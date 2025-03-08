@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Benutzer & Wallet Management</title>
+    <title>SolSniperBot - Vollständige Lösung</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -47,16 +47,31 @@
         <h3 class="text-xl font-semibold mb-2">Wallet Seed Phrase:</h3>
         <p id="seedPhrase" class="text-white bg-gray-700 p-2 rounded mb-4 break-words"></p>
         
-        <h3 class="text-xl font-semibold mb-2">Kontostand der Wallet:</h3>
-        <p id="walletBalance" class="text-white bg-gray-700 p-2 rounded mb-4"></p>
+        <!-- Sicherheitschecks -->
+        <h3 class="text-xl font-semibold mb-2">Manuelle Sicherheitschecks</h3>
+        <div class="grid grid-cols-2 gap-2 mb-4">
+            <label><input type="checkbox" id="checkHoneypot" checked> Honeypot-Check</label>
+            <label><input type="checkbox" id="checkLiquidity" checked> Liquiditätsprüfung</label>
+            <label><input type="checkbox" id="checkFreezable" checked> Freezable-Check</label>
+            <label><input type="checkbox" id="checkMintable" checked> Mintable-Check</label>
+            <label><input type="checkbox" id="checkImmutable" checked> Immutable-Check</label>
+            <label><input type="checkbox" id="checkLPBurned" checked> LP Burned-Check</label>
+        </div>
 
+        <!-- TP und SL Einstellungen -->
+        <h3 class="text-xl font-semibold mb-2">Take-Profit & Stop-Loss</h3>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <input type="number" id="takeProfit" class="w-full p-2 bg-gray-700 rounded" placeholder="Take-Profit (%)">
+            <input type="number" id="stopLoss" class="w-full p-2 bg-gray-700 rounded" placeholder="Stop-Loss (%)">
+        </div>
+
+        <!-- Abmeldung -->
         <button id="logoutButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">
             Abmelden
         </button>
     </section>
 
-    <!-- Status & Logs -->
-    <p id="status" class="text-yellow-400 font-semibold"></p>
+    <!-- Logs -->
     <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
         <h2 class="text-2xl font-semibold mb-4">Aktivitätsprotokoll</h2>
         <div id="logs" class="bg-gray-700 p-4 rounded h-64 overflow-y-auto text-sm w-full"></div>
@@ -102,11 +117,11 @@
         loginButton.onclick = () => {
             const username = document.getElementById('usernameInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
+
             const storedUser = JSON.parse(localStorage.getItem('user_' + username));
 
             if (storedUser && storedUser.password === password) {
                 currentUser = storedUser.username;
-                authStatus.innerText = "";
                 showDashboard();
                 addLog("Benutzer angemeldet: " + currentUser);
             } else {
@@ -118,33 +133,6 @@
             usernameDisplay.innerText = currentUser;
             dashboard.classList.remove('hidden');
         }
-
-        generateWalletButton.onclick = () => {
-            wallet = solanaWeb3.Keypair.generate();
-            const secretArray = Array.from(wallet.secretKey);
-            walletAddressElement.innerText = `Wallet Adresse: ${wallet.publicKey.toString()}`;
-            seedPhraseElement.innerText = `Seed Phrase: ${secretArray.join(',')}`;
-            updateWalletBalance();
-        };
-
-        async function updateWalletBalance() {
-            if (!wallet) return;
-            try {
-                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-                const balance = await connection.getBalance(wallet.publicKey);
-                walletBalanceElement.innerText = `Kontostand: ${(balance / solanaWeb3.LAMPORTS_PER_SOL).toFixed(4)} SOL`;
-                addLog("Kontostand aktualisiert: " + walletBalanceElement.innerText);
-            } catch (err) {
-                addLog("Fehler beim Abrufen des Kontostands: " + err.message);
-            }
-        }
-
-        logoutButton.onclick = () => {
-            currentUser = null;
-            dashboard.classList.add('hidden');
-            authStatus.innerText = "Erfolgreich abgemeldet.";
-            addLog("Benutzer abgemeldet.");
-        };
     </script>
 
 </body>
