@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolSniperBot - Komplette Webseite</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center overflow-auto">
+
+    <!-- Header -->
+    <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
+        <h1 class="text-3xl font-bold">SolSniperBot - Komplette Webseite</h1>
+        <p class="text-gray-400">Automatisierte Meme-Coin Snipes mit erweiterter Funktionalität</p>
+    </header>
+
+    <!-- Hauptinhalt -->
+    <main class="flex flex-col items-center p-4 w-full max-w-4xl space-y-6">
+
+        <!-- Phantom Wallet Verbindung -->
+        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
+            <h2 class="text-2xl font-semibold mb-4">Phantom Wallet verbinden</h2>
+            <button id="connectButton" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full">
+                Verbinden
+            </button>
+            <p id="walletAddress" class="text-green-400 mt-2"></p>
+        </section>
+
+        <!-- Abonnement-Auswahl -->
+        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
+            <h2 class="text-2xl font-semibold mb-4">Abonnement-Modelle</h2>
+            <select id="subscription" class="w-full p-2 mb-4 bg-gray-700 rounded text-white">
+                <option value="free">Kostenlos (1% Gebühren)</option>
+                <option value="silver">Silber (0.5% Gebühren)</option>
+                <option value="gold">Gold (Keine Gebühren, nur mit eigenem Token)</option>
+            </select>
+            <button id="subscribeButton" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">
+                Abonnement aktivieren
+            </button>
+        </section>
+
+        <!-- Sicherheitschecks Einstellungen -->
+        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
+            <h2 class="text-2xl font-semibold mb-4">Manuelle Sicherheitschecks</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkHoneypot" class="mr-2" checked>
+                    Honeypot-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkLiquidity" class="mr-2" checked>
+                    Liquiditätsprüfung
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkFreezable" class="mr-2" checked>
+                    Freezable-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkMintable" class="mr-2" checked>
+                    Mintable-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkImmutable" class="mr-2" checked>
+                    Immutable-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkLPBurned" class="mr-2" checked>
+                    LP Burned-Check
+                </label>
+            </div>
+            <button id="snipeButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mt-4">
+                Automatische Meme-Coin Snipes starten
+            </button>
+        </section>
+
+        <!-- Status- und Log-Anzeige -->
+        <p id="status" class="text-yellow-400 font-semibold"></p>
+        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
+            <h2 class="text-2xl font-semibold mb-4">Aktivitätsprotokoll</h2>
+            <div id="logs" class="bg-gray-700 p-4 rounded h-64 overflow-y-auto text-sm w-full"></div>
+        </section>
+
+    </main>
+
+    <script>
+        const statusElement = document.getElementById('status');
+        const logsElement = document.getElementById('logs');
+        const connectButton = document.getElementById('connectButton');
+        const subscribeButton = document.getElementById('subscribeButton');
+        const snipeButton = document.getElementById('snipeButton');
+        const walletAddressElement = document.getElementById('walletAddress');
+
+        // Log-Funktion
+        function addLog(message) {
+            const timeStamp = new Date().toLocaleTimeString();
+            logsElement.innerHTML += `<p>[${timeStamp}] ${message}</p>`;
+            logsElement.scrollTop = logsElement.scrollHeight;
+        }
+
+        // Wallet verbinden
+        connectButton.onclick = async () => {
+            addLog("Verbindung zur Phantom Wallet wird hergestellt...");
+            try {
+                const resp = await window.solana.connect();
+                walletAddressElement.innerText = `Verbunden: ${resp.publicKey.toString()}`;
+                addLog("Phantom Wallet erfolgreich verbunden.");
+            } catch (err) {
+                addLog("Verbindung zur Phantom Wallet fehlgeschlagen.");
+            }
+        };
+
+        // Abonnement aktivieren
+        subscribeButton.onclick = () => {
+            const subscription = document.getElementById('subscription').value;
+            addLog(`Abonnement geändert auf: ${subscription}`);
+            statusElement.innerText = `Aktives Abonnement: ${subscription}`;
+        };
+
+        // Automatische Snipes starten
+        snipeButton.onclick = () => {
+            addLog("Automatische Meme-Coin Snipes gestartet.");
+            statusElement.innerText = "Suche nach neuen Meme-Coins...";
+        };
+    </script>
+
+</body>
+</html>
