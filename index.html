@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Vollständiger Sniper Bot</title>
+    <title>SolSniperBot - Wallet Integration</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,51 +13,35 @@
     <!-- Header -->
     <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
         <h1 class="text-3xl font-bold">SolSniperBot - Automatisierter Sniper Bot</h1>
-        <p class="text-gray-400">Benutzerkonten, Wallets, Sicherheitschecks & Automatisierte Trades</p>
+        <p class="text-gray-400">Direkte Wallet-Verbindung & Automatisierte Trades</p>
     </header>
 
-    <!-- Benutzerregistrierung & Anmeldung -->
+    <!-- Wallet Verbindung -->
     <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
-        <h2 class="text-2xl font-semibold mb-4">Benutzerkonto erstellen oder anmelden</h2>
-        <input type="text" id="usernameInput" class="w-full p-2 mb-4 bg-gray-700 rounded" placeholder="Benutzername">
-        <input type="password" id="passwordInput" class="w-full p-2 mb-4 bg-gray-700 rounded" placeholder="Passwort">
-        
-        <div class="flex space-x-4">
-            <button id="registerButton" class="w-1/2 bg-green-600 hover:bg-green-700 text-white py-2 rounded">
-                Registrieren
-            </button>
-            <button id="loginButton" class="w-1/2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
-                Anmelden
-            </button>
-        </div>
-        
-        <p id="authStatus" class="text-yellow-400 font-semibold mt-4"></p>
+        <h2 class="text-2xl font-semibold mb-4">Wallet verbinden</h2>
+        <button id="connectPhantom" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded mb-4">
+            Mit Phantom Wallet verbinden
+        </button>
+        <button id="connectSolflare" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mb-4">
+            Mit Solflare Wallet verbinden
+        </button>
+        <p id="walletAddress" class="text-green-400 mt-2 break-words"></p>
     </section>
 
-    <!-- Benutzer-Dashboard & Sniper Bot Einstellungen -->
+    <!-- Sniper Bot Einstellungen -->
     <section id="dashboard" class="hidden bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
-        <h2 class="text-2xl font-semibold mb-4">Willkommen, <span id="usernameDisplay"></span>!</h2>
-        <p id="walletAddress" class="text-green-400 mb-4 break-words"></p>
-        
-        <button id="generateWalletButton" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded mb-4">
-            Neue Wallet erstellen
-        </button>
-        
-        <!-- TP und SL Einstellungen -->
-        <h3 class="text-xl font-semibold mb-2">Sniper Bot Einstellungen</h3>
+        <h2 class="text-2xl font-semibold mb-4">Sniper Bot Einstellungen</h2>
+
+        <!-- Take-Profit & Stop-Loss Einstellungen -->
         <input type="number" id="takeProfit" class="w-full p-2 bg-gray-700 rounded mb-4" placeholder="Take-Profit (%)">
         <input type="number" id="stopLoss" class="w-full p-2 bg-gray-700 rounded mb-4" placeholder="Stop-Loss (%)">
-        
-        <button id="startSniperButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mb-4">
+
+        <!-- Sniper Bot Steuerung -->
+        <button id="startSniperButton" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded mb-4">
             Sniper Bot starten
         </button>
-
         <button id="stopSniperButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded mb-4">
             Sniper Bot stoppen
-        </button>
-        
-        <button id="logoutButton" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded">
-            Abmelden
         </button>
     </section>
 
@@ -68,41 +52,76 @@
     </section>
 
     <script>
+        let walletPublicKey = null;
         let isSniping = false;
 
+        // Wallet Verbindung (Phantom)
+        document.getElementById('connectPhantom').onclick = async () => {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect();
+                    walletPublicKey = resp.publicKey.toString();
+                    document.getElementById('walletAddress').innerText = `Verbunden: ${walletPublicKey}`;
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    addLog("Phantom Wallet erfolgreich verbunden.");
+                } catch (err) {
+                    addLog("Fehler bei der Verbindung zur Phantom Wallet: " + err.message);
+                }
+            } else {
+                addLog("Phantom Wallet nicht gefunden. Bitte installieren.");
+            }
+        };
+
+        // Wallet Verbindung (Solflare)
+        document.getElementById('connectSolflare').onclick = async () => {
+            if (window.solflare) {
+                try {
+                    await window.solflare.connect();
+                    walletPublicKey = window.solflare.publicKey.toString();
+                    document.getElementById('walletAddress').innerText = `Verbunden: ${walletPublicKey}`;
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    addLog("Solflare Wallet erfolgreich verbunden.");
+                } catch (err) {
+                    addLog("Fehler bei der Verbindung zur Solflare Wallet: " + err.message);
+                }
+            } else {
+                addLog("Solflare Wallet nicht gefunden. Bitte installieren.");
+            }
+        };
+
+        // Sniper Bot Starten
         document.getElementById('startSniperButton').onclick = () => {
             isSniping = true;
             addLog("Sniper Bot gestartet...");
             sniperBotLoop();
         };
 
+        // Sniper Bot Stoppen
         document.getElementById('stopSniperButton').onclick = () => {
             isSniping = false;
             addLog("Sniper Bot gestoppt.");
         };
 
+        // Sniper Bot Hauptfunktion
         async function sniperBotLoop() {
             while (isSniping) {
                 addLog("Suche nach neuen Meme-Coins...");
-                
-                // Beispiel Sicherheitschecks (Hier echte API-Logik einfügen)
                 const isSafe = performSecurityChecks();
                 if (isSafe) {
                     addLog("Sicherheitschecks bestanden. Kaufe neuen Meme-Coin...");
-                    // Hier Kauf-Logik einfügen (z.B. über Raydium API)
                 } else {
                     addLog("Sicherheitschecks fehlgeschlagen. Kein Kauf durchgeführt.");
                 }
-
-                await new Promise(resolve => setTimeout(resolve, 5000)); // Warte 5 Sekunden
+                await new Promise(resolve => setTimeout(resolve, 5000));
             }
         }
 
+        // Sicherheitschecks (Dummy-Logik)
         function performSecurityChecks() {
-            // Beispiel: Immer als sicher markieren (Hier echte Checks einbauen)
-            return Math.random() > 0.2; // 80% Chance auf "sicher"
+            return Math.random() > 0.2; 
         }
 
+        // Log-Funktion
         function addLog(message) {
             const logsElement = document.getElementById('logs');
             const timeStamp = new Date().toLocaleTimeString();
