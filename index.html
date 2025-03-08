@@ -26,8 +26,8 @@
         try {
             addLog("Aktualisiere Kontostand der Wallet...");
             
-            // Verwende den Helius RPC-Endpunkt mit API-Schlüssel
-            const connection = new solanaWeb3.Connection('https://mainnet.helius-rpc.com/?api-key=95d3b715-1052-43c6-bb0b-e1136b44961b');
+            // Alternativer RPC-Endpunkt ohne API-Schlüssel
+            const connection = new solanaWeb3.Connection("https://solana-mainnet.rpc.extrnode.com");
             
             const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
                 new solanaWeb3.PublicKey(walletPublicKey),
