@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Wallet Integration</title>
+    <title>SolSniperBot - Wallet Kontostand</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,8 +12,8 @@
 
     <!-- Header -->
     <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
-        <h1 class="text-3xl font-bold">SolSniperBot - Automatisierter Sniper Bot</h1>
-        <p class="text-gray-400">Direkte Wallet-Verbindung & Automatisierte Trades</p>
+        <h1 class="text-3xl font-bold">SolSniperBot - Wallet Kontostand</h1>
+        <p class="text-gray-400">Wallet-Verbindung, Kontostand-Anzeige & Sniper Bot</p>
     </header>
 
     <!-- Wallet Verbindung -->
@@ -26,6 +26,20 @@
             Mit Solflare Wallet verbinden
         </button>
         <p id="walletAddress" class="text-green-400 mt-2 break-words"></p>
+    </section>
+
+    <!-- Kontostand-Anzeige -->
+    <section id="walletBalanceSection" class="hidden bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Kontostand der Wallet</h2>
+        <table class="w-full bg-gray-700 rounded">
+            <thead>
+                <tr class="bg-gray-600">
+                    <th class="p-2">Token Name</th>
+                    <th class="p-2">Menge</th>
+                </tr>
+            </thead>
+            <tbody id="tokenList" class="text-center"></tbody>
+        </table>
     </section>
 
     <!-- Sniper Bot Einstellungen -->
@@ -55,7 +69,6 @@
         let walletPublicKey = null;
         let isSniping = false;
 
-        // Wallet Verbindung (Phantom)
         document.getElementById('connectPhantom').onclick = async () => {
             if (window.solana && window.solana.isPhantom) {
                 try {
@@ -63,7 +76,9 @@
                     walletPublicKey = resp.publicKey.toString();
                     document.getElementById('walletAddress').innerText = `Verbunden: ${walletPublicKey}`;
                     document.getElementById('dashboard').classList.remove('hidden');
+                    document.getElementById('walletBalanceSection').classList.remove('hidden');
                     addLog("Phantom Wallet erfolgreich verbunden.");
+                    updateWalletBalance();
                 } catch (err) {
                     addLog("Fehler bei der Verbindung zur Phantom Wallet: " + err.message);
                 }
@@ -72,56 +87,36 @@
             }
         };
 
-        // Wallet Verbindung (Solflare)
-        document.getElementById('connectSolflare').onclick = async () => {
-            if (window.solflare) {
-                try {
-                    await window.solflare.connect();
-                    walletPublicKey = window.solflare.publicKey.toString();
-                    document.getElementById('walletAddress').innerText = `Verbunden: ${walletPublicKey}`;
-                    document.getElementById('dashboard').classList.remove('hidden');
-                    addLog("Solflare Wallet erfolgreich verbunden.");
-                } catch (err) {
-                    addLog("Fehler bei der Verbindung zur Solflare Wallet: " + err.message);
-                }
-            } else {
-                addLog("Solflare Wallet nicht gefunden. Bitte installieren.");
-            }
-        };
+        async function updateWalletBalance() {
+            if (!walletPublicKey) return;
+            
+            try {
+                addLog("Aktualisiere Kontostand der Wallet...");
+                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+                    new solanaWeb3.PublicKey(walletPublicKey),
+                    { programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
+                );
 
-        // Sniper Bot Starten
-        document.getElementById('startSniperButton').onclick = () => {
-            isSniping = true;
-            addLog("Sniper Bot gestartet...");
-            sniperBotLoop();
-        };
+                const tokenList = document.getElementById('tokenList');
+                tokenList.innerHTML = "";
 
-        // Sniper Bot Stoppen
-        document.getElementById('stopSniperButton').onclick = () => {
-            isSniping = false;
-            addLog("Sniper Bot gestoppt.");
-        };
+                tokenAccounts.value.forEach(tokenAccount => {
+                    const info = tokenAccount.account.data.parsed.info;
+                    tokenList.innerHTML += `
+                        <tr>
+                            <td class="p-2">${info.mint}</td>
+                            <td class="p-2">${info.tokenAmount.uiAmount}</td>
+                        </tr>
+                    `;
+                });
 
-        // Sniper Bot Hauptfunktion
-        async function sniperBotLoop() {
-            while (isSniping) {
-                addLog("Suche nach neuen Meme-Coins...");
-                const isSafe = performSecurityChecks();
-                if (isSafe) {
-                    addLog("Sicherheitschecks bestanden. Kaufe neuen Meme-Coin...");
-                } else {
-                    addLog("Sicherheitschecks fehlgeschlagen. Kein Kauf durchgeführt.");
-                }
-                await new Promise(resolve => setTimeout(resolve, 5000));
+                addLog("Kontostand erfolgreich aktualisiert.");
+            } catch (err) {
+                addLog("Fehler beim Abrufen des Kontostands: " + err.message);
             }
         }
 
-        // Sicherheitschecks (Dummy-Logik)
-        function performSecurityChecks() {
-            return Math.random() > 0.2; 
-        }
-
-        // Log-Funktion
         function addLog(message) {
             const logsElement = document.getElementById('logs');
             const timeStamp = new Date().toLocaleTimeString();
