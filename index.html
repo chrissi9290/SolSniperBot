@@ -3,92 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Private Key Integration</title>
+    <title>SolSniperBot - Benutzerverwaltung & Wallet-Erstellung</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col items-center overflow-auto">
 
     <!-- Header -->
     <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
-        <h1 class="text-3xl font-bold">SolSniperBot - Private Key Integration</h1>
-        <p class="text-gray-400">Automatisierte Meme-Coin Snipes über Wallet Private Key</p>
+        <h1 class="text-3xl font-bold">SolSniperBot - Benutzer & Wallet Management</h1>
+        <p class="text-gray-400">Automatisierte Meme-Coin Snipes mit Benutzerkonten & Wallets</p>
     </header>
 
-    <!-- Hauptinhalt -->
-    <main class="flex flex-col items-center p-4 w-full max-w-4xl space-y-6">
-
-        <!-- Private Key Verbindung -->
-        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
-            <h2 class="text-2xl font-semibold mb-4">Private Key eingeben</h2>
-            <input type="password" id="privateKeyInput" class="w-full p-2 mb-4 bg-gray-700 rounded" placeholder="Geben Sie hier Ihren Private Key ein">
-            <button id="connectButton" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full">
-                Wallet verbinden
+    <!-- Benutzerregistrierung & Anmeldung -->
+    <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Benutzerkonto erstellen oder anmelden</h2>
+        <input type="text" id="usernameInput" class="w-full p-2 mb-4 bg-gray-700 rounded" placeholder="Benutzername">
+        <input type="password" id="passwordInput" class="w-full p-2 mb-4 bg-gray-700 rounded" placeholder="Passwort">
+        
+        <div class="flex space-x-4">
+            <button id="registerButton" class="w-1/2 bg-green-600 hover:bg-green-700 text-white py-2 rounded">
+                Registrieren
             </button>
-            <p id="walletAddress" class="text-green-400 mt-2 break-words"></p>
-        </section>
+            <button id="loginButton" class="w-1/2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
+                Anmelden
+            </button>
+        </div>
+        
+        <p id="authStatus" class="text-yellow-400 font-semibold mt-4"></p>
+    </section>
 
-        <!-- TP und SL Einstellungen -->
-        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
-            <h2 class="text-2xl font-semibold mb-4">Take-Profit (TP) und Stop-Loss (SL) Einstellungen</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label for="takeProfit" class="block mb-1">Take-Profit (%)</label>
-                    <input type="number" id="takeProfit" class="w-full p-2 bg-gray-700 rounded" placeholder="z. B. 50">
-                </div>
-                <div>
-                    <label for="stopLoss" class="block mb-1">Stop-Loss (%)</label>
-                    <input type="number" id="stopLoss" class="w-full p-2 bg-gray-700 rounded" placeholder="z. B. 10">
-                </div>
-            </div>
-        </section>
-
-        <!-- Status & Logs -->
-        <p id="status" class="text-yellow-400 font-semibold"></p>
-        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
-            <h2 class="text-2xl font-semibold mb-4">Aktivitätsprotokoll</h2>
-            <div id="logs" class="bg-gray-700 p-4 rounded h-64 overflow-y-auto text-sm w-full"></div>
-        </section>
-
-    </main>
+    <!-- Benutzer-Dashboard & Wallet -->
+    <section id="dashboard" class="hidden bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Willkommen, <span id="usernameDisplay"></span>!</h2>
+        <p id="walletAddress" class="text-green-400 mb-4 break-words"></p>
+        
+        <button id="generateWalletButton" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded mb-4">
+            Neue Wallet erstellen
+        </button>
+        
+        <h3 class="text-xl font-semibold mb-2">Wallet Seed Phrase:</h3>
+        <p id="seedPhrase" class="text-white bg-gray-700 p-2 rounded mb-4 break-words"></p>
+        
+        <button id="logoutButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">
+            Abmelden
+        </button>
+    </section>
 
     <script>
-        const statusElement = document.getElementById('status');
-        const logsElement = document.getElementById('logs');
-        const connectButton = document.getElementById('connectButton');
-        const privateKeyInput = document.getElementById('privateKeyInput');
+        const authStatus = document.getElementById('authStatus');
+        const dashboard = document.getElementById('dashboard');
+        const usernameDisplay = document.getElementById('usernameDisplay');
         const walletAddressElement = document.getElementById('walletAddress');
+        const seedPhraseElement = document.getElementById('seedPhrase');
 
+        const registerButton = document.getElementById('registerButton');
+        const loginButton = document.getElementById('loginButton');
+        const generateWalletButton = document.getElementById('generateWalletButton');
+        const logoutButton = document.getElementById('logoutButton');
+
+        let currentUser = null;
         let wallet = null;
 
-        // Log-Funktion mit zusätzlichem Debugging
-        function addLog(message) {
-            const timeStamp = new Date().toLocaleTimeString();
-            logsElement.innerHTML += `<p>[${timeStamp}] ${message}</p>`;
-            logsElement.scrollTop = logsElement.scrollHeight;
-            console.log(message); // Zusätzliche Ausgabe in der Browser-Konsole
-        }
+        // Benutzer registrieren
+        registerButton.onclick = () => {
+            const username = document.getElementById('usernameInput').value.trim();
+            const password = document.getElementById('passwordInput').value.trim();
 
-        // Wallet Verbindung über Private Key herstellen
-        connectButton.onclick = async () => {
-            const privateKey = privateKeyInput.value.trim();
-            
-            if (!privateKey) {
-                addLog("Bitte geben Sie einen gültigen Private Key ein.");
+            if (!username || !password) {
+                authStatus.innerText = "Bitte Benutzername und Passwort eingeben.";
                 return;
             }
 
-            try {
-                addLog("Erstelle Wallet aus Private Key...");
-                const keyArray = Uint8Array.from(privateKey.split(',').map(Number));
-                wallet = solanaWeb3.Keypair.fromSecretKey(keyArray);
-                walletAddressElement.innerText = `Verbunden: ${wallet.publicKey.toString()}`;
-                addLog("Wallet erfolgreich verbunden.");
-            } catch (err) {
-                addLog("Fehler bei der Wallet-Verbindung: " + err.message);
-                statusElement.innerText = "Fehler bei der Wallet-Verbindung.";
+            localStorage.setItem('user_' + username, JSON.stringify({ username, password }));
+            authStatus.innerText = "Benutzer erfolgreich registriert!";
+        };
+
+        // Benutzer anmelden
+        loginButton.onclick = () => {
+            const username = document.getElementById('usernameInput').value.trim();
+            const password = document.getElementById('passwordInput').value.trim();
+
+            const storedUser = JSON.parse(localStorage.getItem('user_' + username));
+
+            if (storedUser && storedUser.password === password) {
+                currentUser = storedUser.username;
+                authStatus.innerText = "";
+                showDashboard();
+            } else {
+                authStatus.innerText = "Falscher Benutzername oder Passwort.";
             }
+        };
+
+        // Dashboard anzeigen
+        function showDashboard() {
+            document.getElementById('usernameDisplay').innerText = currentUser;
+            dashboard.classList.remove('hidden');
+        }
+
+        // Neue Wallet erstellen
+        generateWalletButton.onclick = () => {
+            wallet = solanaWeb3.Keypair.generate();
+            const secretArray = Array.from(wallet.secretKey);
+            walletAddressElement.innerText = `Wallet Adresse: ${wallet.publicKey.toString()}`;
+            seedPhraseElement.innerText = `Seed Phrase: ${secretArray.join(',')}`;
+        };
+
+        // Abmelden
+        logoutButton.onclick = () => {
+            currentUser = null;
+            dashboard.classList.add('hidden');
+            authStatus.innerText = "Erfolgreich abgemeldet.";
         };
     </script>
 
