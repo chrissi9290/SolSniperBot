@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Benutzerverwaltung & Wallet-Erstellung</title>
+    <title>SolSniperBot - Benutzer & Wallet Management</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col items-center overflow-auto">
 
     <!-- Header -->
     <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
-        <h1 class="text-3xl font-bold">SolSniperBot - Benutzer & Wallet Management</h1>
-        <p class="text-gray-400">Automatisierte Meme-Coin Snipes mit Benutzerkonten & Wallets</p>
+        <h1 class="text-3xl font-bold">SolSniperBot - Komplettlösung</h1>
+        <p class="text-gray-400">Benutzerkonten, Wallets, Sicherheitschecks & Snipes</p>
     </header>
 
     <!-- Benutzerregistrierung & Anmeldung -->
@@ -37,6 +38,7 @@
     <section id="dashboard" class="hidden bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
         <h2 class="text-2xl font-semibold mb-4">Willkommen, <span id="usernameDisplay"></span>!</h2>
         <p id="walletAddress" class="text-green-400 mb-4 break-words"></p>
+        <p id="walletBalance" class="text-blue-400 mb-4"></p>
         
         <button id="generateWalletButton" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded mb-4">
             Neue Wallet erstellen
@@ -45,9 +47,19 @@
         <h3 class="text-xl font-semibold mb-2">Wallet Seed Phrase:</h3>
         <p id="seedPhrase" class="text-white bg-gray-700 p-2 rounded mb-4 break-words"></p>
         
+        <h3 class="text-xl font-semibold mb-2">Kontostand der Wallet:</h3>
+        <p id="walletBalance" class="text-white bg-gray-700 p-2 rounded mb-4"></p>
+
         <button id="logoutButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">
             Abmelden
         </button>
+    </section>
+
+    <!-- Status & Logs -->
+    <p id="status" class="text-yellow-400 font-semibold"></p>
+    <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Aktivitätsprotokoll</h2>
+        <div id="logs" class="bg-gray-700 p-4 rounded h-64 overflow-y-auto text-sm w-full"></div>
     </section>
 
     <script>
@@ -56,6 +68,7 @@
         const usernameDisplay = document.getElementById('usernameDisplay');
         const walletAddressElement = document.getElementById('walletAddress');
         const seedPhraseElement = document.getElementById('seedPhrase');
+        const walletBalanceElement = document.getElementById('walletBalance');
 
         const registerButton = document.getElementById('registerButton');
         const loginButton = document.getElementById('loginButton');
@@ -65,7 +78,14 @@
         let currentUser = null;
         let wallet = null;
 
-        // Benutzer registrieren
+        function addLog(message) {
+            const logsElement = document.getElementById('logs');
+            const timeStamp = new Date().toLocaleTimeString();
+            logsElement.innerHTML += `<p>[${timeStamp}] ${message}</p>`;
+            logsElement.scrollTop = logsElement.scrollHeight;
+            console.log(message);
+        }
+
         registerButton.onclick = () => {
             const username = document.getElementById('usernameInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
@@ -79,41 +99,51 @@
             authStatus.innerText = "Benutzer erfolgreich registriert!";
         };
 
-        // Benutzer anmelden
         loginButton.onclick = () => {
             const username = document.getElementById('usernameInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
-
             const storedUser = JSON.parse(localStorage.getItem('user_' + username));
 
             if (storedUser && storedUser.password === password) {
                 currentUser = storedUser.username;
                 authStatus.innerText = "";
                 showDashboard();
+                addLog("Benutzer angemeldet: " + currentUser);
             } else {
                 authStatus.innerText = "Falscher Benutzername oder Passwort.";
             }
         };
 
-        // Dashboard anzeigen
         function showDashboard() {
-            document.getElementById('usernameDisplay').innerText = currentUser;
+            usernameDisplay.innerText = currentUser;
             dashboard.classList.remove('hidden');
         }
 
-        // Neue Wallet erstellen
         generateWalletButton.onclick = () => {
             wallet = solanaWeb3.Keypair.generate();
             const secretArray = Array.from(wallet.secretKey);
             walletAddressElement.innerText = `Wallet Adresse: ${wallet.publicKey.toString()}`;
             seedPhraseElement.innerText = `Seed Phrase: ${secretArray.join(',')}`;
+            updateWalletBalance();
         };
 
-        // Abmelden
+        async function updateWalletBalance() {
+            if (!wallet) return;
+            try {
+                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
+                const balance = await connection.getBalance(wallet.publicKey);
+                walletBalanceElement.innerText = `Kontostand: ${(balance / solanaWeb3.LAMPORTS_PER_SOL).toFixed(4)} SOL`;
+                addLog("Kontostand aktualisiert: " + walletBalanceElement.innerText);
+            } catch (err) {
+                addLog("Fehler beim Abrufen des Kontostands: " + err.message);
+            }
+        }
+
         logoutButton.onclick = () => {
             currentUser = null;
             dashboard.classList.add('hidden');
             authStatus.innerText = "Erfolgreich abgemeldet.";
+            addLog("Benutzer abgemeldet.");
         };
     </script>
 
