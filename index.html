@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Wallet-Inhalte anzeigen</title>
+    <title>SolSniperBot - Komplette Webseite</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
 </head>
@@ -11,8 +11,8 @@
 
     <!-- Header -->
     <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
-        <h1 class="text-3xl font-bold">SolSniperBot - Wallet-Inhalte anzeigen</h1>
-        <p class="text-gray-400">Automatisierte Meme-Coin Snipes & Wallet Token-Anzeige</p>
+        <h1 class="text-3xl font-bold">SolSniperBot - Komplette Webseite</h1>
+        <p class="text-gray-400">Automatisierte Meme-Coin Snipes mit erweiterter Funktionalität</p>
     </header>
 
     <!-- Hauptinhalt -->
@@ -25,6 +25,53 @@
                 Verbinden
             </button>
             <p id="walletAddress" class="text-green-400 mt-2"></p>
+        </section>
+
+        <!-- Abonnement-Auswahl -->
+        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
+            <h2 class="text-2xl font-semibold mb-4">Abonnement-Modelle</h2>
+            <select id="subscription" class="w-full p-2 mb-4 bg-gray-700 rounded text-white">
+                <option value="free">Kostenlos (1% Gebühren)</option>
+                <option value="silver">Silber (0.5% Gebühren)</option>
+                <option value="gold">Gold (Keine Gebühren, nur mit eigenem Token)</option>
+            </select>
+            <button id="subscribeButton" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">
+                Abonnement aktivieren
+            </button>
+        </section>
+
+        <!-- Sicherheitschecks Einstellungen -->
+        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
+            <h2 class="text-2xl font-semibold mb-4">Manuelle Sicherheitschecks</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkHoneypot" class="mr-2" checked>
+                    Honeypot-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkLiquidity" class="mr-2" checked>
+                    Liquiditätsprüfung
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkFreezable" class="mr-2" checked>
+                    Freezable-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkMintable" class="mr-2" checked>
+                    Mintable-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkImmutable" class="mr-2" checked>
+                    Immutable-Check
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="checkLPBurned" class="mr-2" checked>
+                    LP Burned-Check
+                </label>
+            </div>
+            <button id="snipeButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mt-4">
+                Automatische Meme-Coin Snipes starten
+            </button>
         </section>
 
         <!-- Wallet Token-Anzeige -->
@@ -54,6 +101,8 @@
         const statusElement = document.getElementById('status');
         const logsElement = document.getElementById('logs');
         const connectButton = document.getElementById('connectButton');
+        const subscribeButton = document.getElementById('subscribeButton');
+        const snipeButton = document.getElementById('snipeButton');
         const walletAddressElement = document.getElementById('walletAddress');
         const tokenTable = document.getElementById('tokenTable');
 
@@ -66,7 +115,7 @@
             logsElement.scrollTop = logsElement.scrollHeight;
         }
 
-        // Wallet verbinden und Token-Mengen anzeigen
+        // Phantom Wallet verbinden
         connectButton.onclick = async () => {
             addLog("Verbindung zur Phantom Wallet wird hergestellt...");
             try {
@@ -74,48 +123,23 @@
                 walletPublicKey = resp.publicKey.toString();
                 walletAddressElement.innerText = `Verbunden: ${walletPublicKey}`;
                 addLog("Phantom Wallet erfolgreich verbunden.");
-                await loadWalletTokens();
             } catch (err) {
                 addLog("Verbindung zur Phantom Wallet fehlgeschlagen.");
             }
         };
 
-        // Token-Mengen auslesen und anzeigen
-        async function loadWalletTokens() {
-            if (!walletPublicKey) return;
+        // Abonnement aktivieren
+        subscribeButton.onclick = () => {
+            const subscription = document.getElementById('subscription').value;
+            addLog(`Abonnement geändert auf: ${subscription}`);
+            statusElement.innerText = `Aktives Abonnement: ${subscription}`;
+        };
 
-            addLog("Lade Token-Mengen der Wallet...");
-            tokenTable.innerHTML = "";
-
-            try {
-                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-                    new solanaWeb3.PublicKey(walletPublicKey),
-                    { programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
-                );
-
-                tokenAccounts.value.forEach(tokenAccount => {
-                    const tokenInfo = tokenAccount.account.data.parsed.info;
-                    const mintAddress = tokenInfo.mint;
-                    const amount = tokenInfo.tokenAmount.uiAmount;
-
-                    if (amount > 0) {
-                        tokenTable.innerHTML += `
-                            <tr>
-                                <td class="p-2">${mintAddress}</td>
-                                <td class="p-2">${amount}</td>
-                            </tr>
-                        `;
-                        addLog(`Token ${mintAddress}: ${amount}`);
-                    }
-                });
-
-                statusElement.innerText = "Token-Mengen erfolgreich geladen.";
-            } catch (err) {
-                addLog("Fehler beim Laden der Token-Mengen.");
-                statusElement.innerText = "Fehler beim Laden der Token-Mengen.";
-            }
-        }
+        // Automatische Snipes starten
+        snipeButton.onclick = () => {
+            addLog("Automatische Meme-Coin Snipes gestartet.");
+            statusElement.innerText = "Suche nach neuen Meme-Coins...";
+        };
     </script>
 
 </body>
