@@ -4,7 +4,7 @@ function App() {
     const [message, setMessage] = useState("Lade...");
 
     useEffect(() => {
-        fetch("https://sol-sniper-bot-8o9k.vercel.app/api/index")
+        fetch("/api/index")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Netzwerkantwort war nicht ok: ' + response.statusText);
