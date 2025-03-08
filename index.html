@@ -26,10 +26,10 @@
         try {
             addLog("Aktualisiere Kontostand der Wallet...");
             
-            // Alternativer RPC-Endpunkt ohne API-Schlüssel
-            const connection = new solanaWeb3.Connection("https://solana-mainnet.rpc.extrnode.com");
+            // Verwende Ankr RPC-Endpunkt
+            const connection = new solanaWeb3.Connection('https://rpc.ankr.com/solana');
             
-            const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+            const tokenAccounts = await connection.getTokenAccountsByOwner(
                 new solanaWeb3.PublicKey(walletPublicKey),
                 { programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
             );
@@ -44,11 +44,12 @@
             }
 
             tokenAccounts.value.forEach(tokenAccount => {
-                const info = tokenAccount.account.data.parsed.info;
+                const accountInfo = await connection.getParsedAccountInfo(tokenAccount.pubkey);
+                const parsedInfo = accountInfo.value.data.parsed.info;
                 tokenList.innerHTML += `
                     <tr>
-                        <td class="p-2">${info.mint}</td>
-                        <td class="p-2">${info.tokenAmount.uiAmount}</td>
+                        <td class="p-2">${parsedInfo.mint}</td>
+                        <td class="p-2">${parsedInfo.tokenAmount.uiAmount}</td>
                     </tr>
                 `;
             });
