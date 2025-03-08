@@ -5,12 +5,7 @@ function App() {
 
     useEffect(() => {
         fetch("/api/index")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Netzwerkantwort war nicht ok');
-                }
-                return response.json();
-            })
+            .then((response) => response.json())
             .then((data) => setMessage(data.message))
             .catch((error) => setMessage("Fehler beim Laden des Backends: " + error.message));
     }, []);
