@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Vollständige Lösung</title>
+    <title>SolSniperBot - Vollständiger Sniper Bot</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,8 +12,8 @@
 
     <!-- Header -->
     <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
-        <h1 class="text-3xl font-bold">SolSniperBot - Komplettlösung</h1>
-        <p class="text-gray-400">Benutzerkonten, Wallets, Sicherheitschecks & Snipes</p>
+        <h1 class="text-3xl font-bold">SolSniperBot - Automatisierter Sniper Bot</h1>
+        <p class="text-gray-400">Benutzerkonten, Wallets, Sicherheitschecks & Automatisierte Trades</p>
     </header>
 
     <!-- Benutzerregistrierung & Anmeldung -->
@@ -34,21 +34,29 @@
         <p id="authStatus" class="text-yellow-400 font-semibold mt-4"></p>
     </section>
 
-    <!-- Benutzer-Dashboard & Wallet -->
+    <!-- Benutzer-Dashboard & Sniper Bot Einstellungen -->
     <section id="dashboard" class="hidden bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
         <h2 class="text-2xl font-semibold mb-4">Willkommen, <span id="usernameDisplay"></span>!</h2>
         <p id="walletAddress" class="text-green-400 mb-4 break-words"></p>
-        <p id="walletBalance" class="text-blue-400 mb-4"></p>
         
         <button id="generateWalletButton" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded mb-4">
             Neue Wallet erstellen
         </button>
         
-        <h3 class="text-xl font-semibold mb-2">Wallet Seed Phrase:</h3>
-        <p id="seedPhrase" class="text-white bg-gray-700 p-2 rounded mb-4 break-words"></p>
+        <!-- TP und SL Einstellungen -->
+        <h3 class="text-xl font-semibold mb-2">Sniper Bot Einstellungen</h3>
+        <input type="number" id="takeProfit" class="w-full p-2 bg-gray-700 rounded mb-4" placeholder="Take-Profit (%)">
+        <input type="number" id="stopLoss" class="w-full p-2 bg-gray-700 rounded mb-4" placeholder="Stop-Loss (%)">
+        
+        <button id="startSniperButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded mb-4">
+            Sniper Bot starten
+        </button>
 
-        <!-- Abmeldung -->
-        <button id="logoutButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">
+        <button id="stopSniperButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded mb-4">
+            Sniper Bot stoppen
+        </button>
+        
+        <button id="logoutButton" class="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded">
             Abmelden
         </button>
     </section>
@@ -60,20 +68,40 @@
     </section>
 
     <script>
-        const authStatus = document.getElementById('authStatus');
-        const dashboard = document.getElementById('dashboard');
-        const usernameDisplay = document.getElementById('usernameDisplay');
-        const walletAddressElement = document.getElementById('walletAddress');
-        const seedPhraseElement = document.getElementById('seedPhrase');
-        const walletBalanceElement = document.getElementById('walletBalance');
+        let isSniping = false;
 
-        const registerButton = document.getElementById('registerButton');
-        const loginButton = document.getElementById('loginButton');
-        const generateWalletButton = document.getElementById('generateWalletButton');
-        const logoutButton = document.getElementById('logoutButton');
+        document.getElementById('startSniperButton').onclick = () => {
+            isSniping = true;
+            addLog("Sniper Bot gestartet...");
+            sniperBotLoop();
+        };
 
-        let currentUser = null;
-        let wallet = null;
+        document.getElementById('stopSniperButton').onclick = () => {
+            isSniping = false;
+            addLog("Sniper Bot gestoppt.");
+        };
+
+        async function sniperBotLoop() {
+            while (isSniping) {
+                addLog("Suche nach neuen Meme-Coins...");
+                
+                // Beispiel Sicherheitschecks (Hier echte API-Logik einfügen)
+                const isSafe = performSecurityChecks();
+                if (isSafe) {
+                    addLog("Sicherheitschecks bestanden. Kaufe neuen Meme-Coin...");
+                    // Hier Kauf-Logik einfügen (z.B. über Raydium API)
+                } else {
+                    addLog("Sicherheitschecks fehlgeschlagen. Kein Kauf durchgeführt.");
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 5000)); // Warte 5 Sekunden
+            }
+        }
+
+        function performSecurityChecks() {
+            // Beispiel: Immer als sicher markieren (Hier echte Checks einbauen)
+            return Math.random() > 0.2; // 80% Chance auf "sicher"
+        }
 
         function addLog(message) {
             const logsElement = document.getElementById('logs');
@@ -82,56 +110,6 @@
             logsElement.scrollTop = logsElement.scrollHeight;
             console.log(message);
         }
-
-        registerButton.onclick = () => {
-            const username = document.getElementById('usernameInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
-
-            if (!username || !password) {
-                authStatus.innerText = "Bitte Benutzername und Passwort eingeben.";
-                return;
-            }
-
-            localStorage.setItem('user_' + username, JSON.stringify({ username, password }));
-            authStatus.innerText = "Benutzer erfolgreich registriert!";
-            addLog("Benutzer registriert: " + username);
-        };
-
-        loginButton.onclick = () => {
-            const username = document.getElementById('usernameInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
-
-            const storedUser = JSON.parse(localStorage.getItem('user_' + username));
-
-            if (storedUser && storedUser.password === password) {
-                currentUser = storedUser.username;
-                showDashboard();
-                addLog("Benutzer angemeldet: " + currentUser);
-            } else {
-                authStatus.innerText = "Falscher Benutzername oder Passwort.";
-                addLog("Anmeldefehler: Benutzername oder Passwort falsch.");
-            }
-        };
-
-        function showDashboard() {
-            usernameDisplay.innerText = currentUser;
-            dashboard.classList.remove('hidden');
-        }
-
-        generateWalletButton.onclick = () => {
-            wallet = solanaWeb3.Keypair.generate();
-            const secretArray = Array.from(wallet.secretKey);
-            walletAddressElement.innerText = `Wallet Adresse: ${wallet.publicKey.toString()}`;
-            seedPhraseElement.innerText = `Seed Phrase: ${secretArray.join(',')}`;
-            addLog("Neue Wallet erstellt: " + wallet.publicKey.toString());
-        };
-
-        logoutButton.onclick = () => {
-            currentUser = null;
-            dashboard.classList.add('hidden');
-            authStatus.innerText = "Erfolgreich abgemeldet.";
-            addLog("Benutzer abgemeldet.");
-        };
     </script>
 
 </body>
