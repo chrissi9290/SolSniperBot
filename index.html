@@ -1,70 +1,137 @@
-<script>
-    let walletPublicKey = null;
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolSniperBot - Wallet Kontostand & Sniper Bot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center overflow-auto">
 
-    document.getElementById('connectPhantom').onclick = async () => {
-        if (window.solana && window.solana.isPhantom) {
+    <!-- Header -->
+    <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
+        <h1 class="text-3xl font-bold">SolSniperBot - Wallet & Sniper Bot</h1>
+        <p class="text-gray-400">Wallet-Verbindung, Kontostand-Anzeige & Automatisierter Sniper Bot</p>
+    </header>
+
+    <!-- Wallet Verbindung -->
+    <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Wallet verbinden</h2>
+        <button id="connectPhantom" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded mb-4">
+            Mit Phantom Wallet verbinden
+        </button>
+        <p id="walletAddress" class="text-green-400 mt-2 break-words"></p>
+    </section>
+
+    <!-- Kontostand-Anzeige -->
+    <section id="walletBalanceSection" class="hidden bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Kontostand der Wallet</h2>
+        <table class="w-full bg-gray-700 rounded">
+            <thead>
+                <tr class="bg-gray-600">
+                    <th class="p-2">Token Name</th>
+                    <th class="p-2">Menge</th>
+                </tr>
+            </thead>
+            <tbody id="tokenList" class="text-center"></tbody>
+        </table>
+    </section>
+
+    <!-- Sniper Bot Einstellungen -->
+    <section id="dashboard" class="hidden bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Sniper Bot Einstellungen</h2>
+
+        <!-- Take-Profit & Stop-Loss Einstellungen -->
+        <input type="number" id="takeProfit" class="w-full p-2 bg-gray-700 rounded mb-4" placeholder="Take-Profit (%)">
+        <input type="number" id="stopLoss" class="w-full p-2 bg-gray-700 rounded mb-4" placeholder="Stop-Loss (%)">
+
+        <!-- Sniper Bot Steuerung -->
+        <button id="startSniperButton" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded mb-4">
+            Sniper Bot starten
+        </button>
+        <button id="stopSniperButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded mb-4">
+            Sniper Bot stoppen
+        </button>
+    </section>
+
+    <!-- Logs -->
+    <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-md mt-6">
+        <h2 class="text-2xl font-semibold mb-4">Aktivitätsprotokoll</h2>
+        <div id="logs" class="bg-gray-700 p-4 rounded h-64 overflow-y-auto text-sm w-full"></div>
+    </section>
+
+    <script>
+        let walletPublicKey = null;
+        let isSniping = false;
+
+        // Wallet Verbindung (Phantom)
+        document.getElementById('connectPhantom').onclick = async () => {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect();
+                    walletPublicKey = resp.publicKey.toString();
+                    document.getElementById('walletAddress').innerText = `Verbunden: ${walletPublicKey}`;
+                    document.getElementById('dashboard').classList.remove('hidden');
+                    document.getElementById('walletBalanceSection').classList.remove('hidden');
+                    addLog("Phantom Wallet erfolgreich verbunden.");
+                    updateWalletBalance();
+                    setInterval(updateWalletBalance, 60000); // Aktualisierung alle 60 Sekunden
+                } catch (err) {
+                    addLog("Fehler bei der Verbindung zur Phantom Wallet: " + err.message);
+                }
+            } else {
+                addLog("Phantom Wallet nicht gefunden. Bitte installieren.");
+            }
+        };
+
+        async function updateWalletBalance() {
+            if (!walletPublicKey) return;
+            
             try {
-                const resp = await window.solana.connect();
-                walletPublicKey = resp.publicKey.toString();
-                document.getElementById('walletAddress').innerText = `Verbunden: ${walletPublicKey}`;
-                document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('walletBalanceSection').classList.remove('hidden');
-                addLog("Phantom Wallet erfolgreich verbunden.");
-                updateWalletBalance();
-                setInterval(updateWalletBalance, 60000); // Aktualisierung alle 60 Sekunden
+                addLog("Aktualisiere Kontostand der Wallet...");
+                
+                // Verwende den Ankr RPC-Endpunkt für Solana
+                const connection = new solanaWeb3.Connection('https://rpc.ankr.com/solana');
+                
+                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+                    new solanaWeb3.PublicKey(walletPublicKey),
+                    { programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
+                );
+
+                const tokenList = document.getElementById('tokenList');
+                tokenList.innerHTML = "";
+
+                if (tokenAccounts.value.length === 0) {
+                    addLog("Keine Token auf der Wallet gefunden.");
+                    tokenList.innerHTML = `<tr><td colspan="2" class="p-2 text-center">Keine Token verfügbar</td></tr>`;
+                    return;
+                }
+
+                tokenAccounts.value.forEach(tokenAccount => {
+                    const info = tokenAccount.account.data.parsed.info;
+                    tokenList.innerHTML += `
+                        <tr>
+                            <td class="p-2">${info.mint}</td>
+                            <td class="p-2">${info.tokenAmount.uiAmount}</td>
+                        </tr>
+                    `;
+                });
+
+                addLog("Kontostand erfolgreich aktualisiert.");
             } catch (err) {
-                addLog("Fehler bei der Verbindung zur Phantom Wallet: " + err.message);
+                addLog("Fehler beim Abrufen des Kontostands: " + err.message);
             }
-        } else {
-            addLog("Phantom Wallet nicht gefunden. Bitte installieren.");
         }
-    };
 
-    async function updateWalletBalance() {
-        if (!walletPublicKey) return;
-        
-        try {
-            addLog("Aktualisiere Kontostand der Wallet...");
-            
-            // Verwende Ankr RPC-Endpunkt
-            const connection = new solanaWeb3.Connection('https://rpc.ankr.com/solana');
-            
-            const tokenAccounts = await connection.getTokenAccountsByOwner(
-                new solanaWeb3.PublicKey(walletPublicKey),
-                { programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
-            );
-
-            const tokenList = document.getElementById('tokenList');
-            tokenList.innerHTML = "";
-
-            if (tokenAccounts.value.length === 0) {
-                addLog("Keine Token auf der Wallet gefunden.");
-                tokenList.innerHTML = `<tr><td colspan="2" class="p-2 text-center">Keine Token verfügbar</td></tr>`;
-                return;
-            }
-
-            tokenAccounts.value.forEach(tokenAccount => {
-                const accountInfo = await connection.getParsedAccountInfo(tokenAccount.pubkey);
-                const parsedInfo = accountInfo.value.data.parsed.info;
-                tokenList.innerHTML += `
-                    <tr>
-                        <td class="p-2">${parsedInfo.mint}</td>
-                        <td class="p-2">${parsedInfo.tokenAmount.uiAmount}</td>
-                    </tr>
-                `;
-            });
-
-            addLog("Kontostand erfolgreich aktualisiert.");
-        } catch (err) {
-            addLog("Fehler beim Abrufen des Kontostands: " + err.message);
+        function addLog(message) {
+            const logsElement = document.getElementById('logs');
+            const timeStamp = new Date().toLocaleTimeString();
+            logsElement.innerHTML += `<p>[${timeStamp}] ${message}</p>`;
+            logsElement.scrollTop = logsElement.scrollHeight;
+            console.log(message);
         }
-    }
+    </script>
 
-    function addLog(message) {
-        const logsElement = document.getElementById('logs');
-        const timeStamp = new Date().toLocaleTimeString();
-        logsElement.innerHTML += `<p>[${timeStamp}] ${message}</p>`;
-        logsElement.scrollTop = logsElement.scrollHeight;
-        console.log(message);
-    }
-</script>
+</body>
+</html>
