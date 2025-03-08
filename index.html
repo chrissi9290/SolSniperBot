@@ -46,24 +46,6 @@
         
         <h3 class="text-xl font-semibold mb-2">Wallet Seed Phrase:</h3>
         <p id="seedPhrase" class="text-white bg-gray-700 p-2 rounded mb-4 break-words"></p>
-        
-        <!-- Sicherheitschecks -->
-        <h3 class="text-xl font-semibold mb-2">Manuelle Sicherheitschecks</h3>
-        <div class="grid grid-cols-2 gap-2 mb-4">
-            <label><input type="checkbox" id="checkHoneypot" checked> Honeypot-Check</label>
-            <label><input type="checkbox" id="checkLiquidity" checked> Liquiditätsprüfung</label>
-            <label><input type="checkbox" id="checkFreezable" checked> Freezable-Check</label>
-            <label><input type="checkbox" id="checkMintable" checked> Mintable-Check</label>
-            <label><input type="checkbox" id="checkImmutable" checked> Immutable-Check</label>
-            <label><input type="checkbox" id="checkLPBurned" checked> LP Burned-Check</label>
-        </div>
-
-        <!-- TP und SL Einstellungen -->
-        <h3 class="text-xl font-semibold mb-2">Take-Profit & Stop-Loss</h3>
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <input type="number" id="takeProfit" class="w-full p-2 bg-gray-700 rounded" placeholder="Take-Profit (%)">
-            <input type="number" id="stopLoss" class="w-full p-2 bg-gray-700 rounded" placeholder="Stop-Loss (%)">
-        </div>
 
         <!-- Abmeldung -->
         <button id="logoutButton" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded">
@@ -112,6 +94,7 @@
 
             localStorage.setItem('user_' + username, JSON.stringify({ username, password }));
             authStatus.innerText = "Benutzer erfolgreich registriert!";
+            addLog("Benutzer registriert: " + username);
         };
 
         loginButton.onclick = () => {
@@ -126,6 +109,7 @@
                 addLog("Benutzer angemeldet: " + currentUser);
             } else {
                 authStatus.innerText = "Falscher Benutzername oder Passwort.";
+                addLog("Anmeldefehler: Benutzername oder Passwort falsch.");
             }
         };
 
@@ -133,6 +117,21 @@
             usernameDisplay.innerText = currentUser;
             dashboard.classList.remove('hidden');
         }
+
+        generateWalletButton.onclick = () => {
+            wallet = solanaWeb3.Keypair.generate();
+            const secretArray = Array.from(wallet.secretKey);
+            walletAddressElement.innerText = `Wallet Adresse: ${wallet.publicKey.toString()}`;
+            seedPhraseElement.innerText = `Seed Phrase: ${secretArray.join(',')}`;
+            addLog("Neue Wallet erstellt: " + wallet.publicKey.toString());
+        };
+
+        logoutButton.onclick = () => {
+            currentUser = null;
+            dashboard.classList.add('hidden');
+            authStatus.innerText = "Erfolgreich abgemeldet.";
+            addLog("Benutzer abgemeldet.");
+        };
     </script>
 
 </body>
