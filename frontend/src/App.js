@@ -4,8 +4,13 @@ function App() {
     const [message, setMessage] = useState("Lade...");
 
     useEffect(() => {
-        fetch("/api/index")
-            .then((response) => response.json())
+        fetch("https://sol-sniper-bot-8o9k.vercel.app/api/index")
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Netzwerkantwort war nicht ok');
+                }
+                return response.json();
+            })
             .then((data) => setMessage(data.message))
             .catch((error) => setMessage("Fehler beim Laden des Backends: " + error.message));
     }, []);
