@@ -7,7 +7,7 @@ function App() {
         fetch("https://sol-sniper-bot-8o9k.vercel.app/api/index")
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Netzwerkantwort war nicht ok');
+                    throw new Error('Netzwerkantwort war nicht ok: ' + response.statusText);
                 }
                 return response.json();
             })
