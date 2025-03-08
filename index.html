@@ -1,149 +1,78 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SolSniperBot - Echtzeit-Updates & Charts</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center overflow-auto">
+<script>
+    const statusElement = document.getElementById('status');
+    const logsElement = document.getElementById('logs');
+    const connectButton = document.getElementById('connectButton');
+    const walletAddressElement = document.getElementById('walletAddress');
+    const tokenTable = document.getElementById('tokenTable');
 
-    <!-- Header -->
-    <header class="w-full bg-gray-800 p-4 text-center sticky top-0 z-50">
-        <h1 class="text-3xl font-bold">SolSniperBot - Echtzeit-Updates & Charts</h1>
-        <p class="text-gray-400">Live Token-Daten & visuelle Darstellung</p>
-    </header>
+    let walletPublicKey = null;
+    let tokenChart = null;
 
-    <!-- Hauptinhalt -->
-    <main class="flex flex-col items-center p-4 w-full max-w-4xl space-y-6">
+    // Log-Funktion
+    function addLog(message) {
+        const timeStamp = new Date().toLocaleTimeString();
+        logsElement.innerHTML += `<p>[${timeStamp}] ${message}</p>`;
+        logsElement.scrollTop = logsElement.scrollHeight;
+        console.log(message); // Zusätzliche Ausgabe in der Browser-Konsole
+    }
 
-        <!-- Wallet Verbindung -->
-        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
-            <h2 class="text-2xl font-semibold mb-4">Phantom Wallet verbinden</h2>
-            <button id="connectButton" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full">
-                Verbinden
-            </button>
-            <p id="walletAddress" class="text-green-400 mt-2"></p>
-        </section>
-
-        <!-- Token-Mengen Anzeige -->
-        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
-            <h2 class="text-2xl font-semibold mb-4">Wallet Token-Mengen (Live-Updates)</h2>
-            <canvas id="tokenChart" class="w-full bg-gray-700 p-4 rounded"></canvas>
-        </section>
-
-        <!-- Status & Logs -->
-        <p id="status" class="text-yellow-400 font-semibold"></p>
-        <section class="bg-gray-800 p-6 rounded-lg shadow-md w-full">
-            <h2 class="text-2xl font-semibold mb-4">Aktivitätsprotokoll</h2>
-            <div id="logs" class="bg-gray-700 p-4 rounded h-64 overflow-y-auto text-sm w-full"></div>
-        </section>
-
-    </main>
-
-    <script>
-        const statusElement = document.getElementById('status');
-        const logsElement = document.getElementById('logs');
-        const connectButton = document.getElementById('connectButton');
-        const walletAddressElement = document.getElementById('walletAddress');
-
-        let walletPublicKey = null;
-        let tokenChart = null;
-        let chartData = {
-            labels: [],
-            datasets: [{
-                label: 'Token Mengen',
-                data: [],
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        // Log-Funktion
-        function addLog(message) {
-            const timeStamp = new Date().toLocaleTimeString();
-            logsElement.innerHTML += `<p>[${timeStamp}] ${message}</p>`;
-            logsElement.scrollTop = logsElement.scrollHeight;
+    // Phantom Wallet verbinden
+    connectButton.onclick = async () => {
+        addLog("Verbindung zur Phantom Wallet wird hergestellt...");
+        try {
+            const resp = await window.solana.connect();
+            walletPublicKey = resp.publicKey.toString();
+            walletAddressElement.innerText = `Verbunden: ${walletPublicKey}`;
+            addLog("Phantom Wallet erfolgreich verbunden.");
+            loadWalletTokens();
+            setInterval(loadWalletTokens, 30000); // Alle 30 Sekunden aktualisieren
+        } catch (err) {
+            addLog("Verbindung zur Phantom Wallet fehlgeschlagen: " + err.message);
         }
+    };
 
-        // Wallet verbinden
-        connectButton.onclick = async () => {
-            addLog("Verbindung zur Phantom Wallet wird hergestellt...");
-            try {
-                const resp = await window.solana.connect();
-                walletPublicKey = resp.publicKey.toString();
-                walletAddressElement.innerText = `Verbunden: ${walletPublicKey}`;
-                addLog("Phantom Wallet erfolgreich verbunden.");
-                loadWalletTokens();
-                setInterval(loadWalletTokens, 10000); // Alle 10 Sekunden aktualisieren
-            } catch (err) {
-                addLog("Verbindung zur Phantom Wallet fehlgeschlagen.");
+    // Token-Mengen auslesen und Chart aktualisieren
+    async function loadWalletTokens() {
+        if (!walletPublicKey) return;
+
+        addLog("Aktualisiere Token-Mengen der Wallet...");
+        try {
+            const connection = new solanaWeb3.Connection('https://mainnet.helius-rpc.com/?api-key=95d3b715-1052-43c6-bb0b-e1136b44961b');
+            const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+                new solanaWeb3.PublicKey(walletPublicKey),
+                { programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
+            );
+
+            if (tokenAccounts.value.length === 0) {
+                addLog("Keine Token auf der Wallet gefunden.");
+                statusElement.innerText = "Wallet ist leer.";
+                return;
             }
-        };
 
-        // Token-Mengen auslesen und Chart aktualisieren
-        async function loadWalletTokens() {
-            if (!walletPublicKey) return;
+            const tokenData = tokenAccounts.value.map(tokenAccount => {
+                const info = tokenAccount.account.data.parsed.info;
+                return { mint: info.mint, amount: info.tokenAmount.uiAmount };
+            }).filter(token => token.amount > 0);
 
-            addLog("Aktualisiere Token-Mengen der Wallet...");
-            try {
-                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
-                    new solanaWeb3.PublicKey(walletPublicKey),
-                    { programId: new solanaWeb3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") }
-                );
-
-                const tokenData = tokenAccounts.value.map(tokenAccount => {
-                    const info = tokenAccount.account.data.parsed.info;
-                    return { mint: info.mint, amount: info.tokenAmount.uiAmount };
-                }).filter(token => token.amount > 0);
-
-                addLog(`Gefundene Token: ${tokenData.length}`);
-
-                // Aktualisiere den Chart mit den neuen Daten
-                updateChart(tokenData);
-                statusElement.innerText = "Token-Mengen erfolgreich aktualisiert.";
-            } catch (err) {
-                addLog("Fehler beim Laden der Token-Mengen: " + err.message);
-                statusElement.innerText = "Fehler beim Laden der Token-Mengen.";
-            }
+            addLog(`Gefundene Token: ${tokenData.length}`);
+            updateTokenTable(tokenData);
+            statusElement.innerText = "Token-Mengen erfolgreich geladen.";
+        } catch (err) {
+            addLog("Fehler beim Laden der Token-Mengen: " + err.message);
+            statusElement.innerText = "Fehler beim Laden der Token-Mengen.";
         }
+    }
 
-        // Chart initialisieren und aktualisieren
-        function updateChart(tokenData) {
-            const labels = tokenData.map(token => token.mint);
-            const data = tokenData.map(token => token.amount);
-
-            if (!tokenChart) {
-                const ctx = document.getElementById('tokenChart').getContext('2d');
-                tokenChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Token Menge',
-                            data: data,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-            } else {
-                tokenChart.data.labels = labels;
-                tokenChart.data.datasets[0].data = data;
-                tokenChart.update();
-            }
-        }
-    </script>
-
-</body>
-</html>
+    // Aktualisiere die Tabelle mit Token-Daten
+    function updateTokenTable(tokenData) {
+        tokenTable.innerHTML = "";
+        tokenData.forEach(token => {
+            tokenTable.innerHTML += `
+                <tr>
+                    <td class="p-2">${token.mint}</td>
+                    <td class="p-2">${token.amount}</td>
+                </tr>
+            `;
+        });
+    }
+</script>
