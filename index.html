@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meme Coin Trader</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/gh/ethers-io/ethers.js@v5/dist/ethers.min.js"></script>
 </head>
 <body>
     <header>
@@ -14,25 +15,19 @@
             <a href="#raydium">Raydium</a>
             <a href="#dexscreener">DEXscreener</a>
         </nav>
+        <button id="connectWallet">Wallet verbinden</button>
+        <p id="walletAddress"></p>
     </header>
 
     <main>
-        <section id="pump-fun">
-            <h2>Pump.fun Integration</h2>
-            <p>Hier könnten Charts oder Informationen von Pump.fun eingebettet werden.</p>
-            <iframe src="https://pump.fun" width="100%" height="600px"></iframe>
-        </section>
-
-        <section id="raydium">
-            <h2>Raydium Trading</h2>
-            <p>Hier könnte eine Trading-Schnittstelle von Raydium eingebunden werden.</p>
-            <iframe src="https://raydium.io" width="100%" height="600px"></iframe>
-        </section>
-
-        <section id="dexscreener">
-            <h2>DEXscreener Charts</h2>
-            <p>Live Charts und Trading-Informationen von DEXscreener.</p>
-            <iframe src="https://dexscreener.com" width="100%" height="600px"></iframe>
+        <section id="trading">
+            <h2>Automatisierter Handel</h2>
+            <label for="tokenAddress">Token Adresse:</label>
+            <input type="text" id="tokenAddress" placeholder="Token Contract Adresse eingeben" />
+            <label for="amount">Menge:</label>
+            <input type="number" id="amount" placeholder="Menge der Token" />
+            <button id="buyButton">Kaufen</button>
+            <button id="sellButton">Verkaufen</button>
         </section>
     </main>
 
