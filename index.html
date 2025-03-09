@@ -1,32 +1,230 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sol Sniper Bot</title>
-</head>
-<body>
-    <h1>Neueste Meme-Coins von Pump.fun</h1>
-    <div id="coin-list">Lade Meme-Coins...</div>
-
-    <script>
-        async function fetchCoins() {
-            const coinListElement = document.getElementById('coin-list');
-            try {
-                const response = await fetch('https://api.pump.fun/coins/latest');
-                if (!response.ok) {
-                    throw new Error('Fehler beim Laden der Daten: ' + response.statusText);
-                }
-                const coins = await response.json();
-                coinListElement.innerHTML = '<ul>' + coins.map(coin => 
-                    `<li><strong>${coin.name}</strong> - Preis: ${coin.price} SOL</li>`
-                ).join('') + '</ul>';
-            } catch (error) {
-                coinListElement.innerHTML = 'Fehler: ' + error.message;
-            }
+    <title>Friedrich Coin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        fetchCoins();
-    </script>
+        body {
+            background: linear-gradient(135deg, #1e3a8a, #60a5fa);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .cta-button {
+            background: #facc15;
+            color: #1e3a8a;
+            padding: 1rem 2.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animated Particles */
+        .particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(-80vh); opacity: 0.2; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Content Section */
+        .content {
+            max-width: 900px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .content h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            color: #e5e7eb;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1.5rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer a {
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .footer img {
+            width: 48px;
+            height: 48px;
+            filter: brightness(90%);
+        }
+
+        .footer a:hover img {
+            transform: scale(1.15);
+            filter: brightness(120%);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .cta-button { padding: 0.8rem 2rem; font-size: 1rem; }
+            .content { margin: 2rem 1rem; padding: 1.5rem; }
+            .content h2 { font-size: 2rem; }
+            .content p { font-size: 1rem; }
+            .footer img { width: 36px; height: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>$FRIEDRICH Coin</h1>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>Welcome to $FRIEDRICH</h1>
+            <p>The first Solana memecoin inspired by Germany’s new Chancellor!</p>
+            <a href="https://drive.google.com/file/d/11n-hTR9aN8EBzxpUu1w0vPxZrMLV9oYN/view?usp=drivesdk" 
+               target="_blank" 
+               class="cta-button">📄 View Whitepaper</a>
+        </div>
+
+        <!-- Animated Particles -->
+        <div class="particle-container">
+            <div class="particle" style="width: 50px; left: 10%; animation-duration: 12s;"></div>
+            <div class="particle" style="width: 70px; left: 25%; animation-duration: 15s;"></div>
+            <div class="particle" style="width: 40px; left: 60%; animation-duration: 18s;"></div>
+            <div class="particle" style="width: 60px; left: 80%; animation-duration: 14s;"></div>
+            <div class="particle" style="width: 30px; left: 45%; animation-duration: 16s;"></div>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content">
+        <h2>🔥 This is $FRIEDRICH</h2>
+        <p>The O.G. Solana Token dedicated to Germany’s newly elected Chancellor, Friedrich. It's a fun, community-driven project with no political ambitions, focusing purely on humor and respectful satire.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <a href="https://dexscreener.com/solana/a5l92fexqncrytaoch2zpqub5vldtnn6jha5cvad5whj" target="_blank">
+            <img src="https://imgur.com/jsB72Q8.jpeg" alt="DEXScreener">
+        </a>
+        <a href="https://x.com/friedrichonsol" target="_blank">
+            <img src="https://i.imgur.com/sY3vPnC.jpeg" alt="Twitter">
+        </a>
+        <a href="https://t.me/friedrichmerzz" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Telegram_2019_Logo.svg" alt="Telegram">
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61572844793604" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+        </a>
+    </footer>
+
 </body>
 </html>
+​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
