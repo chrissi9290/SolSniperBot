@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from 'react';
+// frontend/src/App.js
+import React from 'react';
+import MemeCoins from './MemeCoins';
 
 function App() {
-    const [message, setMessage] = useState("Lade...");
-
-    useEffect(() => {
-        fetch("/api/index")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Netzwerkantwort war nicht ok: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then((data) => setMessage(data.message))
-            .catch((error) => setMessage("Fehler beim Laden des Backends: " + error.message));
-    }, []);
-
     return (
         <div>
-            <h1>{message}</h1>
+            <h1>Sol Sniper Bot</h1>
+            <MemeCoins />
         </div>
     );
 }
