@@ -14,66 +14,86 @@
             padding: 0;
         }
         .container {
-            max-width: 900px;
+            max-width: 90%;
             margin: 50px auto;
-            padding: 30px;
+            padding: 20px;
             background: rgba(0, 0, 0, 0.9);
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
         h1 {
             color: #ffd700;
-            font-size: 2.5em;
+            font-size: 2em;
         }
         h2 {
             color: #d4af37;
-            font-size: 1.8em;
+            font-size: 1.5em;
         }
         p, ul {
-            font-size: 1.2em;
+            font-size: 1em;
             line-height: 1.5em;
+            padding: 0 10px;
         }
         .btn {
             background: #ffd700;
             color: #6a0dad;
-            padding: 15px 25px;
+            padding: 12px 20px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 10px;
             display: inline-block;
             margin-top: 20px;
-            font-size: 1.2em;
+            font-size: 1em;
         }
         .btn:hover {
             background: #d4af37;
         }
         .section {
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 30px;
+            padding: 15px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
         }
         .countdown {
-            font-size: 1.5em;
+            font-size: 1.2em;
             font-weight: bold;
             color: #ffd700;
             margin-top: 10px;
         }
         .social-links {
-            margin-top: 40px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         .social-links a {
-            margin: 0 15px;
             display: inline-block;
         }
         .social-links img {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             transition: transform 0.3s ease;
         }
         .social-links img:hover {
             transform: scale(1.2);
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            .btn {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+            .social-links img {
+                width: 35px;
+                height: 35px;
+            }
         }
     </style>
     <script>
@@ -94,7 +114,7 @@
                 document.getElementById("countdown").innerHTML = `${days}T ${hours}H ${minutes}M ${seconds}S`;
             }, 1000);
         }
-        window.onload = startCountdown;
+        document.addEventListener("DOMContentLoaded", startCountdown);
     </script>
 </head>
 <body>
@@ -108,29 +128,22 @@
         <div class="section">
             <h2>📊 Tokenomics</h2>
             <ul style="list-style-type: none;">
-                <li>🔹 <b>75%</b> der Transaktionsgebühren gehen direkt an die Holder – je mehr du hältst, desto mehr verdienst du!</li>
-                <li>🔹 <b>25%</b> der Gebühren fließen ins Team, um das Projekt weiterzuentwickeln und wachsen zu lassen.</li>
-                <li>🔹 <b>Automatische Ausschüttung alle 60 Minuten</b> – keine Staking-Pools, keine Wartezeiten!</li>
-                <li>🔹 <b>SOLANA direkt auf dein Wallet</b> – passives Einkommen leicht gemacht!</li>
-                <li>🔥 <b>Der gesamte Liquidity Pool ist vollständig geburnt</b> – maximale Sicherheit für Holder!</li>
+                <li>🔹 <b>75%</b> der Transaktionsgebühren gehen direkt an die Holder</li>
+                <li>🔹 <b>25%</b> der Gebühren fließen ins Team für Wachstum</li>
+                <li>🔹 <b>Automatische Ausschüttung alle 60 Minuten</b></li>
+                <li>🔹 <b>SOLANA direkt auf dein Wallet</b></li>
+                <li>🔥 <b>Der gesamte Liquidity Pool ist vollständig geburnt</b></li>
             </ul>
         </div>
 
         <div class="section">
-            <h2>🔥 Maximiere deine Gewinne & werde Teil der Community!</h2>
-            <p>Je mehr Transaktionen – desto höher deine Belohnungen!</p>
-        </div>
-
-        <a href="#" class="btn">💎 Jetzt SOLPRINTER PONZI kaufen & jede Stunde verdienen! 💎</a>
-        
-        <div class="section">
             <h2>🎁 Exklusiver Airdrop</h2>
-            <p>Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop! <br> Der Airdrop bietet dir die Chance, frühzeitig dabei zu sein.</p>
+            <p>Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop! Der Airdrop bietet dir die Chance, frühzeitig dabei zu sein.</p>
             <div id="countdown" class="countdown"></div>
             <a href="#" class="btn">Zum Airdrop</a>
         </div>
         
-       <div class="social-links">
+     <div class="social-links">
             <h2>📢 Folge uns auf unseren Kanälen!</h2>
             <a href="https://t.me/YourTelegramLink" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
