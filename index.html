@@ -67,9 +67,6 @@
             gap: 15px;
             flex-wrap: wrap;
         }
-        .social-links a {
-            display: inline-block;
-        }
         .social-links img {
             width: 40px;
             height: 40px;
@@ -79,9 +76,6 @@
         .social-links img:hover {
             transform: scale(1.2);
         }
-        .language-selector {
-            margin-bottom: 20px;
-        }
     </style>
     <script>
         function setLanguage(lang) {
@@ -89,6 +83,25 @@
                 el.style.display = el.getAttribute('data-lang') === lang ? 'block' : 'none';
             });
         }
+
+        function startCountdown() {
+            const endTime = new Date("2025-03-30T00:00:00").getTime();
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById("countdown").innerHTML = "Airdrop beendet!";
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("countdown").innerHTML = `${days}T ${hours}H ${minutes}M ${seconds}S`;
+            }, 1000);
+        }
+        document.addEventListener("DOMContentLoaded", startCountdown);
     </script>
 </head>
 <body>
@@ -106,26 +119,23 @@
         <div data-lang="de">
             <h1>🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
             <p>Willkommen bei SOLPRINTER PONZI, dem revolutionären Solana-Token, der dich für jede Transaktion automatisch belohnt!</p>
-        </div>
-        <div data-lang="en" style="display: none;">
-            <h1>🚀 SOLPRINTER PONZI – The Ultimate Reward Token! 💰</h1>
-            <p>Welcome to SOLPRINTER PONZI, the revolutionary Solana token that rewards you automatically for every transaction!</p>
-        </div>
-        <div data-lang="fr" style="display: none;">
-            <h1>🚀 SOLPRINTER PONZI – Le jeton de récompense ultime! 💰</h1>
-            <p>Bienvenue chez SOLPRINTER PONZI, le jeton révolutionnaire Solana qui vous récompense automatiquement pour chaque transaction!</p>
-        </div>
-        <div data-lang="ru" style="display: none;">
-            <h1>🚀 SOLPRINTER PONZI – Лучший токен вознаграждения! 💰</h1>
-            <p>Добро пожаловать в SOLPRINTER PONZI, революционный токен Solana, который автоматически вознаграждает вас за каждую транзакцию!</p>
-        </div>
-        <div data-lang="ar" style="display: none;">
-            <h1>🚀 SOLPRINTER PONZI – أفضل رمز مكافأة! 💰</h1>
-            <p>مرحبًا بك في SOLPRINTER PONZI، الرمز الثوري لشبكة Solana الذي يكافئك تلقائيًا على كل معاملة!</p>
+            <h2>🎁 Exklusiver Airdrop</h2>
+            <p>Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop! Der Airdrop bietet dir die Chance, frühzeitig dabei zu sein.</p>
+            <div id="countdown" class="countdown"></div>
+            <a href="#" class="btn">Zum Airdrop</a>
         </div>
         
-        <a href="#" class="btn">Jetzt kaufen & profitieren!</a>
+        <div class="social-links">
+            <a href="https://t.me/YourTelegramLink" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+            </a>
+            <a href="https://dexscreener.com/YourTokenLink" target="_blank">
+                <img src="https://cryptologos.cc/logos/dexscreener-logo.png" alt="Dexscreener">
+            </a>
+            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/X_logo_2023.svg" alt="X (Twitter)">
+            </a>
+        </div>
     </div>
 </body>
 </html>
-
