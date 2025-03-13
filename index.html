@@ -146,52 +146,53 @@
             <div id="countdown">Lädt...</div>
             <a href="#" class="btn" id="airdrop-button">Zum Airdrop</a>
         </div>
+
+      <div class="social-links">
+            <h2>📢 Folge uns auf unseren Kanälen!</h2>
+            <a href="https://t.me/YourTelegramLink" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+            </a>
+            <a href="https://dexscreener.com/YourTokenLink" target="_blank">
+                <img src="https://images.seeklogo.com/logo-png/52/1/dex-screener-logo-png_seeklogo-527276.png">
+            </a>
+            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
+                <img src="https://images.seeklogo.com/logo-png/49/1/twitter-x-logo-png_seeklogo-492396.png">
+            </a>
+        </div>
     </div>
 
     <script>
-        const translations = {
-            de: {
-                subtitle: "Verdiene SOL mit jeder Transaktion!",
-                tokenomicsTitle: "📊 Tokenomics",
-                tokenomicsText: `
-                    ✅ <b>75%</b> der Gebühren gehen direkt an die Holder<br>
-                    ✅ <b>25%</b> fließen ins Team für Entwicklung & Marketing<br>
-                    ✅ <b>Automatische Ausschüttung alle 60 Minuten</b><br>
-                    ✅ <b>Liquidität vollständig geburnt</b>
-                `,
-                airdropText: "Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop!",
-                airdropButton: "Zum Airdrop"
-            },
-            en: {
-                subtitle: "Earn SOL with every transaction!",
-                tokenomicsTitle: "📊 Tokenomics",
-                tokenomicsText: `
-                    ✅ <b>75%</b> of fees go directly to holders<br>
-                    ✅ <b>25%</b> goes to the team for development & marketing<br>
-                    ✅ <b>Automatic distribution every 60 minutes</b><br>
-                    ✅ <b>Liquidity fully burned</b>
-                `,
-                airdropText: "Secure your SOLPRINTER PONZI tokens through our exclusive airdrop!",
-                airdropButton: "Join Airdrop"
-            },
-            ru: {
-                subtitle: "Зарабатывай SOL с каждой транзакцией!",
-                tokenomicsTitle: "📊 Токеномика",
-                tokenomicsText: `
-                    ✅ <b>75%</b> комиссии идут держателям<br>
-                    ✅ <b>25%</b> идет команде на разработку и маркетинг<br>
-                    ✅ <b>Автоматическое распределение каждые 60 минут</b><br>
-                    ✅ <b>Ликвидность полностью сожжена</b>
-                `,
-                airdropText: "Получите токены SOLPRINTER PONZI через наш эксклюзивный эйрдроп!",
-                airdropButton: "Принять участие"
-            }
-        };
+        function startCountdown() {
+            const endTime = new Date("2025-03-30T00:00:00").getTime();
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById("countdown").innerHTML = "Airdrop beendet!";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = `${days}T ${hours}H ${minutes}M ${seconds}S`;
+            }, 1000);
+        }
+
+        document.addEventListener("DOMContentLoaded", startCountdown);
 
         function changeLanguage(lang) {
+            const translations = {
+                de: { subtitle: "Verdiene SOL mit jeder Transaktion!", airdropText: "Sichere dir SOLPRINTER PONZI Token!", airdropButton: "Zum Airdrop" },
+                en: { subtitle: "Earn SOL with every transaction!", airdropText: "Secure your SOLPRINTER PONZI Tokens!", airdropButton: "Join Airdrop" },
+                ru: { subtitle: "Зарабатывай SOL с каждой транзакцией!", airdropText: "Получите токены SOLPRINTER PONZI!", airdropButton: "Принять участие" }
+            };
+
             document.getElementById("subtitle").innerText = translations[lang].subtitle;
-            document.getElementById("tokenomics-title").innerText = translations[lang].tokenomicsTitle;
-            document.getElementById("tokenomics-text").innerHTML = translations[lang].tokenomicsText;
             document.getElementById("airdrop-text").innerText = translations[lang].airdropText;
             document.getElementById("airdrop-button").innerText = translations[lang].airdropButton;
         }
