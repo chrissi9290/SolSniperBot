@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #6a0dad, #ffd700);
+            background: linear-gradient(135deg, #593676, #b292bb);
             color: white;
             text-align: center;
             margin: 0;
@@ -67,6 +67,9 @@
             gap: 15px;
             flex-wrap: wrap;
         }
+        .social-links a {
+            display: inline-block;
+        }
         .social-links img {
             width: 40px;
             height: 40px;
@@ -76,14 +79,24 @@
         .social-links img:hover {
             transform: scale(1.2);
         }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            .btn {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+            .social-links img {
+                width: 35px;
+                height: 35px;
+            }
+        }
     </style>
     <script>
-        function setLanguage(lang) {
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                el.style.display = el.getAttribute('data-lang') === lang ? 'block' : 'none';
-            });
-        }
-
         function startCountdown() {
             const endTime = new Date("2025-03-30T00:00:00").getTime();
             const timer = setInterval(() => {
@@ -106,35 +119,21 @@
 </head>
 <body>
     <div class="container">
-        <div class="language-selector">
-            <select onchange="setLanguage(this.value)">
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="en">🇬🇧 English</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="ru">🇷🇺 Русский</option>
-                <option value="ar">🇸🇦 العربية</option>
-            </select>
-        </div>
+        <h1>🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
+        <p>Willkommen bei <b>SOLPRINTER PONZI</b>, dem revolutionären Solana-Token, der dich für jede Transaktion automatisch belohnt!  
+        Hier verdienen Holder <b>alle 60 Minuten SOL</b>, während unser System unermüdlich für dich arbeitet.</p>
         
-        <div data-lang="de">
-            <h1>🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
-            <p>Willkommen bei SOLPRINTER PONZI, dem revolutionären Solana-Token, der dich für jede Transaktion automatisch belohnt!</p>
-            <h2>🎁 Exklusiver Airdrop</h2>
-            <p>Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop! Der Airdrop bietet dir die Chance, frühzeitig dabei zu sein.</p>
-            <div id="countdown" class="countdown"></div>
-            <a href="#" class="btn">Zum Airdrop</a>
-        </div>
+        <img src="img/your-image.png" alt="SOLPRINTER PONZI Logo" style="max-width: 100%; border-radius: 10px; margin: 20px 0;">
         
-        <div class="social-links">
-            <a href="https://t.me/YourTelegramLink" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-            </a>
-            <a href="https://dexscreener.com/YourTokenLink" target="_blank">
-                <img src="https://cryptologos.cc/logos/dexscreener-logo.png" alt="Dexscreener">
-            </a>
-            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/X_logo_2023.svg" alt="X (Twitter)">
-            </a>
+        <div class="section">
+            <h2>📊 Tokenomics</h2>
+            <ul style="list-style-type: none;">
+                <li>🔹 <b>75%</b> der Transaktionsgebühren gehen direkt an die Holder</li>
+                <li>🔹 <b>25%</b> der Gebühren fließen ins Team für Wachstum</li>
+                <li>🔹 <b>Automatische Ausschüttung alle 60 Minuten</b></li>
+                <li>🔹 <b>SOLANA direkt auf dein Wallet</b></li>
+                <li>🔥 <b>Der gesamte Liquidity Pool ist vollständig geburnt</b></li>
+            </ul>
         </div>
     </div>
 </body>
