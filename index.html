@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOLPRINTER PONZI | Verdiene mit jeder Transaktion!</title>
+    <title>SOLPRINTER PONZI | Earn SOL Every Hour!</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,28 +22,6 @@
             width: 100%;
             max-height: 250px;
             object-fit: cover;
-        }
-
-        .language-selector {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .lang-btn {
-            background: #ffd700;
-            color: #6a0dad;
-            padding: 10px 20px;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .lang-btn:hover {
-            background: #d4af37;
         }
 
         .container {
@@ -121,28 +99,46 @@
         <img src="https://raw.githubusercontent.com/chrissi9290/SolSniperBot/main/5375543886597975199.jpg" alt="SOLPRINTER PONZI Banner" class="banner">
     </header>
 
-    <div class="language-selector">
-        <button class="lang-btn" onclick="changeLanguage('de')">🇩🇪 Deutsch</button>
-        <button class="lang-btn" onclick="changeLanguage('en')">🇬🇧 English</button>
-        <button class="lang-btn" onclick="changeLanguage('ru')">🇷🇺 Русский</button>
-    </div>
-
     <div class="container">
-        <h1 id="title">🚀 SOLPRINTER PONZI</h1>
-        <h2 id="subtitle">Verdiene SOL mit jeder Transaktion!</h2>
+        <h1>🚀 SOLPRINTER PONZI</h1>
+        <h2>Earn SOL Every Hour!</h2>
 
         <div class="section">
-            <p id="promo-text"></p>
+            <p>
+                <b>🚀 SOLPRINTER PONZI – The revolutionary Solana token that pays you SOL every hour! 💰</b><br><br>
+                Welcome to <b>SOLPRINTER PONZI</b>, the ultimate <b>passive income token</b> on the Solana blockchain!  
+                Earn <b>SOL every 60 minutes</b> automatically, just by holding the token in your wallet.<br><br>
+
+                🔹 <b>How does it work?</b><br>
+                Every transaction with SOLPRINTER PONZI generates fees, which are then <b>distributed as SOLANA to all holders.</b>  
+                This means: <b>The more transactions occur, the more you earn – completely automatically!</b><br><br>
+
+                <b>🔥 Tokenomics – Your key to passive income!</b><br>
+                <b>100% transaction tax that works for you!</b><br>
+                ✅ <b>75% of fees go directly to holders</b> – Earn passively just by holding SOLPRINTER PONZI!<br>
+                ✅ <b>25% goes to the team</b> – For development, marketing & token growth.<br>
+                ✅ <b>Payouts every 60 minutes</b> – No waiting, no manual claiming needed!<br><br>
+
+                <b>💎 Why SOLPRINTER PONZI?</b><br>
+                ✅ <b>Automatic SOL payouts</b> directly to your wallet – No complicated staking or farming processes.<br>
+                ✅ <b>Deflationary mechanism</b> – Continuous transactions increase the value of your rewards over time.<br>
+                ✅ <b>Maximum transparency & community-driven project</b> – Our goal: <b>maximize holder rewards & build the strongest Solana community!</b><br><br>
+
+                <b>🚀 The perfect time to join!</b><br>
+                💰 <b>The more SOLPRINTER PONZI you hold, the bigger your rewards.</b><br>
+                ⚡ <b>With every transaction, the community earns – meaning more growth, more profits!</b><br>
+                🔥 <b>Be early & maximize your benefits from our unique reward system!</b>
+            </p>
         </div>
 
         <div class="countdown-container">
-            ⏳ <span id="airdrop-text">Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop!</span><br>
-            <div id="countdown">Lädt...</div>
-            <a href="#" class="btn" id="airdrop-button">Zum Airdrop</a>
+            ⏳ <span id="airdrop-text">Secure your SOLPRINTER PONZI tokens through our exclusive Airdrop!</span><br>
+            <div id="countdown">Loading...</div>
+            <a href="#" class="btn" id="airdrop-button">Join Airdrop</a>
         </div>
 
         <div class="social-links">
-            <h2 id="social-text">📢 Folge uns auf unseren Kanälen!</h2>
+            <h2>📢 Follow us on our channels!</h2>
             <a href="https://t.me/YourTelegramLink" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
             </a>
@@ -164,7 +160,7 @@
 
                 if (distance < 0) {
                     clearInterval(timer);
-                    document.getElementById("countdown").innerHTML = "Airdrop beendet!";
+                    document.getElementById("countdown").innerHTML = "Airdrop ended!";
                     return;
                 }
 
@@ -173,21 +169,11 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                document.getElementById("countdown").innerHTML = `${days}T ${hours}H ${minutes}M ${seconds}S`;
+                document.getElementById("countdown").innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
             }, 1000);
         }
 
         document.addEventListener("DOMContentLoaded", startCountdown);
-
-        function changeLanguage(lang) {
-            const translations = {
-                de: { socialText: "📢 Folge uns auf unseren Kanälen!" },
-                en: { socialText: "📢 Follow us on our channels!" },
-                ru: { socialText: "📢 Подпишитесь на наши каналы!" }
-            };
-
-            document.getElementById("social-text").innerText = translations[lang].socialText;
-        }
     </script>
 
 </body>
