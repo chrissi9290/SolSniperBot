@@ -147,16 +147,16 @@
             <a href="#" class="btn" id="airdrop-button">Zum Airdrop</a>
         </div>
 
-      <div class="social-links">
-            <h2>📢 Folge uns auf unseren Kanälen!</h2>
+        <div class="social-links">
+            <h2 id="social-text">📢 Folge uns auf unseren Kanälen!</h2>
             <a href="https://t.me/YourTelegramLink" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
             </a>
             <a href="https://dexscreener.com/YourTokenLink" target="_blank">
-                <img src="https://images.seeklogo.com/logo-png/52/1/dex-screener-logo-png_seeklogo-527276.png">
+                <img src="https://cryptologos.cc/logos/dexscreener-logo.png" alt="Dexscreener">
             </a>
             <a href="https://twitter.com/YourTwitterHandle" target="_blank">
-                <img src="https://images.seeklogo.com/logo-png/49/1/twitter-x-logo-png_seeklogo-492396.png">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/X_logo_2023.svg" alt="X (Twitter)">
             </a>
         </div>
     </div>
@@ -187,14 +187,12 @@
 
         function changeLanguage(lang) {
             const translations = {
-                de: { subtitle: "Verdiene SOL mit jeder Transaktion!", airdropText: "Sichere dir SOLPRINTER PONZI Token!", airdropButton: "Zum Airdrop" },
-                en: { subtitle: "Earn SOL with every transaction!", airdropText: "Secure your SOLPRINTER PONZI Tokens!", airdropButton: "Join Airdrop" },
-                ru: { subtitle: "Зарабатывай SOL с каждой транзакцией!", airdropText: "Получите токены SOLPRINTER PONZI!", airdropButton: "Принять участие" }
+                de: { socialText: "📢 Folge uns auf unseren Kanälen!" },
+                en: { socialText: "📢 Follow us on our channels!" },
+                ru: { socialText: "📢 Подпишитесь на наши каналы!" }
             };
 
-            document.getElementById("subtitle").innerText = translations[lang].subtitle;
-            document.getElementById("airdrop-text").innerText = translations[lang].airdropText;
-            document.getElementById("airdrop-button").innerText = translations[lang].airdropButton;
+            document.getElementById("social-text").innerText = translations[lang].socialText;
         }
     </script>
 
