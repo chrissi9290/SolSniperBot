@@ -21,100 +21,111 @@
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
-        h1 { color: #ffd700; font-size: 2em; }
-        h2 { color: #d4af37; font-size: 1.5em; }
-        p, ul { font-size: 1em; line-height: 1.5em; padding: 0 10px; }
-        .btn {
-            background: #ffd700; color: #6a0dad; padding: 12px 20px;
-            text-decoration: none; font-weight: bold; border-radius: 10px;
-            display: inline-block; margin-top: 20px; font-size: 1em;
+        h1 {
+            color: #ffd700;
+            font-size: 2em;
         }
-        .btn:hover { background: #d4af37; }
+        h2 {
+            color: #d4af37;
+            font-size: 1.5em;
+        }
+        p, ul {
+            font-size: 1em;
+            line-height: 1.5em;
+            padding: 0 10px;
+        }
+        .btn {
+            background: #ffd700;
+            color: #6a0dad;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1em;
+        }
+        .btn:hover {
+            background: #d4af37;
+        }
         .section {
-            margin-top: 30px; padding: 15px; border-radius: 10px;
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
         }
         .countdown {
-            font-size: 1.2em; font-weight: bold; color: #ffd700;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffd700;
             margin-top: 10px;
         }
         .social-links {
-            margin-top: 30px; display: flex; justify-content: center;
-            gap: 15px; flex-wrap: wrap;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            display: inline-block;
         }
         .social-links img {
-            width: 40px; height: 40px; border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             transition: transform 0.3s ease;
         }
-        .social-links img:hover { transform: scale(1.2); }
-        .language-selector {
-            margin-top: 10px;
+        .social-links img:hover {
+            transform: scale(1.2);
         }
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8em; }
-            h2 { font-size: 1.3em; }
-            .btn { font-size: 0.9em; padding: 10px 15px; }
-            .social-links img { width: 35px; height: 35px; }
+        .language-selector {
+            margin-bottom: 20px;
         }
     </style>
     <script>
-        const translations = {
-            es: {
-                title: "🚀 SOLPRINTER PONZI – ¡El token de recompensa definitivo! 💰",
-                description: "Bienvenido a SOLPRINTER PONZI, el token revolucionario de Solana que te recompensa automáticamente por cada transacción.",
-                tokenomicsTitle: "📊 Tokenomics",
-                tokenomics1: "🔹 <b>75%</b> de las tarifas de transacción van directamente a los titulares",
-                tokenomics2: "🔹 <b>25%</b> de las tarifas van al equipo para el crecimiento",
-                tokenomics3: "🔹 <b>Pago automático cada 60 minutos</b>",
-                tokenomics4: "🔹 <b>SOLANA directamente a tu billetera</b>",
-                tokenomics5: "🔥 <b>El pool de liquidez está completamente quemado</b>",
-                airdropTitle: "🎁 Airdrop exclusivo",
-                airdrop: "¡Asegura tus tokens SOLPRINTER PONZI a través de nuestro airdrop exclusivo! El airdrop te da la oportunidad de unirte temprano.",
-                buy: "¡Compra ahora y obtén ganancias!"
-            },
-            ru: {
-                title: "🚀 SOLPRINTER PONZI – Лучший наградной токен! 💰",
-                description: "Добро пожаловать в SOLPRINTER PONZI, революционный токен Solana, который автоматически вознаграждает вас за каждую транзакцию!",
-                tokenomicsTitle: "📊 Tokenomics",
-                tokenomics1: "🔹 <b>75%</b> комиссий идут напрямую держателям",
-                tokenomics2: "🔹 <b>25%</b> комиссий идут команде на развитие",
-                tokenomics3: "🔹 <b>Автоматические выплаты каждые 60 минут</b>",
-                tokenomics4: "🔹 <b>SOLANA сразу на ваш кошелек</b>",
-                tokenomics5: "🔥 <b>Весь пул ликвидности полностью сожжен</b>",
-                airdropTitle: "🎁 Эксклюзивный Airdrop",
-                airdrop: "Получите свои токены SOLPRINTER PONZI через наш эксклюзивный airdrop! Airdrop дает вам шанс присоединиться рано.",
-                buy: "Купите сейчас и зарабатывайте!"
-            },
-            ar: {
-                title: "🚀 سول برينتر بونزي - الرمز المميز النهائي للمكافآت! 💰",
-                description: "مرحبًا بك في سول برينتر بونزي، الرمز الثوري لسولانا الذي يكافئك تلقائيًا على كل معاملة!",
-                tokenomicsTitle: "📊 Tokenomics",
-                tokenomics1: "🔹 <b>75%</b> من رسوم المعاملات تذهب مباشرة إلى حاملي التوكن",
-                tokenomics2: "🔹 <b>25%</b> من الرسوم تذهب إلى الفريق للنمو",
-                tokenomics3: "🔹 <b>دفع تلقائي كل 60 دقيقة</b>",
-                tokenomics4: "🔹 <b>SOLANA مباشرة إلى محفظتك</b>",
-                tokenomics5: "🔥 <b>تم حرق تجمع السيولة بالكامل</b>",
-                airdropTitle: "🎁 الإيردروب الحصري",
-                airdrop: "احصل على رموز SOLPRINTER PONZI الخاصة بك من خلال عرض التوزيع الحصري! يمنحك العرض فرصة للانضمام مبكرًا.",
-                buy: "اشترِ الآن واستفد!"
-            }
-        };
+        function setLanguage(lang) {
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                el.style.display = el.getAttribute('data-lang') === lang ? 'block' : 'none';
+            });
+        }
     </script>
 </head>
 <body>
     <div class="container">
         <div class="language-selector">
-            <select onchange="changeLanguage(this.value)">
+            <select onchange="setLanguage(this.value)">
                 <option value="de">🇩🇪 Deutsch</option>
                 <option value="en">🇬🇧 English</option>
                 <option value="fr">🇫🇷 Français</option>
-                <option value="es">🇪🇸 Español</option>
                 <option value="ru">🇷🇺 Русский</option>
                 <option value="ar">🇸🇦 العربية</option>
             </select>
         </div>
+        
+        <div data-lang="de">
+            <h1>🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
+            <p>Willkommen bei SOLPRINTER PONZI, dem revolutionären Solana-Token, der dich für jede Transaktion automatisch belohnt!</p>
+        </div>
+        <div data-lang="en" style="display: none;">
+            <h1>🚀 SOLPRINTER PONZI – The Ultimate Reward Token! 💰</h1>
+            <p>Welcome to SOLPRINTER PONZI, the revolutionary Solana token that rewards you automatically for every transaction!</p>
+        </div>
+        <div data-lang="fr" style="display: none;">
+            <h1>🚀 SOLPRINTER PONZI – Le jeton de récompense ultime! 💰</h1>
+            <p>Bienvenue chez SOLPRINTER PONZI, le jeton révolutionnaire Solana qui vous récompense automatiquement pour chaque transaction!</p>
+        </div>
+        <div data-lang="ru" style="display: none;">
+            <h1>🚀 SOLPRINTER PONZI – Лучший токен вознаграждения! 💰</h1>
+            <p>Добро пожаловать в SOLPRINTER PONZI, революционный токен Solana, который автоматически вознаграждает вас за каждую транзакцию!</p>
+        </div>
+        <div data-lang="ar" style="display: none;">
+            <h1>🚀 SOLPRINTER PONZI – أفضل رمز مكافأة! 💰</h1>
+            <p>مرحبًا بك في SOLPRINTER PONZI، الرمز الثوري لشبكة Solana الذي يكافئك تلقائيًا على كل معاملة!</p>
+        </div>
+        
+        <a href="#" class="btn">Jetzt kaufen & profitieren!</a>
     </div>
-<script src="script.js"></script>
-
 </body>
 </html>
+
