@@ -19,9 +19,31 @@
         }
 
         .banner {
-            width: 70%;
-            max-height: 350px;
+            width: 100%;
+            max-height: 250px;
             object-fit: cover;
+        }
+
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .lang-btn {
+            background: #ffd700;
+            color: #6a0dad;
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .lang-btn:hover {
+            background: #d4af37;
         }
 
         .container {
@@ -91,16 +113,6 @@
         .social-links img:hover {
             transform: scale(1.2);
         }
-
-        .language-selector {
-            margin: 20px;
-        }
-
-        select {
-            font-size: 1.2em;
-            padding: 5px;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
@@ -110,22 +122,14 @@
     </header>
 
     <div class="language-selector">
-        🌍 Sprache / Language / Язык:
-        <select id="language" onchange="changeLanguage()">
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="en">🇬🇧 English</option>
-            <option value="ru">🇷🇺 Русский</option>
-        </select>
+        <button class="lang-btn" onclick="changeLanguage('de')">🇩🇪 Deutsch</button>
+        <button class="lang-btn" onclick="changeLanguage('en')">🇬🇧 English</button>
+        <button class="lang-btn" onclick="changeLanguage('ru')">🇷🇺 Русский</button>
     </div>
 
     <div class="container">
         <h1 id="title">🚀 SOLPRINTER PONZI</h1>
         <h2 id="subtitle">Verdiene SOL mit jeder Transaktion!</h2>
-
-        <div class="section">
-            <h2 id="rewards-title">💰 Automatische Belohnungen</h2>
-            <p id="rewards-text">Willkommen bei <b>SOLPRINTER PONZI</b>, dem revolutionären Solana-Token, der dich **jede Stunde** automatisch mit SOL belohnt! Halte einfach den Token in deinem Wallet und profitiere von den Transaktionsgebühren.</p>
-        </div>
 
         <div class="section">
             <h2 id="tokenomics-title">📊 Tokenomics</h2>
@@ -134,7 +138,6 @@
                 <li>✅ <b>25%</b> fließen ins Team für Entwicklung & Marketing</li>
                 <li>✅ <b>Automatische Ausschüttung alle 60 Minuten</b></li>
                 <li>✅ <b>Liquidität vollständig geburnt</b></li>
-                <li>✅ <b>Keine Staking-Pools nötig – einfach halten & verdienen!</b></li>
             </ul>
         </div>
 
@@ -143,47 +146,52 @@
             <div id="countdown">Lädt...</div>
             <a href="#" class="btn" id="airdrop-button">Zum Airdrop</a>
         </div>
-
-        <div class="social-links">
-            <h2>📢 Folge uns auf unseren Kanälen!</h2>
-            <a href="https://t.me/YourTelegramLink" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-            </a>
-            <a href="https://dexscreener.com/YourTokenLink" target="_blank">
-                <img src="https://cryptologos.cc/logos/dexscreener-logo.png" alt="Dexscreener">
-            </a>
-            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/X_logo_2023.svg" alt="X (Twitter)">
-            </a>
-        </div>
     </div>
 
     <script>
         const translations = {
             de: {
                 subtitle: "Verdiene SOL mit jeder Transaktion!",
-                rewardsText: "Willkommen bei SOLPRINTER PONZI, dem revolutionären Solana-Token, der dich jede Stunde automatisch mit SOL belohnt!",
+                tokenomicsTitle: "📊 Tokenomics",
+                tokenomicsText: `
+                    ✅ <b>75%</b> der Gebühren gehen direkt an die Holder<br>
+                    ✅ <b>25%</b> fließen ins Team für Entwicklung & Marketing<br>
+                    ✅ <b>Automatische Ausschüttung alle 60 Minuten</b><br>
+                    ✅ <b>Liquidität vollständig geburnt</b>
+                `,
                 airdropText: "Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop!",
                 airdropButton: "Zum Airdrop"
             },
             en: {
                 subtitle: "Earn SOL with every transaction!",
-                rewardsText: "Welcome to SOLPRINTER PONZI, the revolutionary Solana token that rewards you every hour with SOL!",
+                tokenomicsTitle: "📊 Tokenomics",
+                tokenomicsText: `
+                    ✅ <b>75%</b> of fees go directly to holders<br>
+                    ✅ <b>25%</b> goes to the team for development & marketing<br>
+                    ✅ <b>Automatic distribution every 60 minutes</b><br>
+                    ✅ <b>Liquidity fully burned</b>
+                `,
                 airdropText: "Secure your SOLPRINTER PONZI tokens through our exclusive airdrop!",
                 airdropButton: "Join Airdrop"
             },
             ru: {
                 subtitle: "Зарабатывай SOL с каждой транзакцией!",
-                rewardsText: "Добро пожаловать в SOLPRINTER PONZI, революционный токен Solana, который автоматически вознаграждает вас SOL каждый час!",
+                tokenomicsTitle: "📊 Токеномика",
+                tokenomicsText: `
+                    ✅ <b>75%</b> комиссии идут держателям<br>
+                    ✅ <b>25%</b> идет команде на разработку и маркетинг<br>
+                    ✅ <b>Автоматическое распределение каждые 60 минут</b><br>
+                    ✅ <b>Ликвидность полностью сожжена</b>
+                `,
                 airdropText: "Получите токены SOLPRINTER PONZI через наш эксклюзивный эйрдроп!",
                 airdropButton: "Принять участие"
             }
         };
 
-        function changeLanguage() {
-            const lang = document.getElementById("language").value;
+        function changeLanguage(lang) {
             document.getElementById("subtitle").innerText = translations[lang].subtitle;
-            document.getElementById("rewards-text").innerText = translations[lang].rewardsText;
+            document.getElementById("tokenomics-title").innerText = translations[lang].tokenomicsTitle;
+            document.getElementById("tokenomics-text").innerHTML = translations[lang].tokenomicsText;
             document.getElementById("airdrop-text").innerText = translations[lang].airdropText;
             document.getElementById("airdrop-button").innerText = translations[lang].airdropButton;
         }
