@@ -7,134 +7,171 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #593676, #b292bb);
+            background: linear-gradient(135deg, #593676, #b292bb); /* Gleichmäßiger violetter Hintergrund */
             color: white;
             text-align: center;
             margin: 0;
             padding: 0;
         }
+
+        header {
+            width: 100%;
+        }
+
+        .banner {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+        }
+
         .container {
-            max-width: 90%;
+            max-width: 900px;
             margin: 50px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            padding: 30px;
         }
-        h1 {
-            color: #ffd700;
-            font-size: 2em;
+
+        h1, h2 {
+            color: #ffd700; /* Goldene Schrift */
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Leichter Text-Schatten */
         }
-        h2 {
-            color: #d4af37;
-            font-size: 1.5em;
-        }
-        p, ul {
-            font-size: 1em;
+
+        p {
+            font-size: 1.2em;
             line-height: 1.5em;
-            padding: 0 10px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
         }
+
+        .section {
+            margin-top: 40px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         .btn {
             background: #ffd700;
             color: #6a0dad;
-            padding: 12px 20px;
+            padding: 15px 25px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 10px;
             display: inline-block;
             margin-top: 20px;
-            font-size: 1em;
+            font-size: 1.2em;
         }
+
         .btn:hover {
             background: #d4af37;
         }
-        .section {
-            margin-top: 30px;
-            padding: 15px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .countdown {
-            font-size: 1.2em;
+
+        .countdown-container {
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 1.5em;
             font-weight: bold;
             color: #ffd700;
-            margin-top: 10px;
         }
+
         .social-links {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            margin-top: 40px;
         }
+
         .social-links a {
+            margin: 0 15px;
             display: inline-block;
         }
+
         .social-links img {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             transition: transform 0.3s ease;
         }
+
         .social-links img:hover {
             transform: scale(1.2);
         }
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8em;
-            }
-            h2 {
-                font-size: 1.3em;
-            }
-            .btn {
-                font-size: 0.9em;
-                padding: 10px 15px;
-            }
-            .social-links img {
-                width: 35px;
-                height: 35px;
-            }
-        }
     </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://raw.githubusercontent.com/chrissi9290/SolSniperBot/main/5375543886597975199.jpg" alt="SOLPRINTER PONZI Banner" class="banner">
+    </header>
+
+    <div class="container">
+        <h1>🚀 SOLPRINTER PONZI</h1>
+        <h2>Verdiene SOL mit jeder Transaktion!</h2>
+
+        <div class="section">
+            <h2>💰 Automatische Belohnungen</h2>
+            <p>Willkommen bei <b>SOLPRINTER PONZI</b>, dem revolutionären Solana-Token, der dich **jede Stunde** automatisch mit SOL belohnt! Halte einfach den Token in deinem Wallet und profitiere von den Transaktionsgebühren.</p>
+        </div>
+
+        <div class="section">
+            <h2>📊 Tokenomics</h2>
+            <ul style="list-style-type: none; font-size: 1.2em;">
+                <li>✅ <b>75%</b> der Gebühren gehen direkt an die Holder</li>
+                <li>✅ <b>25%</b> fließen ins Team für Entwicklung & Marketing</li>
+                <li>✅ <b>Automatische Ausschüttung alle 60 Minuten</b></li>
+                <li>✅ <b>Liquidität vollständig geburnt</b></li>
+                <li>✅ <b>Keine Staking-Pools nötig – einfach halten & verdienen!</b></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔥 Warum SOLPRINTER PONZI?</h2>
+            <p>
+                🌟 <b>Passives Einkommen</b> – Verdiene automatisch SOL ohne Aufwand<br>
+                🌟 <b>Transparente & faire Verteilung</b> – Gewinne mit jeder Transaktion<br>
+                🌟 <b>Starke Community</b> – Werde Teil der Bewegung!
+            </p>
+        </div>
+
+        <div class="countdown-container">
+            ⏳ Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop!<br>
+            <div id="countdown">Lädt...</div>
+            <a href="#" class="btn">Zum Airdrop</a>
+        </div>
+
+        <div class="social-links">
+            <h2>📢 Folge uns auf unseren Kanälen!</h2>
+            <a href="https://t.me/YourTelegramLink" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+            </a>
+            <a href="https://dexscreener.com/YourTokenLink" target="_blank">
+                <img src="https://cryptologos.cc/logos/dexscreener-logo.png" alt="Dexscreener">
+            </a>
+            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/X_logo_2023.svg" alt="X (Twitter)">
+            </a>
+        </div>
+    </div>
+
     <script>
         function startCountdown() {
             const endTime = new Date("2025-03-30T00:00:00").getTime();
             const timer = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = endTime - now;
+
                 if (distance < 0) {
                     clearInterval(timer);
                     document.getElementById("countdown").innerHTML = "Airdrop beendet!";
                     return;
                 }
+
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
                 document.getElementById("countdown").innerHTML = `${days}T ${hours}H ${minutes}M ${seconds}S`;
             }, 1000);
         }
+
         document.addEventListener("DOMContentLoaded", startCountdown);
     </script>
-</head>
-<body>
-    <div class="container">
-        <h1>🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
-        <p>Willkommen bei <b>SOLPRINTER PONZI</b>, dem revolutionären Solana-Token, der dich für jede Transaktion automatisch belohnt!  
-        Hier verdienen Holder <b>alle 60 Minuten SOL</b>, während unser System unermüdlich für dich arbeitet.</p>
-        
-        <img src="img/your-image.png" alt="SOLPRINTER PONZI Logo" style="max-width: 100%; border-radius: 10px; margin: 20px 0;">
-        
-        <div class="section">
-            <h2>📊 Tokenomics</h2>
-            <ul style="list-style-type: none;">
-                <li>🔹 <b>75%</b> der Transaktionsgebühren gehen direkt an die Holder</li>
-                <li>🔹 <b>25%</b> der Gebühren fließen ins Team für Wachstum</li>
-                <li>🔹 <b>Automatische Ausschüttung alle 60 Minuten</b></li>
-                <li>🔹 <b>SOLANA direkt auf dein Wallet</b></li>
-                <li>🔥 <b>Der gesamte Liquidity Pool ist vollständig geburnt</b></li>
-            </ul>
-        </div>
-    </div>
+
 </body>
 </html>
