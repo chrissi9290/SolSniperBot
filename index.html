@@ -101,7 +101,7 @@
 
     <div class="container">
         <h1>🚀 SOLPRINTER PONZI</h1>
-        <h2>Earn SOL 60 minutes!</h2>
+        <h2>Earn SOL Every Hour!</h2>
 
         <div class="section">
             <p>
@@ -117,7 +117,11 @@
                 <b>100% transaction tax that works for you!</b><br>
                 ✅ <b>75% of fees go directly to holders</b> – Earn passively just by holding SOLPRINTER PONZI!<br>
                 ✅ <b>25% goes to the team</b> – For development, marketing & token growth.<br>
-                ✅ <b>Payouts every 60 minutes</b> – No waiting, no manual claiming needed!<br><br>
+                ✅ <b>Payouts every 60 minutes</b> – No waiting, no manual claiming needed!<br>
+                ✅ <b>5% buy fee</b> – Ensuring sustainable rewards and project growth.<br><br>
+
+                <b>🔒 Why hold for at least one hour?</b><br>
+                The **one-hour holding period** is a crucial anti-bot mechanism. It ensures that **sniper bots** cannot make instant profits by buying and selling quickly. This protects long-term holders and **maximizes community earnings**.<br><br>
 
                 <b>💎 Why SOLPRINTER PONZI?</b><br>
                 ✅ <b>Automatic SOL payouts</b> directly to your wallet – No complicated staking or farming processes.<br>
@@ -137,16 +141,18 @@
             <a href="#" class="btn" id="airdrop-button">Join Airdrop</a>
         </div>
 
-       <div class="social-links">
-            <h2>📢 Follow us on our channels!</h2>
-            <a href="https://t.me/solprinterponzi">
+        <div class="social-links">
+           <h2>📢 Folge uns auf unseren Kanälen!</h2>
+            <a href="https://t.me/YourTelegramLink" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
             </a>
             <a href="https://dexscreener.com/YourTokenLink" target="_blank">
                 <img src="https://images.seeklogo.com/logo-png/52/1/dex-screener-logo-png_seeklogo-527276.png">
             </a>
-            <a href="https://x.com/SOLPRINTERPONZI">
+            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
                 <img src="https://images.seeklogo.com/logo-png/49/1/twitter-x-logo-png_seeklogo-492396.png">
+
+
             </a>
         </div>
     </div>
@@ -157,22 +163,14 @@
             const timer = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = endTime - now;
-
                 if (distance < 0) {
                     clearInterval(timer);
                     document.getElementById("countdown").innerHTML = "Airdrop ended!";
                     return;
                 }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById("countdown").innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+                document.getElementById("countdown").innerHTML = `${Math.floor(distance / (1000 * 60 * 60 * 24))}D ${Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))}H`;
             }, 1000);
         }
-
         document.addEventListener("DOMContentLoaded", startCountdown);
     </script>
 
