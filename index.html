@@ -21,139 +21,113 @@
             border-radius: 15px;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
-        h1 {
-            color: #ffd700;
-            font-size: 2em;
-        }
-        h2 {
-            color: #d4af37;
-            font-size: 1.5em;
-        }
-        p, ul {
-            font-size: 1em;
-            line-height: 1.5em;
-            padding: 0 10px;
-        }
+        h1 { color: #ffd700; font-size: 2em; }
+        h2 { color: #d4af37; font-size: 1.5em; }
+        p, ul { font-size: 1em; line-height: 1.5em; padding: 0 10px; }
         .btn {
-            background: #ffd700;
-            color: #6a0dad;
-            padding: 12px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 10px;
-            display: inline-block;
-            margin-top: 20px;
-            font-size: 1em;
+            background: #ffd700; color: #6a0dad; padding: 12px 20px;
+            text-decoration: none; font-weight: bold; border-radius: 10px;
+            display: inline-block; margin-top: 20px; font-size: 1em;
         }
-        .btn:hover {
-            background: #d4af37;
-        }
+        .btn:hover { background: #d4af37; }
         .section {
-            margin-top: 30px;
-            padding: 15px;
-            border-radius: 10px;
+            margin-top: 30px; padding: 15px; border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
         }
         .countdown {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #ffd700;
+            font-size: 1.2em; font-weight: bold; color: #ffd700;
             margin-top: 10px;
         }
         .social-links {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .social-links a {
-            display: inline-block;
+            margin-top: 30px; display: flex; justify-content: center;
+            gap: 15px; flex-wrap: wrap;
         }
         .social-links img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             transition: transform 0.3s ease;
         }
-        .social-links img:hover {
-            transform: scale(1.2);
+        .social-links img:hover { transform: scale(1.2); }
+        .language-selector {
+            margin-top: 10px;
         }
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8em;
-            }
-            h2 {
-                font-size: 1.3em;
-            }
-            .btn {
-                font-size: 0.9em;
-                padding: 10px 15px;
-            }
-            .social-links img {
-                width: 35px;
-                height: 35px;
-            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.3em; }
+            .btn { font-size: 0.9em; padding: 10px 15px; }
+            .social-links img { width: 35px; height: 35px; }
         }
     </style>
     <script>
-        function startCountdown() {
-            const endTime = new Date("2025-03-30T00:00:00").getTime();
-            const timer = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = endTime - now;
-                if (distance < 0) {
-                    clearInterval(timer);
-                    document.getElementById("countdown").innerHTML = "Airdrop beendet!";
-                    return;
-                }
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById("countdown").innerHTML = `${days}T ${hours}H ${minutes}M ${seconds}S`;
-            }, 1000);
+        const translations = {
+            de: {
+                title: "🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰",
+                description: "Willkommen bei SOLPRINTER PONZI, dem revolutionären Solana-Token, der dich für jede Transaktion automatisch belohnt!",
+                tokenomicsTitle: "📊 Tokenomics",
+                tokenomics1: "🔹 <b>75%</b> der Transaktionsgebühren gehen direkt an die Holder",
+                tokenomics2: "🔹 <b>25%</b> der Gebühren fließen ins Team für Wachstum",
+                tokenomics3: "🔹 <b>Automatische Ausschüttung alle 60 Minuten</b>",
+                tokenomics4: "🔹 <b>SOLANA direkt auf dein Wallet</b>",
+                tokenomics5: "🔥 <b>Der gesamte Liquidity Pool ist vollständig geburnt</b>",
+                airdropTitle: "🎁 Exklusiver Airdrop",
+                airdrop: "Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop! Der Airdrop bietet dir die Chance, frühzeitig dabei zu sein.",
+                buy: "Jetzt kaufen & profitieren!"
+            },
+            en: {
+                title: "🚀 SOLPRINTER PONZI – The Ultimate Reward Token! 💰",
+                description: "Welcome to SOLPRINTER PONZI, the revolutionary Solana token that rewards you automatically for every transaction!",
+                tokenomicsTitle: "📊 Tokenomics",
+                tokenomics1: "🔹 <b>75%</b> of transaction fees go directly to holders",
+                tokenomics2: "🔹 <b>25%</b> of fees go to the team for growth",
+                tokenomics3: "🔹 <b>Automatic payout every 60 minutes</b>",
+                tokenomics4: "🔹 <b>SOLANA directly to your wallet</b>",
+                tokenomics5: "🔥 <b>The entire liquidity pool is completely burned</b>",
+                airdropTitle: "🎁 Exclusive Airdrop",
+                airdrop: "Secure your SOLPRINTER PONZI tokens through our exclusive airdrop! The airdrop gives you the chance to join early.",
+                buy: "Buy now & profit!"
+            }
+        };
+        function changeLanguage(lang) {
+            document.getElementById("title").innerText = translations[lang].title;
+            document.getElementById("description").innerText = translations[lang].description;
+            document.getElementById("tokenomics-title").innerText = translations[lang].tokenomicsTitle;
+            document.getElementById("tokenomics-1").innerHTML = translations[lang].tokenomics1;
+            document.getElementById("tokenomics-2").innerHTML = translations[lang].tokenomics2;
+            document.getElementById("tokenomics-3").innerHTML = translations[lang].tokenomics3;
+            document.getElementById("tokenomics-4").innerHTML = translations[lang].tokenomics4;
+            document.getElementById("tokenomics-5").innerHTML = translations[lang].tokenomics5;
+            document.getElementById("airdrop-title").innerText = translations[lang].airdropTitle;
+            document.getElementById("airdrop").innerText = translations[lang].airdrop;
+            document.getElementById("buy").innerText = translations[lang].buy;
         }
-        document.addEventListener("DOMContentLoaded", startCountdown);
     </script>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
-        <p>Willkommen bei <b>SOLPRINTER PONZI</b>, dem revolutionären Solana-Token, der dich für jede Transaktion automatisch belohnt!  
-        Hier verdienen Holder <b>alle 60 Minuten SOL</b>, während unser System unermüdlich für dich arbeitet.</p>
-        
-        <img src="img/your-image.png" alt="SOLPRINTER PONZI Logo" style="max-width: 100%; border-radius: 10px; margin: 20px 0;">
-        
+        <div class="language-selector">
+            <select onchange="changeLanguage(this.value)">
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+        </div>
+
+        <h1 id="title">🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
+        <p id="description">Willkommen bei SOLPRINTER PONZI...</p>
+
         <div class="section">
-            <h2>📊 Tokenomics</h2>
-            <ul style="list-style-type: none;">
-                <li>🔹 <b>75%</b> der Transaktionsgebühren gehen direkt an die Holder</li>
-                <li>🔹 <b>25%</b> der Gebühren fließen ins Team für Wachstum</li>
-                <li>🔹 <b>Automatische Ausschüttung alle 60 Minuten</b></li>
-                <li>🔹 <b>SOLANA direkt auf dein Wallet</b></li>
-                <li>🔥 <b>Der gesamte Liquidity Pool ist vollständig geburnt</b></li>
+            <h2 id="tokenomics-title">📊 Tokenomics</h2>
+            <ul>
+                <li id="tokenomics-1"></li>
+                <li id="tokenomics-2"></li>
+                <li id="tokenomics-3"></li>
+                <li id="tokenomics-4"></li>
+                <li id="tokenomics-5"></li>
             </ul>
         </div>
 
         <div class="section">
-            <h2>🎁 Exklusiver Airdrop</h2>
-            <p>Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop! Der Airdrop bietet dir die Chance, frühzeitig dabei zu sein.</p>
-            <div id="countdown" class="countdown"></div>
-            <a href="#" class="btn">Zum Airdrop</a>
-        </div>
-        
-     <div class="social-links">
-            <h2>📢 Folge uns auf unseren Kanälen!</h2>
-            <a href="https://t.me/YourTelegramLink" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-            </a>
-            <a href="https://dexscreener.com/YourTokenLink" target="_blank">
-                <img src="https://images.seeklogo.com/logo-png/52/1/dex-screener-logo-png_seeklogo-527276.png">
-            </a>
-            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
-                <img src="https://images.seeklogo.com/logo-png/49/1/twitter-x-logo-png_seeklogo-492396.png">
-            </a>
+            <h2 id="airdrop-title">🎁 Exklusiver Airdrop</h2>
+            <p id="airdrop"></p>
+            <a href="#" class="btn" id="buy">Jetzt kaufen & profitieren!</a>
         </div>
     </div>
 </body>
