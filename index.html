@@ -69,50 +69,6 @@
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
         }
-
-        .btn {
-            background: #ffd700;
-            color: #6a0dad;
-            padding: 15px 25px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 10px;
-            display: inline-block;
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-
-        .btn:hover {
-            background: #d4af37;
-        }
-
-        .countdown-container {
-            margin-top: 40px;
-            padding: 20px;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #ffd700;
-        }
-
-        .social-links {
-            margin-top: 40px;
-        }
-
-        .social-links a {
-            margin: 0 15px;
-            display: inline-block;
-        }
-
-        .social-links img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-
-        .social-links img:hover {
-            transform: scale(1.2);
-        }
     </style>
 </head>
 <body>
@@ -132,67 +88,53 @@
         <h2 id="subtitle">Verdiene SOL mit jeder Transaktion!</h2>
 
         <div class="section">
-            <h2 id="tokenomics-title">📊 Tokenomics</h2>
-            <ul id="tokenomics-text" style="list-style-type: none; font-size: 1.2em;">
-                <li>✅ <b>75%</b> der Gebühren gehen direkt an die Holder</li>
-                <li>✅ <b>25%</b> fließen ins Team für Entwicklung & Marketing</li>
-                <li>✅ <b>Automatische Ausschüttung alle 60 Minuten</b></li>
-                <li>✅ <b>Liquidität vollständig geburnt</b></li>
-            </ul>
-        </div>
+            <p id="promo-text">
+                🚀 SOLPRINTER PONZI – Der revolutionäre Solana-Token, der dir jede Stunde SOL auszahlt! 💰<br><br>
+                Willkommen bei SOLPRINTER PONZI, dem ultimativen passiven Einkommens-Token auf der Solana-Blockchain! Hier verdienst du alle 60 Minuten automatisch SOL, ohne etwas tun zu müssen – einfach nur durch das Halten des Tokens in deinem Wallet.<br><br>
 
-        <div class="countdown-container">
-            ⏳ <span id="airdrop-text">Sichere dir SOLPRINTER PONZI Token durch unseren exklusiven Airdrop!</span><br>
-            <div id="countdown">Lädt...</div>
-            <a href="#" class="btn" id="airdrop-button">Zum Airdrop</a>
-        </div>
+                🔹 <b>Wie funktioniert es?</b><br>
+                Jede Transaktion mit SOLPRINTER PONZI generiert Gebühren, die dann in SOLANA an alle Holder ausgeschüttet werden.  
+                Das bedeutet: Je mehr Transaktionen stattfinden, desto mehr verdienst du – völlig automatisch!<br><br>
 
-        <div class="social-links">
-            <h2 id="social-text">📢 Folge uns auf unseren Kanälen!</h2>
-            <a href="https://t.me/YourTelegramLink" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-            </a>
-            <a href="https://dexscreener.com/YourTokenLink" target="_blank">
-                <img src="https://cryptologos.cc/logos/dexscreener-logo.png" alt="Dexscreener">
-            </a>
-            <a href="https://twitter.com/YourTwitterHandle" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/X_logo_2023.svg" alt="X (Twitter)">
-            </a>
+                🔥 <b>Tokenomics – Dein Schlüssel zum passiven Einkommen!</b><br>
+                ✅ 75% der Gebühren gehen direkt an die Holder – Du verdienst passiv, einfach nur durch das Halten von SOLPRINTER PONZI!<br>
+                ✅ 25% gehen an das Team – für Weiterentwicklung, Marketing & Wachstum des Tokens.<br>
+                ✅ Ausschüttung alle 60 Minuten – keine Wartezeiten, kein manuelles Claiming nötig!<br><br>
+
+                💎 <b>Warum SOLPRINTER PONZI?</b><br>
+                ✅ Automatische SOL-Auszahlung direkt auf dein Wallet – keine komplizierten Staking- oder Farming-Prozesse.<br>
+                ✅ Deflationärer Mechanismus – Durch stetige Transaktionen wächst der Wert deiner Belohnungen mit der Zeit.<br>
+                ✅ Maximale Transparenz & Community-getriebenes Projekt – Unser Ziel: Holder-Rewards maximieren & die stärkste Community auf Solana aufbauen!<br><br>
+
+                🚀 <b>Der perfekte Zeitpunkt, um einzusteigen!</b><br>
+                💰 Je mehr SOLPRINTER PONZI du hältst, desto größer sind deine Belohnungen.<br>
+                ⚡ Mit jeder Transaktion verdient die Community mit – das bedeutet: Mehr Wachstum, mehr Gewinne!<br>
+                🔥 Sei von Anfang an dabei & profitiere maximal von unserem einzigartigen Belohnungssystem!<br><br>
+
+                📢 Werde Teil der SOLPRINTER PONZI-Revolution!<br>
+                💎 Jetzt kaufen, halten & jede Stunde SOL verdienen!  
+            </p>
         </div>
     </div>
 
     <script>
-        function startCountdown() {
-            const endTime = new Date("2025-03-30T00:00:00").getTime();
-            const timer = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = endTime - now;
-
-                if (distance < 0) {
-                    clearInterval(timer);
-                    document.getElementById("countdown").innerHTML = "Airdrop beendet!";
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById("countdown").innerHTML = `${days}T ${hours}H ${minutes}M ${seconds}S`;
-            }, 1000);
-        }
-
-        document.addEventListener("DOMContentLoaded", startCountdown);
-
         function changeLanguage(lang) {
             const translations = {
-                de: { socialText: "📢 Folge uns auf unseren Kanälen!" },
-                en: { socialText: "📢 Follow us on our channels!" },
-                ru: { socialText: "📢 Подпишитесь на наши каналы!" }
+                de: {
+                    promoText: `🚀 SOLPRINTER PONZI – Der revolutionäre Solana-Token, der dir jede Stunde SOL auszahlt! 💰
+                    Willkommen bei SOLPRINTER PONZI, dem ultimativen passiven Einkommens-Token auf der Solana-Blockchain! ...`
+                },
+                en: {
+                    promoText: `🚀 SOLPRINTER PONZI – The revolutionary Solana token that pays you SOL every hour! 💰
+                    Welcome to SOLPRINTER PONZI, the ultimate passive income token on the Solana blockchain! ...`
+                },
+                ru: {
+                    promoText: `🚀 SOLPRINTER PONZI – Революционный токен Solana, который выплачивает вам SOL каждый час! 💰
+                    Добро пожаловать в SOLPRINTER PONZI, ...`
+                }
             };
 
-            document.getElementById("social-text").innerText = translations[lang].socialText;
+            document.getElementById("promo-text").innerText = translations[lang].promoText;
         }
     </script>
 
