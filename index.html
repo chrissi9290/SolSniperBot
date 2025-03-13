@@ -57,10 +57,52 @@
             .social-links img { width: 35px; height: 35px; }
         }
     </style>
+    <script>
+        const translations = {
+            es: {
+                title: "🚀 SOLPRINTER PONZI – ¡El token de recompensa definitivo! 💰",
+                description: "Bienvenido a SOLPRINTER PONZI, el token revolucionario de Solana que te recompensa automáticamente por cada transacción.",
+                tokenomicsTitle: "📊 Tokenomics",
+                tokenomics1: "🔹 <b>75%</b> de las tarifas de transacción van directamente a los titulares",
+                tokenomics2: "🔹 <b>25%</b> de las tarifas van al equipo para el crecimiento",
+                tokenomics3: "🔹 <b>Pago automático cada 60 minutos</b>",
+                tokenomics4: "🔹 <b>SOLANA directamente a tu billetera</b>",
+                tokenomics5: "🔥 <b>El pool de liquidez está completamente quemado</b>",
+                airdropTitle: "🎁 Airdrop exclusivo",
+                airdrop: "¡Asegura tus tokens SOLPRINTER PONZI a través de nuestro airdrop exclusivo! El airdrop te da la oportunidad de unirte temprano.",
+                buy: "¡Compra ahora y obtén ganancias!"
+            },
+            ru: {
+                title: "🚀 SOLPRINTER PONZI – Лучший наградной токен! 💰",
+                description: "Добро пожаловать в SOLPRINTER PONZI, революционный токен Solana, который автоматически вознаграждает вас за каждую транзакцию!",
+                tokenomicsTitle: "📊 Tokenomics",
+                tokenomics1: "🔹 <b>75%</b> комиссий идут напрямую держателям",
+                tokenomics2: "🔹 <b>25%</b> комиссий идут команде на развитие",
+                tokenomics3: "🔹 <b>Автоматические выплаты каждые 60 минут</b>",
+                tokenomics4: "🔹 <b>SOLANA сразу на ваш кошелек</b>",
+                tokenomics5: "🔥 <b>Весь пул ликвидности полностью сожжен</b>",
+                airdropTitle: "🎁 Эксклюзивный Airdrop",
+                airdrop: "Получите свои токены SOLPRINTER PONZI через наш эксклюзивный airdrop! Airdrop дает вам шанс присоединиться рано.",
+                buy: "Купите сейчас и зарабатывайте!"
+            },
+            ar: {
+                title: "🚀 سول برينتر بونزي - الرمز المميز النهائي للمكافآت! 💰",
+                description: "مرحبًا بك في سول برينتر بونزي، الرمز الثوري لسولانا الذي يكافئك تلقائيًا على كل معاملة!",
+                tokenomicsTitle: "📊 Tokenomics",
+                tokenomics1: "🔹 <b>75%</b> من رسوم المعاملات تذهب مباشرة إلى حاملي التوكن",
+                tokenomics2: "🔹 <b>25%</b> من الرسوم تذهب إلى الفريق للنمو",
+                tokenomics3: "🔹 <b>دفع تلقائي كل 60 دقيقة</b>",
+                tokenomics4: "🔹 <b>SOLANA مباشرة إلى محفظتك</b>",
+                tokenomics5: "🔥 <b>تم حرق تجمع السيولة بالكامل</b>",
+                airdropTitle: "🎁 الإيردروب الحصري",
+                airdrop: "احصل على رموز SOLPRINTER PONZI الخاصة بك من خلال عرض التوزيع الحصري! يمنحك العرض فرصة للانضمام مبكرًا.",
+                buy: "اشترِ الآن واستفد!"
+            }
+        };
+    </script>
 </head>
 <body>
     <div class="container">
-        <!-- Sprachauswahl Dropdown -->
         <div class="language-selector">
             <select onchange="changeLanguage(this.value)">
                 <option value="de">🇩🇪 Deutsch</option>
@@ -71,29 +113,6 @@
                 <option value="ar">🇸🇦 العربية</option>
             </select>
         </div>
-        
-        <h1 id="title">🚀 SOLPRINTER PONZI – Der ultimative Belohnungs-Token! 💰</h1>
-        <p id="description">Willkommen bei SOLPRINTER PONZI...</p>
-
-        <div class="section">
-            <h2 id="tokenomics-title">📊 Tokenomics</h2>
-            <ul>
-                <li id="tokenomics-1"></li>
-                <li id="tokenomics-2"></li>
-                <li id="tokenomics-3"></li>
-                <li id="tokenomics-4"></li>
-                <li id="tokenomics-5"></li>
-            </ul>
-        </div>
-
-        <div class="section">
-            <h2 id="airdrop-title">🎁 Exklusiver Airdrop</h2>
-            <p id="airdrop"></p>
-            <div id="countdown" class="countdown"></div>
-            <a href="#" class="btn" id="buy">Jetzt kaufen & profitieren!</a>
-        </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
