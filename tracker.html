@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLPRINTER PONZI Tracker & Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #593676, #b292bb);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: #ffd700;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .section {
+            margin-top: 40px;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tracker {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .calculator input {
+            padding: 10px;
+            font-size: 1.2em;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .btn {
+            background: #ffd700;
+            color: #6a0dad;
+            padding: 15px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .btn:hover {
+            background: #d4af37;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📊 SOLPRINTER PONZI Tracker & Investment Calculator</h1>
+
+        <div class="section">
+            <h2>🚀 Live Tracker – Transactions & SOL Payouts</h2>
+            <p>🔄 <strong>Total Transactions:</strong> <span id="transactions">Loading...</span></p>
+            <p>💰 <strong>Total SOL Paid Out:</strong> <span id="totalPayouts">Loading...</span></p>
+            <p>⏳ <strong>Next Payout in:</strong> <span id="countdown">Loading...</span></p>
+        </div>
+
+        <div class="section">
+            <h2>💡 Investment Calculator</h2>
+            <p>Enter the amount of **$SPP** you plan to hold, and see how much SOL you can earn!</p>
+            <input type="number" id="sppAmount" placeholder="Enter $SPP Amount" oninput="calculateEarnings()">
+            <p>🔹 **Hourly SOL Earnings:** <strong id="hourlyEarnings">0 SOL</strong></p>
+            <p>🔹 **Daily SOL Earnings:** <strong id="dailyEarnings">0 SOL</strong></p>
+            <p>🔹 **Weekly SOL Earnings:** <strong id="weeklyEarnings">0 SOL</strong></p>
+            <p>🔹 **Monthly SOL Earnings:** <strong id="monthlyEarnings">0 SOL</strong></p>
+        </div>
+
+        <a href="index.html" class="btn">🔙 Back to Homepage</a>
+    </div>
+
+    <script>
+        // Example Data (Replace with Real API Calls)
+        let totalTransactions = 12500;
+        let totalSOLPaidOut = 420.75;
+
+        function updateLiveTracker() {
+            document.getElementById("transactions").innerText = totalTransactions.toLocaleString();
+            document.getElementById("totalPayouts").innerText = totalSOLPaidOut.toFixed(2) + " SOL";
+        }
+
+        // Fake Countdown Timer (Replace with Real Data)
+        function startCountdown() {
+            let endTime = new Date().getTime() + (60 * 60 * 1000); // 1 hour from now
+
+            let timer = setInterval(() => {
+                let now = new Date().getTime();
+                let distance = endTime - now;
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById("countdown").innerText = "Payout Processing...";
+                    return;
+                }
+
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerText = minutes + "m " + seconds + "s";
+            }, 1000);
+        }
+
+        function calculateEarnings() {
+            let sppHeld = document.getElementById("sppAmount").value;
+            let solPerSPP = 0.000002; // Example earnings per token (Replace with real calculation)
+            
+            let hourly = sppHeld * solPerSPP;
+            let daily = hourly * 24;
+            let weekly = daily * 7;
+            let monthly = daily * 30;
+
+            document.getElementById("hourlyEarnings").innerText = hourly.toFixed(6) + " SOL";
+            document.getElementById("dailyEarnings").innerText = daily.toFixed(6) + " SOL";
+            document.getElementById("weeklyEarnings").innerText = weekly.toFixed(6) + " SOL";
+            document.getElementById("monthlyEarnings").innerText = monthly.toFixed(6) + " SOL";
+        }
+
+        // Run Live Tracker & Countdown
+        updateLiveTracker();
+        startCountdown();
+
+    </script>
+
+</body>
+</html>
