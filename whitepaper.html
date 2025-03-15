@@ -13,73 +13,36 @@
             margin: 0;
             padding: 0;
         }
-
         header {
             width: 100%;
         }
-
         .banner {
             width: 100%;
             max-height: 250px;
             object-fit: cover;
         }
-
         .container {
             max-width: 900px;
             margin: 50px auto;
             padding: 30px;
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 15px;
         }
-
-        h1 {
+        h1, h2 {
             color: #ffd700;
-            font-size: 2.5em;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
-
-        h2 {
-            color: #d4af37;
-            font-size: 1.8em;
-        }
-
         p {
             font-size: 1.2em;
             line-height: 1.5em;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+            text-align: left;
         }
-
         .section {
             margin-top: 40px;
             padding: 20px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
+            text-align: left;
         }
-
-        .divider {
-            margin: 40px 0;
-            height: 2px;
-            background: #ffd700;
-        }
-
-        .social-links {
-            margin-top: 40px;
-        }
-
-        .social-links a {
-            margin: 0 15px;
-            display: inline-block;
-        }
-
-        .social-links img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-
-        .social-links img:hover {
-            transform: scale(1.2);
-        }
-
         .btn {
             background: #ffd700;
             color: #6a0dad;
@@ -91,7 +54,6 @@
             margin-top: 20px;
             font-size: 1.2em;
         }
-
         .btn:hover {
             background: #d4af37;
         }
@@ -105,79 +67,91 @@
 
     <div class="container">
         <h1>📜 SOLPRINTER PONZI Whitepaper</h1>
-        <h3>Version 1.2 – March 2025</h3>
-
-        <div class="divider"></div>
-
-        <h2>📌 Table of Contents</h2>
-        <p>
-            1️⃣ <b>Introduction</b> <br>
-            2️⃣ <b>What is SOLPRINTER PONZI?</b> <br>
-            3️⃣ <b>How It Works</b> <br>
-            4️⃣ <b>Tokenomics & Token Distribution</b> <br>
-            5️⃣ <b>Security & Anti-Bot Protection</b> <br>
-            6️⃣ <b>Why Choose SOLPRINTER PONZI?</b> <br>
-            7️⃣ <b>Roadmap & Future Plans</b> <br>
-            8️⃣ <b>How to Get Involved</b> <br>
-            9️⃣ <b>Conclusion</b> <br>
-            🔟 <b>Contact & Socials</b>
-        </p>
-
-        <div class="divider"></div>
+        <h2>Version 1.2 – March 2025</h2>
 
         <div class="section">
-            <h2>1️⃣ Introduction</h2>
-            <p>SOLPRINTER PONZI is a revolutionary Solana token designed to provide passive income with automatic SOL rewards every hour.</p>
-        </div>
-
-        <div class="section">
-            <h2>2️⃣ What is SOLPRINTER PONZI?</h2>
-            <p>SOLPRINTER PONZI ($SPP) is an innovative token built on Solana. It rewards holders with SOL every 60 minutes, using transaction fees to sustain rewards.</p>
-        </div>
-
-        <div class="section">
-            <h2>3️⃣ How It Works</h2>
-            <p>Each transaction generates fees that are redistributed as follows:</p>
-            <p>🔹 <b>75%</b> – Sent to holders as SOL rewards.<br>
-            🔹 <b>25%</b> – Used for development, marketing, and growth.<br>
-            🔹 <b>6% Buy Fee</b> – Ensures sustainability and bot prevention.</p>
-        </div>
-
-        <div class="section">
-            <h2>4️⃣ Tokenomics & Token Distribution</h2>
-            <p>✅ <b>75%</b> of fees go to holders.<br>
-               ✅ <b>25%</b> funds development.<br>
-               ✅ <b>6% Buy Fee</b> ensures fair trading.<br>
-               ✅ <b>Liquidity is fully burned.</b></p>
-        </div>
-
-        <div class="section">
-            <h2>7️⃣ Roadmap & Future Plans</h2>
+            <h2>📌 Table of Contents</h2>
             <p>
-                🔹 <b>Phase 1 – Launch</b>: Website, social media, airdrop event.<br>
-                🔹 <b>Phase 2 – Listings</b>: DEX listings, partnerships.<br>
-                🔹 <b>Phase 3 – Expansion</b>: CEX listings, DAO governance.
+                <a href="#introduction">1️⃣ Introduction</a><br>
+                <a href="#what-is">2️⃣ What is SOLPRINTER PONZI?</a><br>
+                <a href="#how-it-works">3️⃣ How It Works</a><br>
+                <a href="#tokenomics">4️⃣ Tokenomics & Token Distribution</a><br>
+                <a href="#security">5️⃣ Security & Anti-Bot Protection</a><br>
+                <a href="#why-choose">6️⃣ Why Choose SOLPRINTER PONZI?</a><br>
+                <a href="#roadmap">7️⃣ Roadmap & Future Plans</a><br>
+                <a href="#how-to">8️⃣ How to Get Involved</a><br>
+                <a href="#conclusion">9️⃣ Conclusion</a><br>
+                <a href="#contact">🔟 Contact & Socials</a>
             </p>
         </div>
 
-        <div class="section">
+        <div class="section" id="introduction">
+            <h2>1️⃣ Introduction</h2>
+            <p>The cryptocurrency space has evolved rapidly, providing numerous opportunities for passive income. 
+            However, most existing projects require staking, farming, or complex yield farming strategies.</p>
+        </div>
+
+        <div class="section" id="what-is">
+            <h2>2️⃣ What is SOLPRINTER PONZI?</h2>
+            <p>SOLPRINTER PONZI ($SPP) is an innovative Solana-based token designed to provide hourly SOL rewards to its holders.</p>
+        </div>
+
+        <div class="section" id="how-it-works">
+            <h2>3️⃣ How It Works</h2>
+            <p>75% of transaction fees are distributed to holders, 25% goes to development, and there is a 6% buy fee.</p>
+        </div>
+
+        <div class="section" id="tokenomics">
+            <h2>4️⃣ Tokenomics & Token Distribution</h2>
+            <p>
+                ✅ 75% of transaction fees go directly to holders.<br>
+                ✅ 25% funds development, marketing, and long-term project growth.<br>
+                ✅ 6% Buy Fee – Prevents bot trading.<br>
+                ✅ Liquidity is permanently burned – Ensuring a deflationary mechanism.<br>
+                <b>Token Distribution:</b><br>
+                🔹 50% Liquidity<br>
+                🔹 25% Airdrop (unsold tokens burned)<br>
+                🔹 25% Team Allocation
+            </p>
+        </div>
+
+        <div class="section" id="security">
+            <h2>5️⃣ Security & Anti-Bot Protection</h2>
+            <p>1-hour holding period, 6% buy fee, liquidity burned, and smart contract audited.</p>
+        </div>
+
+        <div class="section" id="why-choose">
+            <h2>6️⃣ Why Choose SOLPRINTER PONZI?</h2>
+            <p>Earn SOL every hour without staking, community-focused, and deflationary mechanics.</p>
+        </div>
+
+        <div class="section" id="roadmap">
+            <h2>7️⃣ Roadmap & Future Plans</h2>
+            <p>Phase 1: Launch & Airdrop <br> Phase 2: Exchange Listings <br> Phase 3: CEX Listings & DAO Governance.</p>
+        </div>
+
+        <div class="section" id="how-to">
+            <h2>8️⃣ How to Get Involved?</h2>
+            <p>Buy SOLPRINTER PONZI, hold in your Solana wallet, and earn SOL every hour.</p>
+        </div>
+
+        <div class="section" id="conclusion">
+            <h2>9️⃣ Conclusion</h2>
+            <p>A revolutionary passive income system for Solana holders.</p>
+        </div>
+
+        <div class="section" id="contact">
             <h2>🔟 Contact & Socials</h2>
-            <p>💬 Join the Community:</p>
-            <div class="social-links">
-                <a href="https://t.me/solprinterponzi" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-                </a>
-                <a href="https://x.com/solprinterponzi?s=21" target="_blank">
-                    <img src="https://images.seeklogo.com/logo-png/49/1/twitter-x-logo-png_seeklogo-492396.png" alt="X (Twitter)">
-                </a>
-                <a href="#" target="_blank">
-                    <img src="https://images.seeklogo.com/logo-png/52/1/dex-screener-logo-png_seeklogo-527276.png" alt="Dexscreener">
-                </a>
-            </div>
-            <p>🌐 <b>Website:</b> <a href="https://www.solprinter-ponzi.com/#" target="_blank">www.solprinter-ponzi.com</a></p>
+            <p>
+                🔹 <b>Telegram:</b> <a href="https://t.me/solprinterponzi">Join Here</a><br>
+                🔹 <b>Twitter (X):</b> <a href="https://x.com/solprinterponzi?s=21">Follow Us</a><br>
+                🔹 <b>Dexscreener:</b> Coming after Airdrop<br>
+                🔹 <b>Website:</b> <a href="https://www.solprinter-ponzi.com/#">Visit Here</a>
+            </p>
         </div>
 
         <a href="index.html" class="btn">⬅ Back to Main Page</a>
+
     </div>
 
 </body>
