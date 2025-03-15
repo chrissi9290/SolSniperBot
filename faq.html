@@ -29,24 +29,36 @@
             max-width: 900px;
             margin: 50px auto;
             padding: 30px;
+            text-align: left;
         }
 
-        h1, h2 {
+        h1 {
             color: #ffd700;
+            text-align: center;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        p {
+        .faq-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
             font-size: 1.2em;
-            line-height: 1.5em;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+            transition: background 0.3s;
         }
 
-        .section {
-            margin-top: 40px;
-            padding: 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 15px;
+            font-size: 1.1em;
+            line-height: 1.5em;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
         }
 
         hr {
@@ -78,177 +90,89 @@
         <img src="https://raw.githubusercontent.com/chrissi9290/SolSniperBot/main/5375543886597975199.jpg" alt="SOLPRINTER PONZI Banner" class="banner">
     </header>
 
-  <h1>SOLPRINTER PONZI FAQ</h1>
+    <div class="container">
+        <h1>📜 SOLPRINTER PONZI FAQ</h1>
 
-    <div class="section">
-        <h2>🚀 How Does the Hourly Payout Work in SOLPRINTER PONZI?</h2>
-        <p>SOLPRINTER PONZI uses an automatic distribution system, where transaction fees are redistributed as <span class="highlight">SOLANA (SOL)</span> to all token holders every hour – with no manual claiming required!</p>
-    </div>
+        <hr>
 
-    <div class="section">
-        <h2>🔹 Where Do the Fees for the Payout Come From?</h2>
-        <p>Every transaction with the SOLPRINTER PONZI ($SPP) Token generates a transaction fee. This fee is structured to directly benefit token holders.</p>
-        <p>Fees are collected from:</p>
-        <ul>
-            <li>1️⃣ <strong>Buying & Selling $SPP Tokens</strong> – Every time someone buys or sells SOLPRINTER PONZI, a fee is charged.</li>
-            <li>2️⃣ <strong>The 6% Buy Fee</strong> – Each purchase contributes to liquidity and prevents sniper bots.</li>
-            <li>3️⃣ <strong>The 100% Sell Tax</strong> – This tax is fully used for payouts and goes directly to the community & project development.</li>
-        </ul>
-    </div>
+        <div class="faq-item" onclick="toggleAnswer(0)">🚀 How Does the Hourly Payout Work?</div>
+        <div class="faq-answer">
+            SOLPRINTER PONZI uses an **automatic system** where **transaction fees** are redistributed as **SOLANA (SOL)** to all holders **every hour – no manual claiming needed!**
+        </div>
 
-    <div class="section">
-        <h2>🔹 How Are Rewards Distributed to Holders?</h2>
-        <p><span class="highlight">75% of transaction fees</span> are distributed directly to all token holders as SOLANA (SOL).</p>
-        <p><span class="highlight">25% of fees</span> go toward project development, marketing, and future expansion.</p>
-        <p>The more transactions occur, the higher the SOL rewards for each holder.</p>
-        <p>👉 This means:</p>
-        <ul>
-            <li>The more people buy & sell $SPP, the more SOL you receive every hour!</li>
-            <li>The more $SPP you hold, the larger your share of the rewards!</li>
-        </ul>
-    </div>
+        <div class="faq-item" onclick="toggleAnswer(1)">🔹 Where Do the Fees for the Payout Come From?</div>
+        <div class="faq-answer">
+            Every transaction with **$SPP** generates a **fee**, which is distributed to holders.  
+            **Fees come from:**
+            <ul>
+                <li>1️⃣ **Buying & Selling $SPP Tokens** – Every trade generates fees.</li>
+                <li>2️⃣ **The 6% Buy Fee** – Contributes to liquidity & prevents bots.</li>
+                <li>3️⃣ **The 100% Sell Tax** – Fully used for payouts & project growth.</li>
+            </ul>
+        </div>
 
-    <div class="section">
-        <h2>🔹 Why an Hourly Payout?</h2>
-        <ul>
-            <li>✅ <strong>Automatic Rewards:</strong> No need for manual staking or farming. Rewards go directly to your wallet!</li>
-            <li>✅ <strong>Long-Term Stability:</strong> Regular payouts encourage an active community and continuous transactions.</li>
-            <li>✅ <strong>Anti-Sniper Bot Protection:</strong> The 1-hour holding period prevents bots from gaining unfair advantages.</li>
-        </ul>
-        <p>In short: The more you hold, the more you earn – completely passively! 🚀💰</p>
-    </div>
+        <div class="faq-item" onclick="toggleAnswer(2)">🔹 How Are Rewards Distributed?</div>
+        <div class="faq-answer">
+            🔸 **75% of transaction fees** → Directly paid to holders as SOL.  
+            🔸 **25% of fees** → Used for project development & marketing.  
+            **More transactions = More SOL rewards for holders!**
+        </div>
 
-    <hr>
+        <div class="faq-item" onclick="toggleAnswer(3)">🔹 Why an Hourly Payout?</div>
+        <div class="faq-answer">
+            <ul>
+                <li>✅ **Automatic Rewards** – No staking or farming needed.</li>
+                <li>✅ **Long-Term Stability** – Encourages continuous transactions.</li>
+                <li>✅ **Anti-Sniper Bot Protection** – 1-hour holding period prevents quick flips.</li>
+            </ul>
+        </div>
 
-    <div class="section">
-        <h2>🔹 Why Is the SOLPRINTER PONZI Airdrop Worth It?</h2>
-        <p>An airdrop is an opportunity to receive tokens for free or at a discount before they are fully traded on the market. The SOLPRINTER PONZI Airdrop gives you a chance to get in early before major trading begins!</p>
-    </div>
+        <div class="faq-item" onclick="toggleAnswer(4)">🔥 Why Is the Airdrop Worth It?</div>
+        <div class="faq-answer">
+            The SOLPRINTER PONZI Airdrop lets you **get in early** before major trading begins!  
+            **Benefits:**
+            <ul>
+                <li>✅ **Early Access** – Get $SPP before the main sale.</li>
+                <li>✅ **Lower Entry Price** – Buy cheaper than on a DEX.</li>
+                <li>✅ **Higher Rewards** – Start earning SOL payouts immediately!</li>
+                <li>✅ **Deflationary Mechanism** – **Unclaimed airdrop tokens are burned!**</li>
+                <li>✅ **Anti-Bot Protection** – Ensures fair distribution.</li>
+            </ul>
+        </div>
 
-    <div class="section">
-        <h2>🔥 The Benefits of the SOLPRINTER PONZI Airdrop</h2>
-        <ul>
-            <li>✅ <strong>Early Participation</strong> – You receive $SPP before the main sale starts, giving you a head start and benefiting from early price increases.</li>
-            <li>✅ <strong>Lower Entry Price</strong> – Compared to buying later on a decentralized exchange (DEX), you get tokens at the best possible price.</li>
-            <li>✅ <strong>Higher Rewards for Holding Early</strong> – Since you hold the tokens before everyone else, you start receiving hourly SOL rewards from transaction fees right away!</li>
-            <li>✅ <strong>Deflationary Mechanism</strong> – All unclaimed airdrop tokens will be burned. This means:
-                <ul>
-                    <li>Fewer available tokens → Higher demand → Rising value!</li>
-                </ul>
-            </li>
-            <li>✅ <strong>Anti-Bot Protection & Community Rewards</strong> – Since the airdrop requires a minimum holding period of one hour, it prevents sniper bots from buying and dumping quickly. Real investors benefit more!</li>
-        </ul>
-    </div>
+        <div class="faq-item" onclick="toggleAnswer(5)">💎 What Is Liquidity & How Does It Affect Price?</div>
+        <div class="faq-answer">
+            Liquidity determines **how easily a token can be traded** without price instability.  
+            **More Liquidity = More Stability!**
+        </div>
 
-    <div class="section">
-        <h2>🚀 How to Participate in the Airdrop?</h2>
-        <ol>
-            <li>1️⃣ <strong>Secure your tokens:</strong> Claim your SOLPRINTER PONZI Airdrop Tokens on our website.</li>
-            <li>2️⃣ <strong>Hold & Profit:</strong> After 60 minutes, your first automatic SOL payout begins.</li>
-            <li>3️⃣ <strong>Earn Long-Term:</strong> The longer you hold, the more SOL rewards you receive every hour!</li>
-        </ol>
-        <p><strong>💎 Conclusion:</strong> The airdrop is the best way to get in early, acquire low-cost tokens, and start earning passive SOL rewards from the beginning! 🚀💰</p>
-    </div>
+        <div class="faq-item" onclick="toggleAnswer(6)">💎 Why Invest in SOLPRINTER PONZI?</div>
+        <div class="faq-answer">
+            <ul>
+                <li>✅ **Hourly SOL Payouts** – No staking or farming needed.</li>
+                <li>✅ **Fair & Secure System** – Protection against sniper bots.</li>
+                <li>✅ **Deflationary Model** – **Liquidity is burned forever!**</li>
+                <li>✅ **Strong Community & Future Plans** – Roadmap includes CEX listings & governance.</li>
+            </ul>
+        </div>
 
-    <hr>
-
-    <div class="section">
-        <h2>💎 What Is Liquidity & How Does It Determine the Price of SOLPRINTER PONZI?</h2>
-        <p>Liquidity is a key concept in cryptocurrency trading. It determines how easily and stably a token can be bought and sold without drastic price changes.</p>
-    </div>
-
-    <div class="section">
-        <h2>🔹 What Does “Liquidity” Mean in a Liquidity Pool?</h2>
-        <p>In decentralized exchanges (DEX) like Raydium or Orca on Solana, there are no central market makers like in traditional exchanges. Instead, the token price is set by an automated market maker (AMM).</p>
-        <ul>
-            <li>A <strong>Liquidity Pool (LP)</strong> is a smart contract that contains two different tokens (e.g., SOL and $SPP).</li>
-            <li>Every transaction (buy or sell) uses this pool to swap tokens.</li>
-        </ul>
-        <p>The pool ensures there are always enough tokens available for trading and that the price adjusts dynamically to supply & demand.</p>
-    </div>
-
-    <div class="section">
-        <h2>🔹 How Does Liquidity Determine the Price?</h2>
-        <p>The token price is set by a mathematical model in the liquidity pool:</p>
-        <p>🛒 <strong>More buyers than sellers</strong> = Price goes up!</p>
-        <p>📉 <strong>More sellers than buyers</strong> = Price goes down!</p>
-        <p>The ratio of SOL to $SPP in the pool decides the price:</p>
-        <ul>
-            <li>If many people buy SOLPRINTER PONZI, the amount of SOL in the pool increases, and the amount of $SPP decreases → <strong>The price rises!</strong></li>
-            <li>If many people sell $SPP, the amount of SOL in the pool decreases, and the amount of $SPP increases → <strong>The price drops!</strong></li>
-        </ul>
-        <p><strong>🔹 More Liquidity = More Stable Price!</strong></p>
-        <p><strong>🔹 Less Liquidity = Higher Price Volatility!</strong></p>
-    </div>
-
-    <div class="section">
-        <h2>🔹 How Does SOLPRINTER PONZI Use Liquidity?</h2>
-        <ol>
-            <li>1️⃣ <strong>50% of the Token Supply</strong> is provided for liquidity
-                <ul>
-                    <li>This ensures a stable price base and smooth transactions.</li>
-                </ul>
-            </li>
-            <li>2️⃣ <strong>Liquidity is permanently burned 🔥</strong>
-                <ul>
-                    <li>This means no one can remove the liquidity, making Rug Pulls (exit scams) impossible!</li>
-                </ul>
-            </li>
-            <li>3️⃣ <strong>Every transaction contributes to liquidity</strong>
-                <ul>
-                    <li>The 6% buy fee ensures there are always enough funds for trading.</li>
-                </ul>
-            </li>
-        </ol>
-        <p><strong>💡 Conclusion:</strong> Liquidity is the foundation of a stable coin. The larger the liquidity pool, the more stable the price, and the safer your investment! 🚀💰</p>
-    </div>
-
-    <hr>
-
-    <div class="section">
-        <h2>💎 Why Invest in SOLPRINTER PONZI ($SPP)?</h2>
-        <p>SOLPRINTER PONZI is not just another meme coin – it’s a revolutionary way to earn passive SOL just by holding. While many cryptocurrencies rely on speculation and volatile price increases, SPP offers a sustainable income source for long-term investors.</p>
-    </div>
-
-    <div class="section">
-        <h2>🚀 Advantages of SOLPRINTER PONZI Compared to Other Coins</h2>
-        <h3>1️⃣ Hourly SOL Payouts – No Staking or Farming Required</h3>
-        <ul>
-            <li>✅ <strong>Automatic rewards:</strong> Most coins require staking or farming to earn yields. SPP pays you SOL every 60 minutes – completely automatically!</li>
-            <li>✅ <strong>No complex processes:</strong> Just hold $SPP and earn passive income.</li>
-        </ul>
-        <p><strong>🔹 Competitor Comparison:</strong></p>
-        <ul>
-            <li><em>Other Projects:</em> Manual claiming, high staking fees, or complex DeFi platforms.</li>
-            <li><em>SOLPRINTER PONZI:</em> Direct SOL payouts with no wait times or extra costs!</li>
-        </ul>
-
-        <h3>2️⃣ Secure & Fair Token Design – Protection Against Sniper Bots</h3>
-        <ul>
-            <li>✅ <strong>1-hour holding period:</strong> Prevents sniper bots from manipulating the market and ensures only long-term holders benefit.</li>
-            <li>✅ <strong>Deflationary mechanism:</strong> Unclaimed airdrop tokens are burned, reducing supply and increasing demand.</li>
-        </ul>
-        <p><strong>🔹 Competitor Comparison:</strong></p>
-        <ul>
-            <li><em>Other Projects:</em> Frequent bot attacks, pump-and-dump scenarios.</li>
-            <li><em>SOLPRINTER PONZI:</em> Protects long-term investors from unfair trading practices!</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>💎 Conclusion – Why Invest Now?</h2>
-        <p>📌 <strong>Early entry means:</strong></p>
-        <ul>
-            <li>Lower entry price → Benefit from future price increases!</li>
-            <li>Higher SOL rewards for holding early!</li>
-            <li>Protection against sniper bots & dump trades.</li>
-        </ul>
-        <p>📢 <strong>Now is the perfect time to invest in SOLPRINTER PONZI!</strong></p>
-        <p>💰 Buy, hold & earn passive SOL every hour! 🚀</p>
+        <a href="index.html" class="btn">🔙 Back to Website</a>
 
     </div>
 
-  <a href="index.html" class="btn">⬅ Back to Website</a>
+    <script>
+        function toggleAnswer(index) {
+            var answers = document.querySelectorAll(".faq-answer");
+            var currentAnswer = answers[index];
+
+            if (currentAnswer.style.display === "block") {
+                currentAnswer.style.display = "none";
+            } else {
+                answers.forEach(answer => answer.style.display = "none");
+                currentAnswer.style.display = "block";
+            }
+        }
+    </script>
 
 </body>
 </html>
