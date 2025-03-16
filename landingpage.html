@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOLPRINTER PONZI | Official Landingpage</title>
+    <title>SOLPRINTER PONZI | Offizielle Landingpage</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
             text-align: center;
+            overflow-x: hidden;
         }
 
         header {
@@ -24,10 +25,11 @@
             max-height: 350px;
             object-fit: cover;
             border-radius: 10px;
+            animation: fadeIn 2s ease-in-out;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 30px auto;
             padding: 20px;
         }
@@ -35,34 +37,39 @@
         h1, h2 {
             color: #ffd700;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in-out;
         }
 
         p {
             font-size: 1.1em;
-            line-height: 1.6em;
+            line-height: 1.7em;
+            animation: fadeIn 2s ease-in-out;
         }
 
         .btn {
             background: #ffd700;
             color: #6a0dad;
-            padding: 12px 25px;
+            padding: 14px 30px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 10px;
             display: inline-block;
             margin: 20px 10px;
             font-size: 1.1em;
+            transition: transform 0.3s ease;
         }
 
         .btn:hover {
             background: #d4af37;
+            transform: scale(1.05);
         }
 
         .section {
             margin-top: 30px;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
+            animation: fadeIn 2s ease-in-out;
         }
 
         .social-icons img {
@@ -74,6 +81,17 @@
         .social-icons img:hover {
             transform: scale(1.2);
         }
+
+        #countdown {
+            font-size: 2em;
+            margin: 20px 0;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -84,30 +102,50 @@
 
     <div class="container">
         <h1>🚀 SOLPRINTER PONZI</h1>
-        <h2>The Ultimate Passive Income Token!</h2>
+        <h2>Verdiene jede Stunde automatisch SOL! 💎</h2>
 
         <div class="section">
-            <p><strong>✅ Earn SOL every hour by simply holding $SPP tokens!</strong></p>
-            <p>🔹 75% of all transaction fees go directly to holders – paid in SOL!</p>
-            <p>🔹 25% supports project growth, marketing & development.</p>
-            <p>🔹 No staking, no farming – automated hourly rewards!</p>
-            <p>🔹 6% Buy Fee & 1-hour holding period to prevent sniper bots.</p>
-            <p>🔹 Liquidity permanently burned – no rug pulls possible!</p>
+            <h2>🔥 Warum SOLPRINTER PONZI?</h2>
+            <p>💰 <strong>Passives SOL-Einkommen alle 60 Minuten</strong> – Kein Staking oder Farming erforderlich.</p>
+            <p>🔒 <strong>Liquidität dauerhaft verbrannt</strong> – Keine Rug Pulls, totale Sicherheit für Investoren.</p>
+            <p>🛡️ <strong>1-Stunden-Haltefrist</strong> – Verhindert Sniper-Bots & schützt langfristige Inhaber.</p>
+            <p>💎 <strong>Deflationäre Tokenomics</strong> – Nicht beanspruchte Airdrop-Token werden verbrannt!</p>
         </div>
 
         <div class="section">
-            <h2>🔗 Official Links</h2>
-            <a href="https://www.solprinter-ponzi.com" class="btn">🌐 Visit Website</a>
-            <a href="https://t.me/solprinterponzi" class="btn">💬 Join Telegram</a>
-            <a href="https://x.com/solprinterponzi" class="btn">📢 Follow on X</a>
+            <h2>📊 Tokenomics</h2>
+            <p>✅ <strong>75% aller Transaktionsgebühren gehen direkt an Inhaber</strong> (ausgezahlt in SOLANA)</p>
+            <p>✅ <strong>25% für Entwicklung, Marketing & zukünftiges Wachstum</strong></p>
+            <p>✅ <strong>6% Kaufgebühr</strong> & <strong>100% Verkaufssteuer</strong> – Maximierung des passiven Einkommens & Nachhaltigkeit</p>
+            <p>✅ <strong>50% Liquidität dauerhaft verbrannt</strong>, 25% Team, 25% Airdrop (nicht beanspruchte = verbrannt)</p>
+        </div>
+
+        <div class="section">
+            <h2>🕒 Airdrop-Verkauf endet in:</h2>
+            <div id="countdown"></div>
+            <a href="https://solsale.app/presale/all" class="btn">🔥 Airdrop-Token kaufen</a>
+        </div>
+
+        <div class="section">
+            <h2>🌐 Links & Community</h2>
+            <a href="https://www.solprinter-ponzi.com" class="btn">🌐 Offizielle Webseite</a>
+            <a href="https://t.me/solprinterponzi" class="btn">💬 Telegram beitreten</a>
+            <a href="https://x.com/solprinterponzi" class="btn">📢 Auf X folgen</a>
+        </div>
+
+        <div class="section">
+            <h2>💬 Testimonials</h2>
+            <p>⭐️⭐️⭐️⭐️⭐️<br>“Bestes passives Einkommensprojekt! Verdiene bereits jede Stunde SOL!” – @CryptoFan</p>
+            <p>⭐️⭐️⭐️⭐️⭐️<br>“Transparente Tokenomics und großartige Community. Absolut empfehlenswert!” – @InvestorGuru</p>
         </div>
 
         <div class="section social-icons">
-            <h2>📢 Follow & Stay Updated!</h2>
+            <h2>📢 Folge uns & bleibe auf dem Laufenden!</h2>
             <a href="https://t.me/solprinterponzi"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram"></a>
             <a href="https://x.com/solprinterponzi"><img src="https://upload.wikimedia.org/wikipedia/commons/6/60/X_logo_2023.svg" alt="X"></a>
         </div>
     </div>
 
-</body>
-</html>
+    <script>
+        // Set the date we're counting down to
+        var countDownDate 
