@@ -1,116 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>SPP Dashboard Access</title>
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
-  <style>
-    body {
-      background-color: #121212;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
-    button {
-      padding: 12px 24px;
-      font-size: 16px;
-      background-color: #ffd700;
-      border: none;
-      color: #000;
-      cursor: pointer;
-      border-radius: 6px;
-    }
-    #status {
-      margin: 20px 0;
-      font-size: 18px;
-    }
-    .section {
-      padding: 30px;
-      margin: 30px auto;
-      border-radius: 10px;
-      max-width: 700px;
-      background-color: #1e1e1e;
-    }
-    .gold {
-      border: 2px solid #ffd700;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeSniper</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 { margin-bottom: 10px; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            border-radius: 5px;
+        }
+        .connect-btn { background-color: #3b82f6; }
+        .buy-btn { background-color: #22c55e; }
+        .gold-btn { background-color: #f59e0b; }
+        input {
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            margin: 5px 0;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        #status { margin-top: 10px; color: #22c55e; }
+    </style>
 </head>
 <body>
+    <h1>MemeSniper</h1>
+    
+    <!-- Wallet-Verbindung -->
+    <h2>Wallet verbinden</h2>
+    <button class="connect-btn" onclick="connectWallet()">Wallet verbinden</button>
+    <p id="wallet-status">Nicht verbunden</p>
 
-<h1>SPP Utility Dashboard</h1>
-<p>Connect your wallet to access features</p>
+    <!-- Token kaufen -->
+    <h2>Token kaufen</h2>
+    <input type="text" id="token-address" placeholder="Token-Adresse">
+    <input type="number" id="amount" placeholder="Menge (SOL)">
+    <button class="buy-btn" onclick="buyToken()">Kaufen</button>
 
-<button onclick="connectWallet()">Connect Wallet</button>
-<div id="status">Wallet not connected</div>
+    <!-- Gold-Mitgliedschaft -->
+    <h2>Mitgliedschaft</h2>
+    <p>Gold: 100 SPP – keine Gebühren</p>
+    <button class="gold-btn" onclick="buyGold()">Gold kaufen</button>
+    <p id="membership-status">Kein Gold-Mitglied</p>
 
-<div id="free-content" class="section">
-  <h2>Free Access Area</h2>
-  <p>Use basic tools, live charts, and more – no token requirement!</p>
-</div>
+    <!-- Statusmeldungen -->
+    <p id="status"></p>
 
-<div id="gold-content" class="section gold" style="display:none;">
-  <h2>Gold Access Unlocked</h2>
-  <p>You are holding $100+ in SPP!</p>
-  <p>Welcome to the premium dashboard: Trading Bot, Sniper Tools & More</p>
-</div>
+    <!-- Solana Web3.js einbinden -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.min.js"></script>
+    <script>
+        const { Connection, PublicKey, Transaction } = solanaWeb3;
+        const { TOKEN_PROGRAM_ID, transfer } = splToken;
+        const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+        
+        let wallet = null;
+        let isGold = false;
 
-<script>
-  const SPP_MINT = "AJwynGxHawX14e2ZL9VQV1kpXGKxWtTdqAxWMaL53H3H";
-  let walletAddress = null;
-  let connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+        // Wallet verbinden
+        async function connectWallet() {
+            const { solana } = window;
+            if (solana) {
+                try {
+                    const response = await solana.connect();
+                    wallet = response;
+                    document.getElementById("wallet-status").textContent = `Verbunden: ${wallet.publicKey.toString().slice(0, 8)}...`;
+                } catch (error) {
+                    showStatus("Fehler bei der Verbindung!", "red");
+                }
+            } else {
+                showStatus("Installiere eine Solana-Wallet (z. B. Phantom)!", "red");
+            }
+        }
 
-  async function connectWallet() {
-    if (!window.solana) {
-      alert("Phantom Wallet not detected.");
-      return;
-    }
+        // Token kaufen
+        async function buyToken() {
+            if (!wallet) return showStatus("Wallet nicht verbunden!", "red");
 
-    try {
-      const resp = await window.solana.connect();
-      walletAddress = resp.publicKey.toString();
-      document.getElementById("status").innerText = "Connected: " + walletAddress;
+            const tokenAddress = document.getElementById("token-address").value;
+            const amount = parseFloat(document.getElementById("amount").value);
+            if (!tokenAddress || !amount) return showStatus("Fülle alle Felder aus!", "red");
 
-      const balance = await getSppBalance(walletAddress);
-      const price = await fetchSppPrice();
-      const totalUSD = balance * price;
+            try {
+                const tokenPublicKey = new PublicKey(tokenAddress);
+                const sppPublicKey = new PublicKey("SPP_TOKEN_ADDRESS_HERE"); // Ersetze mit echter SPP-Adresse
+                const amountLamports = amount * 1e9;
 
-      document.getElementById("status").innerText += `\nSPP: ${balance.toFixed(2)} ($${totalUSD.toFixed(2)})`;
+                const transaction = new Transaction();
 
-      if (totalUSD >= 100) {
-        document.getElementById("gold-content").style.display = "block";
-      } else {
-        document.getElementById("gold-content").style.display = "none";
-      }
+                // Kauf-Transaktion (vereinfacht)
+                transaction.add(
+                    transfer({
+                        source: wallet.publicKey,
+                        dest: tokenPublicKey,
+                        owner: wallet.publicKey,
+                        amount: amountLamports,
+                        programId: TOKEN_PROGRAM_ID,
+                    })
+                );
 
-    } catch (err) {
-      console.error(err);
-      document.getElementById("status").innerText = "Wallet connection failed.";
-    }
-  }
+                // 5% Gebühr in SPP, außer bei Gold-Mitgliedern
+                if (!isGold) {
+                    const fee = amountLamports * 0.05;
+                    transaction.add(
+                        transfer({
+                            source: wallet.publicKey,
+                            dest: new PublicKey("DEINE_WALLET_ADRESSE"), // Ersetze mit deiner Adresse
+                            owner: wallet.publicKey,
+                            amount: fee,
+                            programId: TOKEN_PROGRAM_ID,
+                        })
+                    );
+                }
 
-  async function getSppBalance(address) {
-    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(new solanaWeb3.PublicKey(address), {
-      mint: new solanaWeb3.PublicKey(SPP_MINT)
-    });
+                const signature = await wallet.signAndSendTransaction(transaction);
+                await connection.confirmTransaction(signature);
+                showStatus("Kauf erfolgreich!");
+            } catch (error) {
+                console.error(error);
+                showStatus("Fehler beim Kauf!", "red");
+            }
+        }
 
-    if (tokenAccounts.value.length === 0) return 0;
-    const amount = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
-    return amount;
-  }
+        // Gold-Mitgliedschaft kaufen
+        async function buyGold() {
+            if (!wallet) return showStatus("Wallet nicht verbunden!", "red");
 
-  async function fetchSppPrice() {
-    try {
-      const res = await fetch("https://api.dexscreener.com/latest/dex/pairs/solana/H6D2hjG4z9ASYfju9mUvWheoCtSTii8FELpvNYGijUsj");
-      const data = await res.json();
-      return parseFloat(data.pair.priceUsd);
-    } catch (err) {
-      console.error("Price fetch error", err);
-      return 0;
-    }
-  }
-</script>
+            try {
+                const sppPublicKey = new PublicKey("SPP_TOKEN_ADDRESS_HERE"); // Ersetze mit echter SPP-Adresse
+                const transaction = new Transaction().add(
+                    transfer({
+                        source: wallet.publicKey,
+                        dest: new PublicKey("DEINE_WALLET_ADRESSE"), // Ersetze mit deiner Adresse
+                        owner: wallet.publicKey,
+                        amount: 100 * 1e9, // 100 SPP
+                        programId: TOKEN_PROGRAM_ID,
+                    })
+                );
 
+                const signature = await wallet.signAndSendTransaction(transaction);
+                await connection.confirmTransaction(signature);
+                isGold = true;
+                document.getElementById("membership-status").textContent = "Gold-Mitglied!";
+                showStatus("Gold-Mitgliedschaft gekauft!");
+            } catch (error) {
+                console.error(error);
+                showStatus("Fehler beim Kauf!", "red");
+            }
+        }
+
+        // Status anzeigen
+        function showStatus(message, color = "#22c55e") {
+            const status = document.getElementById("status");
+            status.textContent = message;
+            status.style.color = color;
+        }
+    </script>
 </body>
 </html>
