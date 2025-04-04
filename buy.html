@@ -1,125 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SOLPRINTER SNIPE Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SPP Access Dashboard</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
     body {
-      background: linear-gradient(135deg, #593676, #b292bb);
       font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #593676, #b292bb);
       color: white;
-      margin: 0;
-      padding: 0;
       text-align: center;
+      margin: 0;
+      padding: 40px 20px;
     }
 
-    header {
-      padding: 30px 0;
-    }
-
-    h1 {
+    h2 {
       color: #ffd700;
-      font-size: 2.2em;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
     }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
+    #access-content {
+      margin-top: 30px;
       padding: 20px;
-    }
-
-    .section {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      margin: 20px 0;
-      border-radius: 12px;
-    }
-
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
-
-    input, select {
-      padding: 10px;
-      width: 90%;
-      max-width: 400px;
-      border-radius: 5px;
-      border: none;
-      font-size: 1em;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     button {
-      margin-top: 15px;
-      padding: 12px 25px;
-      background: #ffd700;
+      background-color: #ffd700;
       color: #6a0dad;
       border: none;
-      border-radius: 8px;
+      padding: 15px 30px;
+      font-size: 16px;
       font-weight: bold;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 1em;
+      margin-top: 20px;
     }
 
     button:hover {
-      background: #e0c200;
-    }
-
-    .log {
-      background: #1e1e2f;
-      color: #00ffae;
-      padding: 10px;
-      font-size: 0.9em;
-      height: 150px;
-      overflow-y: scroll;
-      border-radius: 5px;
-      margin-top: 10px;
+      background-color: #e6c200;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>SOLPRINTER SNIPE Dashboard</h1>
-  </header>
 
-  <div class="container">
+  <h2>🔐 Access SOLPRINTER PRO Tools</h2>
+  <p>Connect your wallet to verify your payment</p>
+  <button onclick="connectWallet()">🔗 Connect Wallet</button>
+  <p id="wallet-address"></p>
+  <p id="access-status"></p>
 
-    <div class="section">
-      <h2>Connect Wallet</h2>
-      <button onclick="alert('Wallet connection coming soon...')">Connect Phantom Wallet</button>
-    </div>
-
-    <div class="section">
-      <h2>Sniper Settings</h2>
-      <label for="token">Token Address</label>
-      <input type="text" id="token" placeholder="Enter token address">
-
-      <label for="amount">Buy Amount (SOL)</label>
-      <input type="number" id="amount" placeholder="0.1">
-
-      <label for="slippage">Slippage %</label>
-      <input type="number" id="slippage" placeholder="1">
-
-      <button onclick="alert('Sniping bot configuration will be active soon.')">Start Sniper</button>
-    </div>
-
-    <div class="section">
-      <h2>Gold Membership</h2>
-      <p>Upgrade to Gold and snipe unlimited tokens with 0% fee!</p>
-      <button onclick="alert('Upgrade coming soon – Pay $100 in SPP')">Upgrade to Gold</button>
-    </div>
-
-    <div class="section">
-      <h2>Live Trade Logs</h2>
-      <div class="log" id="log-box">
-        Awaiting trades...
-      </div>
-    </div>
-
+  <div id="access-content" style="display:none;">
+    <h3>🎉 Welcome, Gold Member!</h3>
+    <p>You now have full access to our premium tools.</p>
+    <!-- Add your bot dashboard, features, or links here -->
   </div>
+
+  <script>
+    const SPP_TOKEN_MINT = "SPPTokenMint123..."; // replace with real SPP Mint
+    const PROJECT_RECEIVER = "YourProjectWallet123..."; // replace with real receiver wallet
+    const GOLD_THRESHOLD = 100000; // e.g. 100k SPP = $100 (adjust as needed)
+
+    let userWallet = "";
+
+    async function connectWallet() {
+      try {
+        if (!window.solana || !window.solana.isPhantom) {
+          alert("Phantom Wallet not found!");
+          return;
+        }
+
+        const resp = await window.solana.connect();
+        userWallet = resp.publicKey.toString();
+        document.getElementById("wallet-address").innerText = "Wallet: " + userWallet;
+        checkPaymentToProjectWallet(userWallet);
+      } catch (err) {
+        console.error(err);
+        alert("Wallet connection failed");
+      }
+    }
+
+    async function checkPaymentToProjectWallet(walletAddress) {
+      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
+      const signatures = await connection.getSignaturesForAddress(new solanaWeb3.PublicKey(walletAddress), { limit: 20 });
+
+      let accessGranted = false;
+
+      for (const sig of signatures) {
+        const tx = await connection.getParsedTransaction(sig.signature);
+        if (!tx) continue;
+
+        for (const ix of tx.transaction.message.instructions) {
+          const parsed = ix.parsed;
+          if (
+            parsed?.type === "transfer" &&
+            parsed.info?.destination === PROJECT_RECEIVER &&
+            parsed.info?.mint === SPP_TOKEN_MINT &&
+            parseFloat(parsed.info?.amount || 0) >= GOLD_THRESHOLD
+          ) {
+            accessGranted = true;
+            break;
+          }
+        }
+
+        if (accessGranted) break;
+      }
+
+      if (accessGranted) {
+        document.getElementById("access-status").innerText = "✅ Access Granted";
+        document.getElementById("access-content").style.display = "block";
+      } else {
+        document.getElementById("access-status").innerText = "❌ Access Denied – Please pay 100$ in SPP";
+      }
+    }
+  </script>
 
 </body>
 </html>
