@@ -1,119 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SPP Access Dashboard</title>
+  <meta charset="UTF-8">
+  <title>SPP Dashboard Access</title>
   <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
   <style>
     body {
+      background-color: #121212;
+      color: #fff;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #593676, #b292bb);
-      color: white;
       text-align: center;
-      margin: 0;
-      padding: 40px 20px;
+      padding: 40px;
     }
-
-    h2 {
-      color: #ffd700;
-    }
-
-    #access-content {
-      margin-top: 30px;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
     button {
-      background-color: #ffd700;
-      color: #6a0dad;
-      border: none;
-      padding: 15px 30px;
+      padding: 12px 24px;
       font-size: 16px;
-      font-weight: bold;
-      border-radius: 8px;
+      background-color: #ffd700;
+      border: none;
+      color: #000;
       cursor: pointer;
-      margin-top: 20px;
+      border-radius: 6px;
     }
-
-    button:hover {
-      background-color: #e6c200;
+    #status {
+      margin: 20px 0;
+      font-size: 18px;
+    }
+    .section {
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 10px;
+      max-width: 700px;
+      background-color: #1e1e1e;
+    }
+    .gold {
+      border: 2px solid #ffd700;
     }
   </style>
 </head>
 <body>
 
-  <h2>🔐 Access SOLPRINTER PRO Tools</h2>
-  <p>Connect your wallet to verify your payment (min. 100$ in SPP)</p>
-  <button onclick="connectWallet()">🔗 Connect Wallet</button>
-  <p id="wallet-address"></p>
-  <p id="access-status"></p>
+<h1>SPP Utility Dashboard</h1>
+<p>Connect your wallet to access features</p>
 
-  <div id="access-content" style="display:none;">
-    <h3>🎉 Welcome, Gold Member!</h3>
-    <p>You now have full access to our premium tools.</p>
-  </div>
+<button onclick="connectWallet()">Connect Wallet</button>
+<div id="status">Wallet not connected</div>
 
-  <script>
-    const SPP_TOKEN_MINT = "AJwynGxHawX14e2ZL9VQV1kpXGKxWtTdqAxWMaL53H3H";
-    const PROJECT_RECEIVER = "G8iGHPSv1j21bmYBfSiwgrvGKanNAsVqnR8bb6VUpCj3";
-    const GOLD_THRESHOLD = 100000; // Adjusted for estimated $100 SPP
+<div id="free-content" class="section">
+  <h2>Free Access Area</h2>
+  <p>Use basic tools, live charts, and more – no token requirement!</p>
+</div>
 
-    let userWallet = "";
+<div id="gold-content" class="section gold" style="display:none;">
+  <h2>Gold Access Unlocked</h2>
+  <p>You are holding $100+ in SPP!</p>
+  <p>Welcome to the premium dashboard: Trading Bot, Sniper Tools & More</p>
+</div>
 
-    async function connectWallet() {
-      try {
-        if (!window.solana || !window.solana.isPhantom) {
-          alert("Phantom Wallet not found!");
-          return;
-        }
+<script>
+  const SPP_MINT = "AJwynGxHawX14e2ZL9VQV1kpXGKxWtTdqAxWMaL53H3H";
+  let walletAddress = null;
+  let connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
 
-        const resp = await window.solana.connect();
-        userWallet = resp.publicKey.toString();
-        document.getElementById("wallet-address").innerText = "Wallet: " + userWallet;
-        checkPaymentToProjectWallet(userWallet);
-      } catch (err) {
-        console.error(err);
-        alert("Wallet connection failed");
-      }
+  async function connectWallet() {
+    if (!window.solana) {
+      alert("Phantom Wallet not detected.");
+      return;
     }
 
-    async function checkPaymentToProjectWallet(walletAddress) {
-      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
-      const signatures = await connection.getSignaturesForAddress(new solanaWeb3.PublicKey(walletAddress), { limit: 50 });
+    try {
+      const resp = await window.solana.connect();
+      walletAddress = resp.publicKey.toString();
+      document.getElementById("status").innerText = "Connected: " + walletAddress;
 
-      let accessGranted = false;
+      const balance = await getSppBalance(walletAddress);
+      const price = await fetchSppPrice();
+      const totalUSD = balance * price;
 
-      for (const sig of signatures) {
-        const tx = await connection.getParsedTransaction(sig.signature);
-        if (!tx) continue;
+      document.getElementById("status").innerText += `\nSPP: ${balance.toFixed(2)} ($${totalUSD.toFixed(2)})`;
 
-        for (const ix of tx.transaction.message.instructions) {
-          const parsed = ix.parsed;
-          if (
-            parsed?.type === "transfer" &&
-            parsed.info?.destination === PROJECT_RECEIVER &&
-            parsed.info?.mint === SPP_TOKEN_MINT &&
-            parseFloat(parsed.info?.amount || 0) >= GOLD_THRESHOLD
-          ) {
-            accessGranted = true;
-            break;
-          }
-        }
-
-        if (accessGranted) break;
-      }
-
-      if (accessGranted) {
-        document.getElementById("access-status").innerText = "✅ Access Granted";
-        document.getElementById("access-content").style.display = "block";
+      if (totalUSD >= 100) {
+        document.getElementById("gold-content").style.display = "block";
       } else {
-        document.getElementById("access-status").innerText = "❌ Access Denied – Please send 100$ worth of SPP to access.";
+        document.getElementById("gold-content").style.display = "none";
       }
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById("status").innerText = "Wallet connection failed.";
     }
-  </script>
+  }
+
+  async function getSppBalance(address) {
+    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(new solanaWeb3.PublicKey(address), {
+      mint: new solanaWeb3.PublicKey(SPP_MINT)
+    });
+
+    if (tokenAccounts.value.length === 0) return 0;
+    const amount = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
+    return amount;
+  }
+
+  async function fetchSppPrice() {
+    try {
+      const res = await fetch("https://api.dexscreener.com/latest/dex/pairs/solana/H6D2hjG4z9ASYfju9mUvWheoCtSTii8FELpvNYGijUsj");
+      const data = await res.json();
+      return parseFloat(data.pair.priceUsd);
+    } catch (err) {
+      console.error("Price fetch error", err);
+      return 0;
+    }
+  }
+</script>
 
 </body>
 </html>
