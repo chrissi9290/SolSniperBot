@@ -12,7 +12,9 @@
             margin: 0;
             padding: 20px;
         }
-        h1, h2 { margin-bottom: 10px; }
+        h1 { font-size: 2em; text-align: center; }
+        h2 { margin: 20px 0 10px; }
+        .section { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
         button {
             padding: 10px 20px;
             margin: 5px;
@@ -20,10 +22,16 @@
             cursor: pointer;
             color: white;
             border-radius: 5px;
+            transition: background 0.3s;
         }
         .connect-btn { background-color: #3b82f6; }
+        .connect-btn:hover { background-color: #2563eb; }
         .buy-btn { background-color: #22c55e; }
+        .buy-btn:hover { background-color: #16a34a; }
         .gold-btn { background-color: #f59e0b; }
+        .gold-btn:hover { background-color: #d97706; }
+        .stop-btn { background-color: #ef4444; }
+        .stop-btn:hover { background-color: #dc2626; }
         input {
             padding: 10px;
             width: 100%;
@@ -34,42 +42,56 @@
             border: none;
             border-radius: 5px;
         }
-        #status { margin-top: 10px; color: #22c55e; }
+        #status, #sniper-status { margin-top: 10px; font-size: 0.9em; }
+        .green { color: #22c55e; }
+        .red { color: #ef4444; }
     </style>
 </head>
 <body>
     <h1>MemeSniper</h1>
     
     <!-- Wallet-Verbindung -->
-    <h2>Wallet verbinden</h2>
-    <button class="connect-btn" onclick="connectWallet()">Wallet verbinden</button>
-    <p id="wallet-status">Nicht verbunden</p>
+    <div class="section">
+        <h2>Wallet</h2>
+        <button class="connect-btn" onclick="connectWallet()">Wallet verbinden</button>
+        <p id="wallet-status">Nicht verbunden</p>
+    </div>
 
-    <!-- Token kaufen -->
-    <h2>Token kaufen</h2>
-    <input type="text" id="token-address" placeholder="Token-Adresse">
-    <input type="number" id="amount" placeholder="Menge (SOL)">
-    <button class="buy-btn" onclick="buyToken()">Kaufen</button>
+    <!-- Sniper-Bot -->
+    <div class="section">
+        <h2>Sniper-Bot</h2>
+        <input type="text" id="token-address" placeholder="Token-Adresse">
+        <input type="number" id="amount" placeholder="Menge (SOL)">
+        <button class="buy-btn" onclick="startSniper()">Sniper starten</button>
+        <button class="stop-btn" onclick="stopSniper()">Sniper stoppen</button>
+        <p id="sniper-status">Sniper inaktiv</p>
+    </div>
 
-    <!-- Gold-Mitgliedschaft -->
-    <h2>Mitgliedschaft</h2>
-    <p>Gold: 100 SPP – keine Gebühren</p>
-    <button class="gold-btn" onclick="buyGold()">Gold kaufen</button>
-    <p id="membership-status">Kein Gold-Mitglied</p>
+    <!-- Mitgliedschaft -->
+    <div class="section">
+        <h2>Mitgliedschaft</h2>
+        <p>Gold: 100 SPP – keine Gebühren</p>
+        <button class="gold-btn" onclick="buyGold()">Gold kaufen</button>
+        <p id="membership-status">Kein Gold-Mitglied</p>
+    </div>
 
     <!-- Statusmeldungen -->
-    <p id="status"></p>
+    <div class="section">
+        <h2>Status</h2>
+        <p id="status"></p>
+    </div>
 
     <!-- Solana Web3.js einbinden -->
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
     <script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.min.js"></script>
     <script>
         const { Connection, PublicKey, Transaction } = solanaWeb3;
-        const { TOKEN_PROGRAM_ID, transfer } = splToken;
+        const { TOKEN_PROGRAM_ID, transfer, getOrCreateAssociatedTokenAccount } = splToken;
         const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
         
         let wallet = null;
         let isGold = false;
+        let sniperInterval = null;
 
         // Wallet verbinden
         async function connectWallet() {
@@ -79,6 +101,7 @@
                     const response = await solana.connect();
                     wallet = response;
                     document.getElementById("wallet-status").textContent = `Verbunden: ${wallet.publicKey.toString().slice(0, 8)}...`;
+                    showStatus("Wallet verbunden!", "green");
                 } catch (error) {
                     showStatus("Fehler bei der Verbindung!", "red");
                 }
@@ -87,8 +110,8 @@
             }
         }
 
-        // Token kaufen
-        async function buyToken() {
+        // Sniper starten
+        async function startSniper() {
             if (!wallet) return showStatus("Wallet nicht verbunden!", "red");
 
             const tokenAddress = document.getElementById("token-address").value;
@@ -97,43 +120,82 @@
 
             try {
                 const tokenPublicKey = new PublicKey(tokenAddress);
-                const sppPublicKey = new PublicKey("SPP_TOKEN_ADDRESS_HERE"); // Ersetze mit echter SPP-Adresse
-                const amountLamports = amount * 1e9;
+                document.getElementById("sniper-status").textContent = "Sniper läuft...";
+                
+                // Simulierte Sniping-Logik (prüft alle 5 Sekunden)
+                sniperInterval = setInterval(async () => {
+                    try {
+                        const balance = await connection.getTokenAccountBalance(tokenPublicKey);
+                        if (balance.value.uiAmount > 0) { // Beispiel: Token verfügbar
+                            await buyToken(tokenPublicKey, amount);
+                            stopSniper();
+                            showStatus("Token gekauft!", "green");
+                        }
+                    } catch (error) {
+                        console.error("Sniper-Fehler:", error);
+                    }
+                }, 5000);
+            } catch (error) {
+                showStatus("Fehler beim Starten des Sniper!", "red");
+            }
+        }
 
-                const transaction = new Transaction();
+        // Sniper stoppen
+        function stopSniper() {
+            if (sniperInterval) {
+                clearInterval(sniperInterval);
+                sniperInterval = null;
+                document.getElementById("sniper-status").textContent = "Sniper inaktiv";
+                showStatus("Sniper gestoppt!", "green");
+            }
+        }
 
-                // Kauf-Transaktion (vereinfacht)
+        // Token kaufen
+        async function buyToken(tokenPublicKey, amount) {
+            const sppPublicKey = new PublicKey("SPP_TOKEN_ADDRESS_HERE"); // Ersetze mit echter SPP-Adresse
+            const amountLamports = amount * 1e9;
+
+            const transaction = new Transaction();
+
+            // Token-Kauf
+            const buyerTokenAccount = await getOrCreateAssociatedTokenAccount(
+                connection,
+                wallet.publicKey,
+                tokenPublicKey,
+                wallet.publicKey
+            );
+            transaction.add(
+                transfer({
+                    source: wallet.publicKey,
+                    dest: buyerTokenAccount.address,
+                    owner: wallet.publicKey,
+                    amount: amountLamports,
+                    programId: TOKEN_PROGRAM_ID,
+                })
+            );
+
+            // 5% Gebühr in SPP, außer bei Gold-Mitgliedern
+            if (!isGold) {
+                const fee = amountLamports * 0.05;
+                const sppAccount = await getOrCreateAssociatedTokenAccount(
+                    connection,
+                    wallet.publicKey,
+                    sppPublicKey,
+                    wallet.publicKey
+                );
                 transaction.add(
                     transfer({
-                        source: wallet.publicKey,
-                        dest: tokenPublicKey,
+                        source: sppAccount.address,
+                        dest: new PublicKey("DEINE_WALLET_ADRESSE"), // Ersetze mit deiner Adresse
                         owner: wallet.publicKey,
-                        amount: amountLamports,
+                        amount: fee,
                         programId: TOKEN_PROGRAM_ID,
                     })
                 );
-
-                // 5% Gebühr in SPP, außer bei Gold-Mitgliedern
-                if (!isGold) {
-                    const fee = amountLamports * 0.05;
-                    transaction.add(
-                        transfer({
-                            source: wallet.publicKey,
-                            dest: new PublicKey("DEINE_WALLET_ADRESSE"), // Ersetze mit deiner Adresse
-                            owner: wallet.publicKey,
-                            amount: fee,
-                            programId: TOKEN_PROGRAM_ID,
-                        })
-                    );
-                }
-
-                const signature = await wallet.signAndSendTransaction(transaction);
-                await connection.confirmTransaction(signature);
-                showStatus("Kauf erfolgreich!");
-            } catch (error) {
-                console.error(error);
-                showStatus("Fehler beim Kauf!", "red");
             }
+
+            const signature = await wallet.signAndSendTransaction(transaction);
+            await connection.confirmTransaction(signature);
         }
 
         // Gold-Mitgliedschaft kaufen
@@ -142,9 +204,15 @@
 
             try {
                 const sppPublicKey = new PublicKey("SPP_TOKEN_ADDRESS_HERE"); // Ersetze mit echter SPP-Adresse
+                const sppAccount = await getOrCreateAssociatedTokenAccount(
+                    connection,
+                    wallet.publicKey,
+                    sppPublicKey,
+                    wallet.publicKey
+                );
                 const transaction = new Transaction().add(
                     transfer({
-                        source: wallet.publicKey,
+                        source: sppAccount.address,
                         dest: new PublicKey("DEINE_WALLET_ADRESSE"), // Ersetze mit deiner Adresse
                         owner: wallet.publicKey,
                         amount: 100 * 1e9, // 100 SPP
@@ -156,7 +224,7 @@
                 await connection.confirmTransaction(signature);
                 isGold = true;
                 document.getElementById("membership-status").textContent = "Gold-Mitglied!";
-                showStatus("Gold-Mitgliedschaft gekauft!");
+                showStatus("Gold-Mitgliedschaft gekauft!", "green");
             } catch (error) {
                 console.error(error);
                 showStatus("Fehler beim Kauf!", "red");
@@ -164,10 +232,10 @@
         }
 
         // Status anzeigen
-        function showStatus(message, color = "#22c55e") {
+        function showStatus(message, colorClass = "green") {
             const status = document.getElementById("status");
             status.textContent = message;
-            status.style.color = color;
+            status.className = colorClass;
         }
     </script>
 </body>
