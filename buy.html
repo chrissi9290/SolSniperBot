@@ -46,7 +46,7 @@
 <body>
 
   <h2>🔐 Access SOLPRINTER PRO Tools</h2>
-  <p>Connect your wallet to verify your payment</p>
+  <p>Connect your wallet to verify your payment (min. 100$ in SPP)</p>
   <button onclick="connectWallet()">🔗 Connect Wallet</button>
   <p id="wallet-address"></p>
   <p id="access-status"></p>
@@ -54,13 +54,12 @@
   <div id="access-content" style="display:none;">
     <h3>🎉 Welcome, Gold Member!</h3>
     <p>You now have full access to our premium tools.</p>
-    <!-- Add your bot dashboard, features, or links here -->
   </div>
 
   <script>
-    const SPP_TOKEN_MINT = "SPPTokenMint123..."; // replace with real SPP Mint
-    const PROJECT_RECEIVER = "YourProjectWallet123..."; // replace with real receiver wallet
-    const GOLD_THRESHOLD = 100000; // e.g. 100k SPP = $100 (adjust as needed)
+    const SPP_TOKEN_MINT = "AJwynGxHawX14e2ZL9VQV1kpXGKxWtTdqAxWMaL53H3H";
+    const PROJECT_RECEIVER = "G8iGHPSv1j21bmYBfSiwgrvGKanNAsVqnR8bb6VUpCj3";
+    const GOLD_THRESHOLD = 100000; // Adjusted for estimated $100 SPP
 
     let userWallet = "";
 
@@ -83,7 +82,7 @@
 
     async function checkPaymentToProjectWallet(walletAddress) {
       const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("mainnet-beta"));
-      const signatures = await connection.getSignaturesForAddress(new solanaWeb3.PublicKey(walletAddress), { limit: 20 });
+      const signatures = await connection.getSignaturesForAddress(new solanaWeb3.PublicKey(walletAddress), { limit: 50 });
 
       let accessGranted = false;
 
@@ -111,7 +110,7 @@
         document.getElementById("access-status").innerText = "✅ Access Granted";
         document.getElementById("access-content").style.display = "block";
       } else {
-        document.getElementById("access-status").innerText = "❌ Access Denied – Please pay 100$ in SPP";
+        document.getElementById("access-status").innerText = "❌ Access Denied – Please send 100$ worth of SPP to access.";
       }
     }
   </script>
