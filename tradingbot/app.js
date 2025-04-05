@@ -1,29 +1,25 @@
-document.getElementById('connectWallet').addEventListener('click', async () => {
-  if (window.solana && window.solana.isPhantom) {
-    try {
-      const response = await window.solana.connect();
-      document.getElementById('walletAddress').innerText = `Wallet: ${response.publicKey}`;
-    } catch (err) {
-      console.error("Connection failed:", err);
-    }
-  } else {
-    alert("Please install Phantom Wallet.");
+async function fetchTrendingCoins() {
+  try {
+    const response = await fetch("https://pump.fun/api/projects?limit=20");
+    const data = await response.json();
+
+    const tbody = document.getElementById('tokenList');
+    tbody.innerHTML = ""; // Reset
+
+    data.projects.forEach(project => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${project.ticker}</td>
+        <td>${(project.volume24h / 1e9).toFixed(2)} SOL</td>
+        <td><a href="https://pump.fun/${project.id}" target="_blank"><button>View</button></a></td>
+      `;
+      tbody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Pump.fun API error:", error);
   }
-});
+}
 
-// Beispielhafte Tokens (später durch API ersetzt)
-const tokens = [
-  { name: "MemeMaster", volume: "25 SOL" },
-  { name: "Pumpzilla", volume: "40 SOL" },
-];
-
-const tbody = document.getElementById('tokenList');
-tokens.forEach(token => {
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>${token.name}</td>
-    <td>${token.volume}</td>
-    <td><button>Buy</button></td>
-  `;
-  tbody.appendChild(row);
-});
+// On load
+fetchTrendingCoins();
