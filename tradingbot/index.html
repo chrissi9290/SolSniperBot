@@ -1,45 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SOLPRINTER Trading Bot</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Trading Bot Interface | SOLPRINTER</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #593676, #b292bb);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #ffd700;
+    }
+    .bot-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 30px;
+      margin: auto;
+      max-width: 600px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
+    }
+    button {
+      background-color: #ffd700;
+      color: #6a0dad;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e6c200;
+    }
+  </style>
 </head>
-
-<div id="goldStatus">Checking Gold Access...</div>
-  
-<nav>
-  <a href="../index.html">Home</a> |
-  <a href="https://pump.fun" target="_blank">Pump.fun</a> |
-  <a href="#">Gold Access</a>
-</nav>
-  
 <body>
-  <header>
-    <h1>SOLPRINTER TRADING BOT</h1>
-    <button id="connectWallet">Connect Wallet</button>
-    <p id="walletAddress"></p>
-  </header>
+  <h1>Solprinter Meme Coin Trading Bot</h1>
+  <div class="bot-container">
+    <p><strong>Token Contract Address</strong></p>
+    <input type="text" id="tokenAddress" placeholder="Enter token CA (e.g. Solana token)" size="45">
+    <p><strong>Amount to Buy (SOL)</strong></p>
+    <input type="number" id="amount" placeholder="e.g. 0.5">
+    <p><strong>Slippage (%)</strong></p>
+    <input type="number" id="slippage" value="5">
+    <br>
+    <button onclick="simulateTrade()">Simulate Trade</button>
+    <p id="result"></p>
+  </div>
 
-  <main>
-    <section>
-      <h2>Live Meme Coins (Pump.fun Example)</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Token</th>
-            <th>Volume</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="tokenList">
-          <!-- Tokens werden hier eingefügt -->
-        </tbody>
-      </table>
-    </section>
-  </main>
+  <script>
+    function simulateTrade() {
+      const token = document.getElementById('tokenAddress').value;
+      const amount = document.getElementById('amount').value;
+      const slippage = document.getElementById('slippage').value;
 
-  <script type="module" src="app.js"></script>
+      if (token && amount > 0) {
+        document.getElementById('result').innerText =
+          `Simulated purchase of ${amount} SOL into ${token} with ${slippage}% slippage. (Real trade coming soon!)`;
+      } else {
+        document.getElementById('result').innerText = 'Please enter valid data.';
+      }
+    }
+  </script>
 </body>
 </html>
