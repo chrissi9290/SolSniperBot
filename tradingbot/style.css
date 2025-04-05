@@ -29,3 +29,24 @@ th, td {
   padding: 12px;
   border: 1px solid #444;
 }
+
+
+nav {
+  margin-bottom: 20px;
+  font-size: 1.1em;
+}
+nav a {
+  color: #ffcc00;
+  text-decoration: none;
+  margin: 0 10px;
+}
+nav a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
