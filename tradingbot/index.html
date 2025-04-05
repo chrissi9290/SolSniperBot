@@ -1,71 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Trading Bot Interface | SOLPRINTER</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #593676, #b292bb);
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #ffd700;
-    }
-    .bot-container {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 30px;
-      margin: auto;
-      max-width: 600px;
-    }
-    input, select, button {
-      padding: 10px;
-      margin: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1em;
-    }
-    button {
-      background-color: #ffd700;
-      color: #6a0dad;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #e6c200;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SOLPRINTER PONZI</title>
 </head>
 <body>
-  <h1>Solprinter Meme Coin Trading Bot</h1>
-  <div class="bot-container">
-    <p><strong>Token Contract Address</strong></p>
-    <input type="text" id="tokenAddress" placeholder="Enter token CA (e.g. Solana token)" size="45">
-    <p><strong>Amount to Buy (SOL)</strong></p>
-    <input type="number" id="amount" placeholder="e.g. 0.5">
-    <p><strong>Slippage (%)</strong></p>
-    <input type="number" id="slippage" value="5">
-    <br>
-    <button onclick="simulateTrade()">Simulate Trade</button>
-    <p id="result"></p>
-  </div>
-
-  <script>
-    function simulateTrade() {
-      const token = document.getElementById('tokenAddress').value;
-      const amount = document.getElementById('amount').value;
-      const slippage = document.getElementById('slippage').value;
-
-      if (token && amount > 0) {
-        document.getElementById('result').innerText =
-          `Simulated purchase of ${amount} SOL into ${token} with ${slippage}% slippage. (Real trade coming soon!)`;
-      } else {
-        document.getElementById('result').innerText = 'Please enter valid data.';
-      }
-    }
-  </script>
+    <h1>Welcome to SOLPRINTER PONZI</h1>
+    <a href="whitepaper.html">Whitepaper</a>
+    <a href="buy.html">Buy</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="faq.html">FAQ</a>
+    <a href="nft.html">NFT</a>
 </body>
 </html>
