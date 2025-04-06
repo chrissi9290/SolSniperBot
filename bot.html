@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOLPRINTER | Meme Trading Hub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4c1d95, #8b5cf6);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .banner {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+    }
+
+    .container {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      background: #ffd700;
+      color: #4c1d95;
+      padding: 15px 25px;
+      font-weight: bold;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 15px;
+    }
+
+    .btn:hover {
+      background: #facc15;
+    }
+
+    .wallet-address {
+      font-weight: bold;
+      margin-top: 10px;
+      word-break: break-all;
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://raw.githubusercontent.com/chrissi9290/SolSniperBot/main/5375543886597975199.jpg" class="banner" alt="Solprinter Banner"/>
+
+  <div class="container">
+    <h1>Welcome to SOLPRINTER PONZI Trading Hub</h1>
+    <p>Trade the hottest meme coins on Solana, set TP/SL, and unlock exclusive sniper mode!</p>
+
+    <button class="btn" onclick="connectWallet()">Connect Wallet</button>
+    <div class="wallet-address" id="wallet-address"></div>
+
+    <div class="status" id="gold-status">Gold Status: <span style="color: orange;">Not Verified</span></div>
+
+    <div id="gold-info" style="margin-top: 30px;">
+      <h3>Unlock Gold Access</h3>
+      <p>Send $100 in SPP tokens to:</p>
+      <code>G8iGHPSv1j21bmYBfSiwgrvGKanNAsVqnR8bb6VUpCj3</code>
+    </div>
+  </div>
+
+  <script type="module">
+    import {
+      Connection,
+      clusterApiUrl,
+      PublicKey
+    } from "https://unpkg.com/@solana/web3.js@1.82.1/lib/index.iife.min.js";
+
+    const SPP_MINT = new PublicKey("AJwynGxHawX14e2ZL9VQV1kpXGKxWtTdqAxWMaL53H3H");
+    const GOLD_THRESHOLD = 100; // $100 worth in SPP
+
+    let walletAddress = null;
+    const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+
+    async function connectWallet() {
+      try {
+        const resp = await window.solana.connect();
+        walletAddress = resp.publicKey.toString();
+        document.getElementById("wallet-address").innerText = `Wallet: ${walletAddress}`;
+        checkGoldStatus(walletAddress);
+      } catch (err) {
+        alert("Please install Phantom Wallet.");
+      }
+    }
+
+    async function checkGoldStatus(wallet) {
+      try {
+        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(
+          new PublicKey(wallet),
+          { mint: SPP_MINT }
+        );
+
+        const balance = tokenAccounts.value[0]?.account.data.parsed.info.tokenAmount.uiAmount || 0;
+
+        if (balance >= GOLD_THRESHOLD) {
+          document.getElementById("gold-status").innerHTML = 'Gold Status: <span style="color: limegreen;">Verified</span>';
+        } else {
+          document.getElementById("gold-status").innerHTML = `Gold Status: <span style="color: orange;">Insufficient Balance (${balance} SPP)</span>`;
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById("gold-status").innerText = "Unable to fetch token balance.";
+      }
+    }
+
+    window.connectWallet = connectWallet;
+  </script>
+
+</body>
+</html>
