@@ -26,6 +26,7 @@
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
+            display: none; /* initially hidden */
         }
 
         .btn:hover {
@@ -48,13 +49,35 @@
         h1, h2 {
             color: #ffd700;
         }
+
+        .countdown {
+            font-size: 2em;
+            margin: 30px 0;
+            color: #ffd700;
+        }
+
+        footer {
+            padding: 20px;
+            color: #fff;
+        }
+
+        footer a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>🚀 SOLPRINTER Sniper Bot 🚀</h1>
         <p>Automated meme coin sniping on Solana - Fast, Secure, and Reliable.</p>
-        <a href="dashboard.html" class="btn">Launch Sniper Dashboard</a>
+        
+        <div id="countdown" class="countdown"></div>
+        <a href="dashboard.html" class="btn" id="launchBtn">Launch Sniper Dashboard</a>
     </header>
 
     <div class="container">
@@ -80,7 +103,34 @@
     </div>
 
     <footer>
-        <p>Powered by SOLPRINTER PONZI Token - <a href="https://www.solprinter-ponzi.com/" style="color:#ffd700;">Official Website</a></p>
+        <p>Powered by SOLPRINTER PONZI Token - <a href="https://www.solprinter-ponzi.com/">Official Website</a></p>
     </footer>
+
+    <script>
+        const launchBtn = document.getElementById('launchBtn');
+        const countdownEl = document.getElementById('countdown');
+
+        // Countdown 14 Tage ab Seitenladezeitpunkt
+        const countdownDate = new Date().getTime() + (14 * 24 * 60 * 60 * 1000);
+
+        const countdownFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownEl.innerHTML = days + "d " + hours + "h " 
+                                  + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                countdownEl.innerHTML = "🎉 Launch is Live!";
+                launchBtn.style.display = 'inline-block';
+            }
+        }, 1000);
+    </script>
 </body>
 </html>
