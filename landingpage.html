@@ -1,192 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOLPRINTER PONZI | Official Landing Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #593676, #b292bb);
-            color: white;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            overflow-x: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SOLPRINTER Sniper Mode</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4c1d95, #8b5cf6);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
 
-        header {
-            width: 100%;
-            margin-top: 20px;
-        }
+    .container {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-        .banner {
-            width: 80%;
-            max-height: 350px;
-            object-fit: cover;
-            border-radius: 10px;
-            animation: fadeIn 2s ease-in-out;
-        }
+    .btn {
+      background: #ffd700;
+      color: #4c1d95;
+      padding: 12px 24px;
+      font-weight: bold;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
 
-        .container {
-            max-width: 950px;
-            margin: 30px auto;
-            padding: 20px;
-        }
+    .btn:hover {
+      background: #facc15;
+    }
 
-        h1, h2 {
-            color: #ffd700;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 2s ease-in-out;
-        }
+    input {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin: 10px;
+      font-size: 1em;
+    }
 
-        p {
-            font-size: 1.1em;
-            line-height: 1.7em;
-            animation: fadeIn 2s ease-in-out;
-        }
+    .section {
+      margin-top: 40px;
+      padding: 20px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+    }
 
-        .btn {
-            background: #ffd700;
-            color: #6a0dad;
-            padding: 14px 30px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 10px;
-            display: inline-block;
-            margin: 20px 10px;
-            font-size: 1.1em;
-            transition: transform 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #d4af37;
-            transform: scale(1.05);
-        }
-
-        .section {
-            margin-top: 30px;
-            padding: 25px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        .social-icons img {
-            width: 45px;
-            margin: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .social-icons img:hover {
-            transform: scale(1.2);
-        }
-
-        #countdown {
-            font-size: 2em;
-            margin: 20px 0;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    </style>
+  </style>
 </head>
 <body>
 
-    <header>
-        <img src="https://raw.githubusercontent.com/chrissi9290/SolSniperBot/main/5375543886597975199.jpg" alt="SOLPRINTER PONZI Banner" class="banner">
-    </header>
+  <div class="container">
+    <h1>Sniper Mode Control Panel</h1>
 
-    <div class="container">
-        <h1>🚀 SOLPRINTER PONZI</h1>
-        <h2>Earn SOL automatically every hour! 💎</h2>
-
-        <div class="section">
-            <h2>🔥 Why Choose SOLPRINTER PONZI?</h2>
-            <p>💰 <strong>Passive SOL income every 60 minutes</strong> – No staking or farming required.</p>
-            <p>🔒 <strong>Liquidity permanently burned</strong> – No rug pulls, total security for investors.</p>
-            <p>🛡️ <strong>1-hour holding period</strong> – Prevents sniper bots & protects long-term holders.</p>
-            <p>💎 <strong>Deflationary tokenomics</strong> – Unclaimed Pre-Sale tokens will be burned!</p>
-        </div>
-
-        <div class="section">
-            <h2>📊 Tokenomics</h2>
-            <p>✅ <strong>75% of all transaction fees go directly to holders</strong> (paid in SOLANA)</p>
-            <p>✅ <strong>25% allocated for development, marketing & future growth</strong></p>
-            <p>✅ <strong>6% buy fee</strong> & <strong>100% sell tax</strong> – Maximizing passive income & sustainability</p>
-            <p>✅ <strong>50% liquidity permanently burned</strong>, 25% team, 25% Pre-Sale (unclaimed = burned)</p>
-        </div>
-
-        <div class="section">
-            <h2>🕒 Pre-Sale Ends In:</h2>
-            <div id="countdown"></div>
-            <a href="https://solsale.app/presale/8mrnJQ7j3JoRs8pLVSk9JSabgP3wLiqFE7ibMikz4xj5" class="btn">🔥 Buy Pre-Sale Tokens</a>
-
-            <iframe width="100%" height="500" frameBorder="0" scrolling="no" src="https://solsale.app/embed/?address=8mrnJQ7j3JoRs8pLVSk9JSabgP3wLiqFE7ibMikz4xj5&bgColor=%2312181F&fgColor=%23161D27&hasAnimation=true&hasBanner=true&hasSocialLinks=true&network=999999&padding=30&refer=&responsive=false&saleType=presale&theme=dark&txtColor=%23FFFFFF"></iframe>
-
-            
-            <!-- New Buy Button -->
-    <a href="https://www.solprinter-ponzi.com/buy.html" class="btn">💎 How to Buy SOLPRINTER PONZI ($SPP) in the Presale on SolSale?</a>
-        </div>
-
-<a href="whitepaper.html" class="btn">Read Full Whitepaper</a>
-
-        <div class="section">
-            <h2>🌐 Links & Community</h2>
-            <a href="https://www.solprinter-ponzi.com" class="btn">🌐 Official Website</a>
-            <a href="https://t.me/solprinterponzi" class="btn">💬 Join Telegram</a>
-            <a href="https://x.com/solprinterponzi" class="btn">📢 Follow on X</a>
-        </div>
-
-        <div class="section">
-            <h2>💬 Testimonials</h2>
-            <p>⭐️⭐️⭐️⭐️⭐️<br>“Best passive income project! Already earning SOL every hour!” – @CryptoFan</p>
-            <p>⭐️⭐️⭐️⭐️⭐️<br>“Transparent tokenomics and great community. Highly recommend!” – @InvestorGuru</p>
-        </div>
-
-        <div class="section social-icons">
-            <h2>📢 Follow Us & Stay Updated!</h2>
-            <a href="https://t.me/solprinterponzi"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram"></a>
-            <a href="https://x.com/solprinterponzi"><img src="https://img.freepik.com/vektoren-kostenlos/neues-twitter-logo-x-icon-design-2023_1017-45418.jpg?t=st=1742118328~exp=1742121928~hmac=719c9e4a4f79166189265e9a096c38905197f6ad3be3505ca34ea51da4c11b90&w=1380" alt="X"></a>
-        </div>
+    <div class="section">
+      <h2>Enter Token Address</h2>
+      <input type="text" placeholder="Token CA (Solana address)" id="tokenAddress" />
+      <button class="btn" onclick="startSniper()">Start Sniper</button>
     </div>
 
-    <script>
+    <div class="section">
+      <h2>Take Profit / Stop Loss</h2>
+      <input type="number" placeholder="TP % (e.g. 50)" id="tpValue" />
+      <input type="number" placeholder="SL % (e.g. 20)" id="slValue" />
+      <button class="btn" onclick="setTPSL()">Set TP/SL</button>
+    </div>
+  </div>
 
-    // Set the date we're counting down to: March 30, 2025 20:00:00
-    var countDownDate = new Date("March 30, 2025 20:00:00").getTime();
+  <script>
+    function startSniper() {
+      const ca = document.getElementById('tokenAddress').value;
+      if (!ca) return alert('Enter a token address');
+      alert('Sniper started for ' + ca);
+    }
 
-    // Update the count down every 1 second
-    var countdownfunction = setInterval(function() {
-
-        // Get today's date and time
-        var now = new Date().getTime();
-
-        // Find the distance between now and the countdown date
-        var distance = countDownDate - now;
-
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Display the result
-        document.getElementById("countdown").innerHTML = days + "D " + hours + "H "
-        + minutes + "M " + seconds + "S ";
-
-        // If the count down is over
-        if (distance < 0) {
-            clearInterval(countdownfunction);
-            document.getElementById("countdown").innerHTML = "Airdrop Ended!";
-        }
-    }, 1000);
-</script>
+    function setTPSL() {
+      const tp = document.getElementById('tpValue').value;
+      const sl = document.getElementById('slValue').value;
+      if (!tp || !sl) return alert('Enter both TP and SL values');
+      alert('TP/SL set:\nTP: ' + tp + '%\nSL: ' + sl + '%');
+    }
+  </script>
 
 </body>
 </html>
-
- 
