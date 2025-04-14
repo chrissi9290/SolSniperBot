@@ -6,6 +6,7 @@ function addActivity(message) {
     activityFeed.prepend(item);
 }
 
+// Wallet Connect
 document.getElementById('connectWallet').addEventListener('click', async () => {
     try {
         const provider = window.phantom?.solana;
@@ -22,7 +23,17 @@ document.getElementById('connectWallet').addEventListener('click', async () => {
     }
 });
 
+// Simulierter Token-Daten Abruf
+function loadTokenData() {
+    document.getElementById('tokenName').innerText = "Token: $PRINTER";
+    document.getElementById('tokenPrice').innerText = "Preis: 0.000023 SOL";
+    document.getElementById('tokenVolume').innerText = "Volumen: 6.3 SOL";
+    document.getElementById('tokenChange').innerText = "24h Änderung: +13.4%";
+}
+loadTokenData();
+
+// Sniper Buy (Demo)
 document.getElementById('snipeBtn').addEventListener('click', async () => {
-    document.getElementById('snipeStatus').innerText = "Sniping ausgeführt...";
-    addActivity("🟢 Sniper gestartet – Demo-Kauf ausgeführt (0.1 SOL)");
+    document.getElementById('snipeStatus').innerText = "Sniping ausgeführt (Simuliert)...";
+    addActivity("🟢 $PRINTER gesniped – 0.1 SOL (Demo)");
 });
